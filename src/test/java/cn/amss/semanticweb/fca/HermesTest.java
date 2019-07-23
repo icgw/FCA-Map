@@ -4,6 +4,7 @@
  *
  * Distributed under terms of the GPL license.
  */
+
 package cn.amss.semanticweb.fca;
 
 import static org.junit.Assert.assertEquals;
@@ -83,5 +84,56 @@ public class HermesTest
     answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(), new HashSet<Character>(Arrays.asList('f'))));
 
     assertEquals ( answer, algorithm.listAllSimplifiedConcepts() );
+  }
+
+  @Test
+  public void testListAllConcepts() {
+    Map<String, Set<String>> context = new HashMap<>();
+    context.put("鹰", new HashSet<String>());
+    context.get("鹰").add("鸟类");
+    context.get("鹰").add("会飞的");
+    context.get("鹰").add("食肉的");
+
+    context.put("鹅", new HashSet<String>());
+    context.get("鹅").add("鸟类");
+    context.get("鹅").add("食草的");
+
+    context.put("马", new HashSet<String>());
+    context.get("马").add("哺乳动物");
+    context.get("马").add("食草的");
+    context.get("马").add("奇蹄的");
+
+    context.put("牛", new HashSet<String>());
+    context.get("牛").add("哺乳动物");
+    context.get("牛").add("食草的");
+    context.get("牛").add("偶蹄的");
+
+    context.put("豹", new HashSet<String>());
+    context.get("豹").add("哺乳动物");
+    context.get("豹").add("食肉的");
+
+    context.put("狮", new HashSet<String>());
+    context.get("狮").add("哺乳动物");
+    context.get("狮").add("食肉的");
+
+    Hermes<String, String> algorithm = new Hermes<>();
+    algorithm.init(context);
+    algorithm.compute();
+
+    Set<Pair<Set<String>, Set<String>>> answer = new HashSet<>();
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(), new HashSet<String>(Arrays.asList("鸟类", "食肉的", "食草的", "会飞的", "哺乳动物", "偶蹄的", "奇蹄的"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰", "鹅", "豹", "狮", "牛", "马")), new HashSet<String>()));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰", "鹅")), new HashSet<String>(Arrays.asList("鸟类"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰", "豹", "狮")), new HashSet<String>(Arrays.asList("食肉的"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹅", "牛", "马")), new HashSet<String>(Arrays.asList("食草的"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("豹", "狮", "牛", "马")), new HashSet<String>(Arrays.asList("哺乳动物"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰")), new HashSet<String>(Arrays.asList("鸟类", "食肉的", "会飞的"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹅")), new HashSet<String>(Arrays.asList("鸟类", "食草的"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("豹", "狮")), new HashSet<String>(Arrays.asList("食肉的", "哺乳动物"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("牛")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物", "偶蹄的"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("牛", "马")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物"))));
+    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("马")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物", "奇蹄的"))));
+
+    assertEquals( answer, algorithm.listAllConcepts() );
   }
 }

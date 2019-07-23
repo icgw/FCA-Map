@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import cn.amss.semanticweb.util.Pair;
 
@@ -215,14 +216,141 @@ public class Hermes <O, A>
     return retransform(simplifiedConceptIdFrom(s));
   }
 
+  private Set<Integer> relative(Set<Integer> s, Map<Integer, Set<Integer>> m) {
+    Set<Integer> relative_s = new HashSet<>();
+    if (s == null || m == null) return relative_s;
+
+    Iterator<Integer> it = s.iterator();
+    if (it.hasNext()) {
+      int i = it.next();
+      if (m.get(i) != null) {
+        relative_s.addAll(m.get(i));
+      }
+    }
+
+    while (it.hasNext()) {
+      int i = it.next();
+      if (m.get(i) != null) {
+        relative_s.retainAll(m.get(i));
+      }
+    }
+
+    return relative_s;
+  }
+
+  private Set<Integer> relativeObjects(Set<Integer> attributes) {
+    if (attributes == null || object2Attributes == null) return new HashSet<Integer>();
+    if (attributes.isEmpty()) {
+      return object2Attributes.keySet();
+    }
+    return relative(attributes, attribute2Objects);
+  }
+
+  private Set<Integer> relativeAttributes(Set<Integer> objects) {
+    if (objects == null || attribute2Objects == null) return new HashSet<Integer>();
+    if (objects.isEmpty()) {
+      return attribute2Objects.keySet();
+    }
+    return relative(objects, object2Attributes);
+  }
+
+  private Pair<Set<Integer>, Set<Integer>> computeConceptId(Set<Integer> attributes,
+                                                            int limit_objects_size,
+                                                            int limit_attributes_size) {
+    Set<Integer> extent_id = new HashSet<>();
+    Set<Integer> intent_id = new HashSet<>();
+
+    if (attributes == null) return new Pair<>(extent_id, intent_id);
+
+    intent_id.addAll(attributes);
+
+    if (attributes.isEmpty() && object2Attributes != null) {
+      Set<Integer> all_objects = object2Attributes.keySet();
+      if (limit_objects_size > 0 && all_objects.size() > limit_objects_size) {
+        return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+      }
+      return new Pair<Set<Integer>, Set<Integer>>(all_objects, intent_id);
+    }
+
+    if (limit_attributes_size > 0 && attributes.size() > limit_attributes_size) {
+      return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+    }
+
+    extent_id = relativeObjects(attributes);
+
+    if (limit_objects_size > 0 && extent_id.size() > limit_objects_size) {
+      return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+    }
+
+    Set<Integer> relative_intent = relativeAttributes(extent_id);
+
+    if (!intent_id.equals(relative_intent)) {
+      return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+    }
+
+    return new Pair<Set<Integer>, Set<Integer>>(extent_id, intent_id);
+  }
+
+  private Set<Integer> computeParentAttributes(Set<Integer> s, Set<Integer> attributes) {
+    Pair<Set<Integer>, Set<Integer>> simplified_concept = simplifiedConceptIdFrom(s);
+
+    Set<Integer> parent_attributes = new HashSet<>(attributes);
+    parent_attributes.removeAll(simplified_concept.getValue());
+
+    return parent_attributes;
+  }
+
   public Set<Pair<Set<O>, Set<A>>> listAllSimplifiedConcepts() {
     if (simplifiedConcepts == null || simplifiedConcepts.isEmpty()) {
       simplifiedConcepts = new HashSet<>();
-      for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
-        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-        simplifiedConcepts.add(simplified_concept);
+      if (simplification != null) {
+        for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
+          Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+          simplifiedConcepts.add(simplified_concept);
+        }
       }
     }
     return simplifiedConcepts;
+  }
+
+  public Set<Pair<Set<O>, Set<A>>> listConceptsLimits(int limit_objects_size, int limit_attributes_size) {
+    Set<Pair<Set<O>, Set<A>>> concepts_limit = new HashSet<>();
+
+    Set<Set<Integer>> set_of_attributes = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
+        Set<Integer> attributes = r.getKey();
+        Set<Integer> s          = r.getValue();
+
+        if (limit_attributes_size <= 0 || attributes.size() < limit_attributes_size) {
+          set_of_attributes.add(attributes);
+        }
+
+        Set<Integer> parent_attributes = computeParentAttributes(s, attributes);
+        if (limit_attributes_size <= 0 || parent_attributes.size() < limit_attributes_size) {
+          set_of_attributes.add(parent_attributes);
+        }
+      }
+    }
+
+    if (attribute2Objects != null) {
+      Set<Integer> total_attributes = attribute2Objects.keySet();
+      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
+        set_of_attributes.add(total_attributes);
+      }
+    }
+
+    for (Set<Integer> attributes : set_of_attributes) {
+      Pair<Set<Integer>, Set<Integer>> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
+      if (concept_id != null && (!concept_id.getKey().isEmpty() || !concept_id.getValue().isEmpty())) {
+        concepts_limit.add(retransform(concept_id));
+      }
+    }
+
+    return concepts_limit;
+  }
+
+  public Set<Pair<Set<O>, Set<A>>> listAllConcepts() {
+    return listConceptsLimits(0, 0);
   }
 }
