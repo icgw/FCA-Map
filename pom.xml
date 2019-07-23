@@ -25,6 +25,13 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14 -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>1.7.26</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
     <dependency>
         <groupId>org.apache.jena</groupId>
@@ -88,7 +95,7 @@
             </execution>
           </executions>
           <configuration>
-            <mainClass>cn.amss.semanticweb.fca.Main</mainClass>
+            <mainClass>cn.amss.semanticweb.fca.Hermes</mainClass>
             <arguments>
               <argument>arg1</argument>
             </arguments>
