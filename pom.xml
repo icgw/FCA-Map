@@ -95,7 +95,7 @@
             </execution>
           </executions>
           <configuration>
-            <mainClass>cn.amss.semanticweb.fca.Hermes</mainClass>
+            <mainClass>cn.amss.semanticweb.lexicon.stemming.PorterStemmer</mainClass>
             <arguments>
               <argument>arg1</argument>
             </arguments>
