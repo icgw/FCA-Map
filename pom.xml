@@ -94,8 +94,8 @@
               </goals>
             </execution>
           </executions>
-          <configuration>
-            <mainClass>cn.amss.semanticweb.model.ModelWrapper</mainClass>
+         <configuration>
+            <mainClass>cn.amss.semanticweb.matching.impl.LexicalMatcherImpl</mainClass>
             <arguments>
               <argument>arg1</argument>
             </arguments>

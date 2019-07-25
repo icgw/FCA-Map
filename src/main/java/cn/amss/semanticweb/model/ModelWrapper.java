@@ -16,10 +16,14 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.rdf.model.SimpleSelector;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Statement;
+// import org.apache.jena.ontology.OntModel;
+// import org.apache.jena.ontology.OntModelSpec;
+// import org.apache.jena.ontology.Individual;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.SKOS;
 import org.apache.jena.util.FileManager;
+// import org.apache.jena.util.iterator.ExtendedIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +33,12 @@ import java.io.InputStream;
 
 import cn.amss.semanticweb.vocabulary.DBkWik;
 
+// for test
+// import org.apache.jena.reasoner.rulesys.Rule;
+// import org.apache.jena.reasoner.rulesys.GenericRuleReasoner;
+// import org.apache.jena.reasoner.Reasoner;
+// import java.util.Map;
+
 public class ModelWrapper
 {
   final Logger m_logger = LoggerFactory.getLogger(ModelWrapper.class);
@@ -37,6 +47,7 @@ public class ModelWrapper
 
   private Model    m_raw_model      = null;
   private InfModel m_inferred_model = null;
+  // private OntModel m_ontology_model = null;
 
   private Set<Resource> m_instances  = null;
   private Set<Resource> m_properties = null;
@@ -67,8 +78,14 @@ public class ModelWrapper
 
     m_raw_model.read(in, null);
 
+    // XXX: add rule.
+    // String rules = "[r1: (?a ?p ?b) (?p rdfs:label 'type') -> (?a rdf:type ?b)]";
+    // Reasoner reasoner = new GenericRuleReasoner(Rule.parseRules(rules));
+    // m_inferred_model = ModelFactory.createInfModel(reasoner, m_raw_model);
+ 
     // XXX: You can change it and add other reasoning rules.
     m_inferred_model = ModelFactory.createRDFSModel(m_raw_model);
+    // m_ontology_model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM_MICRO_RULE_INF, m_raw_model);
 
     // NOTE: acquire instances, properties and classes.
     acquireInstances();
@@ -96,14 +113,17 @@ public class ModelWrapper
 
     StmtIterator it = m_inferred_model.listStatements(
     // StmtIterator it = m_raw_model.listStatements(
-          new SimpleSelector(null, RDF.type, (RDFNode) null) {
+          // new SimpleSelector(null, RDF.type, (RDFNode) null) {
+          new SimpleSelector(null, null, (RDFNode) null) {
             @Override
             public boolean selects(Statement s) {
-              return !s.getObject().equals(SKOS.Concept) &&
-                     !s.getObject().equals(DBkWik._Image) &&
-                     !s.getObject().equals(RDF.Property) &&
-                     !s.getObject().equals(OWL.Class) &&
-                     DBkWik.own(s.getSubject());
+              Resource subject = s.getSubject();
+              return !subject.hasProperty(RDF.type, SKOS.Concept) &&
+                     !subject.hasProperty(RDF.type, DBkWik.Image) &&
+                     !subject.hasProperty(RDF.type, RDF.Property) &&
+                     !subject.hasProperty(RDF.type, OWL.Class) &&
+                     // DBkWik.own(subject);
+                     DBkWik.ownAsResource(subject);
             }
           }
         );
@@ -112,6 +132,14 @@ public class ModelWrapper
       Resource r = it.nextStatement().getSubject();
       m_instances.add(r);
     }
+
+    // ExtendedIterator<Individual> it = m_ontology_model.listIndividuals();
+    // while (it.hasNext()) {
+    //   Individual inst = it.next();
+    //   if (inst.isResource()) {
+    //     m_instances.add(inst.asResource());
+    //   }
+    // }
   }
 
   private void acquireProperties() {
@@ -124,6 +152,21 @@ public class ModelWrapper
     // ResIterator it = m_raw_model.listResourcesWithProperty(RDF.type, OWL.Class);
     ResIterator it = m_inferred_model.listResourcesWithProperty(RDF.type, OWL.Class);
     m_classes = acquireResources(it);
+  }
+
+  public Set<Resource> getInstances() {
+    // XXX: ..
+    return m_instances;
+  }
+
+  public Set<Resource> getProperties() {
+    // XXX: ..
+    return m_properties;
+  }
+
+  public Set<Resource> getClasses() {
+    // XXX: ..
+    return m_classes;
   }
 
   public static void main(String[] args) {

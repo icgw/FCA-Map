@@ -14,32 +14,61 @@ import org.apache.jena.rdf.model.Property;
 
 public class DBkWik
 {
-  private static final Model m = ModelFactory.createDefaultModel();
+  private static final Model m       = ModelFactory.createDefaultModel();
 
-  private static final String uri = "http://dbkwik.webdatacommons.org/";
-  private static final String ontology = uri + "ontology/";
+  private static final String uri    = "http://dbkwik.webdatacommons.org/";
+  private static final String prefix = uri + "ontology/";
 
-  public static String getURI() {
-    return uri;
+  protected static final Resource resource(String local) {
+    return m.createResource( prefix + local );
+  }
+
+  protected static final Property property(String local) {
+    return m.createProperty( prefix + local );
   }
 
   public static boolean own(Resource r) {
     return r.getURI().startsWith(uri);
   }
 
+  public static boolean ownAsResource(Resource r) {
+    String that_uri = r.getURI();
+    return that_uri.startsWith(uri) && that_uri.contains("/resource/");
+  }
+
   // NOTE: Define DBkWik Classes
-  public static final Resource _Image = m.createResource( uri + "Image" );
+  public static final Resource Image                 = Init.Image();
 
   // NOTE: Define DBkWik Properties
-  public static final Property _wikiPageDisambiguates = m.createProperty( ontology + "wikiPageDisambiguates" );
-  public static final Property _abstract              = m.createProperty( ontology + "abstract" );
-  public static final Property _thumbnail             = m.createProperty( ontology + "thumbnail" );
-  public static final Property _wikiPageExternalLink  = m.createProperty( ontology + "wikiPageExternalLink" );
-  public static final Property _wikiPageID            = m.createProperty( ontology + "wikiPageID" );
-  public static final Property _wikiPageLength        = m.createProperty( ontology + "wikiPageLength" );
-  public static final Property _wikiPageOutDegree     = m.createProperty( ontology + "wikiPageOutDegree" );
-  public static final Property _wikiPageRedirects     = m.createProperty( ontology + "wikiPageRedirects" );
-  public static final Property _wikiPageUsesTemplate  = m.createProperty( ontology + "wikiPageUsesTemplate" );
-  public static final Property _wikiPageWikiLink      = m.createProperty( ontology + "wikiPageWikiLink" );
-  public static final Property _wikiPageWikiLinkText  = m.createProperty( ontology + "wikiPageWikiLinkText" );
+  public static final Property wikiPageDisambiguates = Init.wikiPageDisambiguates();
+  public static final Property _abstract             = Init._abstract();
+  public static final Property thumbnail             = Init.thumbnail();
+  public static final Property wikiPageExternalLink  = Init.wikiPageExternalLink();
+  public static final Property wikiPageID            = Init.wikiPageID();
+  public static final Property wikiPageLength        = Init.wikiPageLength();
+  public static final Property wikiPageOutDegree     = Init.wikiPageOutDegree();
+  public static final Property wikiPageRedirects     = Init.wikiPageRedirects();
+  public static final Property wikiPageUsesTemplate  = Init.wikiPageUsesTemplate();
+  public static final Property wikiPageWikiLink      = Init.wikiPageWikiLink();
+  public static final Property wikiPageWikiLinkText  = Init.wikiPageWikiLinkText();
+
+  public static class Init {
+    public static Resource Image()                 { return resource( "Image" ); }
+
+    public static Property wikiPageDisambiguates() { return property( "wikiPageDisambiguates" ); }
+    public static Property _abstract()             { return property( "abstract" ); }
+    public static Property thumbnail()             { return property( "thumbnail"); }
+    public static Property wikiPageExternalLink()  { return property( "wikiPageExternalLink" ); }
+    public static Property wikiPageID()            { return property( "wikiPageID" ); }
+    public static Property wikiPageLength()        { return property( "wikiPageLength" ); }
+    public static Property wikiPageOutDegree()     { return property( "wikiPageOutDegree" ); }
+    public static Property wikiPageRedirects()     { return property( "wikiPageRedirects" ); }
+    public static Property wikiPageUsesTemplate()  { return property( "wikiPageUsesTemplate" ); }
+    public static Property wikiPageWikiLink()      { return property( "wikiPageWikiLink" ); }
+    public static Property wikiPageWikiLinkText()  { return property( "wikiPageWikiLinkText" ); }
+  }
+
+  public static String getURI() {
+    return uri;
+  }
 }

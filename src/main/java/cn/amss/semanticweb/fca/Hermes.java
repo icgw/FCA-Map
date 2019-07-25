@@ -313,7 +313,12 @@ public class Hermes <O, A>
     return simplifiedConcepts;
   }
 
-  public Set<Pair<Set<O>, Set<A>>> listConceptsLimits(int limit_objects_size, int limit_attributes_size) {
+  public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
+    // TODO: extent_size < limit_objects && intent_size < limit_attributes_size.
+    return null;
+  }
+
+  public Set<Pair<Set<O>, Set<A>>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {
     Set<Pair<Set<O>, Set<A>>> concepts_limit = new HashSet<>();
 
     Set<Set<Integer>> set_of_attributes = new HashSet<>();
@@ -351,6 +356,6 @@ public class Hermes <O, A>
   }
 
   public Set<Pair<Set<O>, Set<A>>> listAllConcepts() {
-    return listConceptsLimits(0, 0);
+    return listConceptsLimit(0, 0);
   }
 }
