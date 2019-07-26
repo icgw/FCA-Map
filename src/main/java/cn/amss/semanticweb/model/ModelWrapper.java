@@ -96,6 +96,16 @@ public class ModelWrapper
                    m_file_name, m_instances.size(), m_properties.size(), m_classes.size());
   }
 
+  public void close() {
+    if (m_raw_model != null && !m_raw_model.isClosed()) {
+      m_raw_model.close();
+    }
+
+    if (m_inferred_model != null && !m_inferred_model.isClosed()) {
+      m_inferred_model.close();
+    }
+  }
+
   private Set<Resource> acquireResources(ResIterator it) {
     Set<Resource> resources = new HashSet<>();
     while (it.hasNext()) {
