@@ -118,7 +118,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     for (Resource r : resources) {
       Set<String> labelOrNames = acquireLabelOrName(r, b_lowercase);
       for (String ln : labelOrNames) {
-        m.putIfAbsent(ln, new HashSet<>());
+        m.putIfAbsent(ln, new HashSet<ResourceWrapper>());
         m.get(ln).add(new ResourceWrapper(r, from_id));
       }
     }
@@ -143,6 +143,8 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
   @Override
   public void matchResources(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
+    if (sources == null || targets == null || mappings == null) return;
+
     Map<String, Set<ResourceWrapper>> labelOrName2Resources = new HashMap<>();
     constructLabelOrName2ResourcesTable(sources, targets, labelOrName2Resources, to_lower_case);
 
@@ -153,7 +155,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
     // TODO:
 
-
+    hermes.close();
   }
 
   @Override

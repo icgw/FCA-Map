@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>cn.amss.semanticweb.fca</groupId>
+  <groupId>cn.amss.semanticweb</groupId>
   <artifactId>FCAMap-KG</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -95,7 +95,7 @@
             </execution>
           </executions>
          <configuration>
-            <mainClass>cn.amss.semanticweb.matching.impl.LexicalMatcherImpl</mainClass>
+            <mainClass>cn.amss.semanticweb.alignment.MappingCell</mainClass>
             <arguments>
               <argument>arg1</argument>
             </arguments>

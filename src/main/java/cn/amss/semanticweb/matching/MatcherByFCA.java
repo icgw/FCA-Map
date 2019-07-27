@@ -18,12 +18,12 @@ import cn.amss.semanticweb.matching.impl.MatcherBase;
 
 public abstract class MatcherByFCA extends MatcherBase implements Matcher
 {
-  protected <O, A> Set<Pair<O, O>> extractMappingFromGSH(Hermes<O, A> hermes, int extent_limit, int intent_limit) {
+  protected <O, A> Set<Set<O>> extractExtentFromGSH(Hermes<O, A> hermes, int extent_limit, int intent_limit) {
     // TODO:
     return null;
   }
 
-  protected <O, A> Set<Pair<O, O>> extractMappingFromLattice(Hermes<O, A> hermes, int extent_limit, int intent_limit) {
+  protected <O, A> Set<Set<O>> extractExtentFromLattice(Hermes<O, A> hermes, int extent_limit, int intent_limit) {
     // TODO:
     return null;
   }

@@ -314,8 +314,22 @@ public class Hermes <O, A>
   }
 
   public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
-    // TODO: extent_size < limit_objects && intent_size < limit_attributes_size.
-    return null;
+    if (limit_objects_size <= 0 && limit_attributes_size <= 0) {
+      return listAllSimplifiedConcepts();
+    }
+
+    if (simplifiedConcepts == null || simplifiedConcepts.isEmpty()) {
+      simplifiedConcepts = new HashSet<>();
+      if (simplification != null) {
+        for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
+          Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+          if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) && (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size)) {
+            simplifiedConcepts.add(simplified_concept);
+          }
+        }
+      }
+    }
+    return simplifiedConcepts;
   }
 
   public Set<Pair<Set<O>, Set<A>>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {
@@ -357,5 +371,47 @@ public class Hermes <O, A>
 
   public Set<Pair<Set<O>, Set<A>>> listAllConcepts() {
     return listConceptsLimit(0, 0);
+  }
+
+  public void close() {
+    if (object2Attributes != null) {
+      object2Attributes.clear();
+    }
+ 
+    if (attribute2Objects != null) {
+      attribute2Objects.clear();
+    }
+
+    if (object2O != null) {
+      object2O.clear();
+    }
+
+    if (O2Object != null) {
+      O2Object.clear();
+    }
+
+    if (attribute2A != null) {
+      attribute2A.clear();
+    }
+
+    if (A2Attribute != null) {
+      A2Attribute.clear();
+    }
+ 
+    if (clarified != null) {
+      clarified.clear();
+    }
+
+    if (domination != null) {
+      domination.clear();
+    }
+
+    if (simplification != null) {
+      simplification.clear();
+    }
+
+    if (simplifiedConcepts != null) {
+      simplifiedConcepts.clear();
+    }
   }
 }
