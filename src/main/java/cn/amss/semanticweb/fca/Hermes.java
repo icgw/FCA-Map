@@ -35,7 +35,6 @@ public class Hermes <O, A>
   // Rces: the simplification of Rce, which is the juxtaposition of Rc with Dom.
   private Map<Set<Integer>, Set<Integer>> simplification = null;
 
-  private Set<Pair<Set<O>, Set<A>>> simplifiedConcepts = null;
 
   public Hermes() {
     object2Attributes = new HashMap<Integer, Set<Integer>>();
@@ -151,6 +150,9 @@ public class Hermes <O, A>
   }
 
   public void compute() {
+    if (object2Attributes == null || object2Attributes.isEmpty() ||
+        attribute2Objects == null || attribute2Objects.isEmpty()) return;
+
     ClarifiedThread rc   = new ClarifiedThread(object2Attributes);
     DominationThread dom = new DominationThread(attribute2Objects);
 
@@ -191,29 +193,40 @@ public class Hermes <O, A>
     return new Pair<>(objects, attributes);
   }
 
+  private <T> Set<T> retransform(Set<Integer> sid, Map<Integer, T> m) {
+    Set<T> origin = new HashSet<>();
+    if (sid == null || sid.isEmpty()) {
+      return origin;
+    }
+
+    for (int i : sid) {
+      if (m.containsKey(i)) {
+        origin.add(m.get(i));
+      }
+    }
+
+    return origin;
+  }
+
   private Pair<Set<O>, Set<A>> retransform(Pair<Set<Integer>, Set<Integer>> pair) {
-    Set<O> objects    = new HashSet<>();
-    Set<A> attributes = new HashSet<>();
-
-    if (pair == null) return new Pair<>(objects, attributes);
-
-    if (pair.getKey() != null) {
-      for (int i : pair.getKey()) {
-        if (object2O.containsKey(i)) objects.add(object2O.get(i));
-      }
+    if (pair == null) {
+      return null;
     }
 
-    if (pair.getValue() != null) {
-      for (int i : pair.getValue()) {
-        if (attribute2A.containsKey(i)) attributes.add(attribute2A.get(i));
-      }
-    }
+    Set<O> objects = retransform(pair.getKey(), object2O);
+
+    Set<A> attributes = retransform(pair.getValue(), attribute2A);
 
     return new Pair<>(objects, attributes);
   }
 
   private Pair<Set<O>, Set<A>> simplifiedConceptFrom(Set<Integer> s) {
     return retransform(simplifiedConceptIdFrom(s));
+  }
+
+  // NOTE: s from simplification.
+  private Set<O> simplifiedExtentFrom(Set<Integer> s) {
+    return retransform(s, object2O);
   }
 
   private Set<Integer> relative(Set<Integer> s, Map<Integer, Set<Integer>> m) {
@@ -300,36 +313,36 @@ public class Hermes <O, A>
     return parent_attributes;
   }
 
-  public Set<Pair<Set<O>, Set<A>>> listAllSimplifiedConcepts() {
-    if (simplifiedConcepts == null || simplifiedConcepts.isEmpty()) {
-      simplifiedConcepts = new HashSet<>();
-      if (simplification != null) {
-        for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
-          Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-          simplifiedConcepts.add(simplified_concept);
+  public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
+    Set<Pair<Set<O>, Set<A>>> simplified_concepts_limit = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
+        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) && (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size) && simplified_concept != null) {
+          simplified_concepts_limit.add(simplified_concept);
         }
       }
     }
-    return simplifiedConcepts;
+    return simplified_concepts_limit;
   }
 
-  public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
-    if (limit_objects_size <= 0 && limit_attributes_size <= 0) {
-      return listAllSimplifiedConcepts();
-    }
+  public Set<Pair<Set<O>, Set<A>>> listAllSimplifiedConcepts() {
+    return listSimplifiedConceptsLimit(0, 0);
+  }
 
-    if (simplifiedConcepts == null || simplifiedConcepts.isEmpty()) {
-      simplifiedConcepts = new HashSet<>();
-      if (simplification != null) {
-        for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
-          Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-          if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) && (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size)) {
-            simplifiedConcepts.add(simplified_concept);
-          }
+  public Set<Set<O>> listSimplifiedExtentsLimit(int limit_objects_size, int limit_attributes_size) {
+    Set<Set<O>> simlified_extents_limit = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
+        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) &&
+            (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size) &&
+            simplified_concept != null) {
+          simlified_extents_limit.add(simplified_concept.getKey());
         }
       }
     }
-    return simplifiedConcepts;
+    return simlified_extents_limit;
   }
 
   public Set<Pair<Set<O>, Set<A>>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {
@@ -361,12 +374,51 @@ public class Hermes <O, A>
 
     for (Set<Integer> attributes : set_of_attributes) {
       Pair<Set<Integer>, Set<Integer>> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
-      if (concept_id != null && (!concept_id.getKey().isEmpty() || !concept_id.getValue().isEmpty())) {
-        concepts_limit.add(retransform(concept_id));
+      Pair<Set<O>, Set<A>> concept = retransform(concept_id);
+      if (concept != null && (!concept_id.getKey().isEmpty() || !concept_id.getValue().isEmpty())) {
+        concepts_limit.add(concept);
       }
     }
 
     return concepts_limit;
+  }
+
+  public Set<Set<O>> listExtentsLimit(int limit_objects_size, int limit_attributes_size) {
+    Set<Set<O>> extents_limit = new HashSet<>();
+
+    Set<Set<Integer>> set_of_attributes = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
+        Set<Integer> attributes = r.getKey();
+        Set<Integer> s          = r.getValue();
+
+        if (limit_attributes_size <= 0 || attributes.size() < limit_attributes_size) {
+          set_of_attributes.add(attributes);
+        }
+
+        Set<Integer> parent_attributes = computeParentAttributes(s, attributes);
+        if (limit_attributes_size <= 0 || parent_attributes.size() < limit_attributes_size) {
+          set_of_attributes.add(parent_attributes);
+        }
+      }
+    }
+
+    if (attribute2Objects != null) {
+      Set<Integer> total_attributes = attribute2Objects.keySet();
+      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
+        set_of_attributes.add(total_attributes);
+      }
+    }
+
+    for (Set<Integer> attributes : set_of_attributes) {
+      Pair<Set<Integer>, Set<Integer>> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
+      Set<O> extent = retransform(concept_id.getKey(), object2O);
+      if (extent != null && (!concept_id.getKey().isEmpty() || !concept_id.getValue().isEmpty())) {
+        extents_limit.add(extent);
+      }
+    }
+
+    return extents_limit;
   }
 
   public Set<Pair<Set<O>, Set<A>>> listAllConcepts() {
@@ -408,10 +460,6 @@ public class Hermes <O, A>
 
     if (simplification != null) {
       simplification.clear();
-    }
-
-    if (simplifiedConcepts != null) {
-      simplifiedConcepts.clear();
     }
   }
 }

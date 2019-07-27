@@ -32,6 +32,7 @@ import cn.amss.semanticweb.fca.Hermes;
 // for test
 import cn.amss.semanticweb.model.ModelWrapper;
 import cn.amss.semanticweb.vocabulary.DBkWik;
+import cn.amss.semanticweb.matching.MatcherFactory;
 
 public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 {
@@ -126,7 +127,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
   private void constructLabelOrName2ResourcesTable(Set<Resource> sources, Set<Resource> targets, Map<String, Set<ResourceWrapper>> m, boolean b_lowercase) {
     constructLabelOrName2ResourcesTable(sources, m, m_source_id, b_lowercase);
-    constructLabelOrName2ResourcesTable(sources, m, m_target_id, b_lowercase);
+    constructLabelOrName2ResourcesTable(targets, m, m_target_id, b_lowercase);
   }
 
   private Map<String, Set<String>> constructContextLexicalForm(Set<String> labelOrNames) {
@@ -141,6 +142,47 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     return context;
   }
 
+  private final boolean isFromSource(ResourceWrapper rw) {
+    return rw.getFromId() == m_source_id;
+  }
+
+  private final boolean isFromTarget(ResourceWrapper rw) {
+    return rw.getFromId() == m_target_id;
+  }
+
+  private void splitResourceWrapper(Set<String> lns, Map<String, Set<ResourceWrapper>> m, Set<String> source_uris, Set<String> target_uris) {
+    if (lns == null || m == null || source_uris == null || target_uris == null) return;
+    for (String ln : lns) {
+      Set<ResourceWrapper> rws = m.get(ln);
+      if (rws != null && !rws.isEmpty()) {
+        for (ResourceWrapper rw : rws) {
+          if (isFromSource(rw)) {
+            source_uris.add(rw.getURI());
+          } else if (isFromTarget(rw)) {
+            target_uris.add(rw.getURI());
+          }
+        }
+      }
+    }
+  }
+
+  private void extractMapping(Set<Set<String>> cluster, Map<String, Set<ResourceWrapper>> m, Mapping mappings) {
+    Set<String> source_uris = new HashSet<>();
+    Set<String> target_uris = new HashSet<>();
+    for (Set<String> c : cluster) {
+      source_uris.clear();
+      target_uris.clear();
+
+      splitResourceWrapper(c, m, source_uris, target_uris);
+
+      for (String s : source_uris) {
+        for (String t : target_uris) {
+          mappings.add(s, t);
+        }
+      }
+    }
+  }
+
   @Override
   public void matchResources(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
     if (sources == null || targets == null || mappings == null) return;
@@ -148,12 +190,28 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     Map<String, Set<ResourceWrapper>> labelOrName2Resources = new HashMap<>();
     constructLabelOrName2ResourcesTable(sources, targets, labelOrName2Resources, to_lower_case);
 
-    Set<String> labelOrNames = labelOrName2Resources.keySet();
+    Set<String> labelOrNames         = labelOrName2Resources.keySet();
     Map<String, Set<String>> context = constructContextLexicalForm(labelOrNames);
-    Hermes<String, String> hermes = new Hermes<>();
+    Hermes<String, String> hermes    = new Hermes<>();
     hermes.init(context);
+    hermes.compute();
 
-    // TODO:
+    Set<Set<String>> simplified_extents = null, extents = null;
+    if (extract_from_GSH) {
+      simplified_extents = extractExtentsFromGSH(hermes);
+    }
+
+    if (extract_from_Lattice) {
+      extents = extractExtentsFromLattice(hermes);
+    }
+
+    if (simplified_extents != null) {
+      extractMapping(simplified_extents, labelOrName2Resources, mappings);
+    }
+
+    if (extents != null) {
+      extractMapping(extents, labelOrName2Resources, mappings);
+    }
 
     hermes.close();
   }
@@ -174,22 +232,22 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   public static void main(String[] args) {
-    String inputFile = "file:/Users/icgw/Desktop/dataset/swtor.xml";
-    // String inputFile = "file:/Users/icgw/Desktop/dataset/swg.xml";
+    String source = "oaei/2018/kg/DarkScape_Wiki.xml";
+    String target = "oaei/2018/kg/Old_School_RuneScape_Wiki.xml";
 
-    ModelWrapper m = new ModelWrapper();
-    m.setFileName(inputFile);
-    m.read();
+    ModelWrapper source_model = new ModelWrapper();
+    source_model.setFileName(source);
+    source_model.read();
 
-    Set<Resource> inst = m.getInstances();
+    ModelWrapper target_model = new ModelWrapper();
+    target_model.setFileName(target);
+    target_model.read();
 
-    for (Resource r : inst) {
-      Set<String> ln = acquireLabelOrName(r, true);
-      if (ln.isEmpty() || (ln.size() > 1 && r.getLocalName().isEmpty())) {
-      // if (ln.isEmpty()) {
-        System.out.println(r.getURI() + " => " + ln + ", local_name: " + r.getLocalName());
-      }
-    }
+    // Mapping classMappings = new Mapping();
+    // LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
+    // lm.matchClasses(source_model.getClasses(), target_model.getClasses(), classMappings);
+
+    source_model.close();
+    target_model.close();
   }
-
 }

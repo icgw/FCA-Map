@@ -15,7 +15,7 @@ public class MatcherFactory
   private MatcherFactory() {
   }
 
-  public static Matcher createLexicalMatcher() {
+  public static LexicalMatcher createLexicalMatcher() {
     return new LexicalMatcherImpl();
   }
 

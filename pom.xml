@@ -95,7 +95,7 @@
             </execution>
           </executions>
          <configuration>
-            <mainClass>cn.amss.semanticweb.alignment.MappingCell</mainClass>
+            <mainClass>cn.amss.semanticweb.matching.impl.LexicalMatcherImpl</mainClass>
             <arguments>
               <argument>arg1</argument>
             </arguments>

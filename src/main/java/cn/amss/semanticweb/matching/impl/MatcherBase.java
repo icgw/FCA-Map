@@ -19,7 +19,7 @@ public abstract class MatcherBase
 
   public MatcherBase() {
     m_source_id = 0;
-    m_target_id = 0;
+    m_target_id = 1;
   }
 
   protected ModelWrapper readModel(String path) {
