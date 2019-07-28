@@ -31,8 +31,6 @@ public class ModelWrapper
 {
   final Logger m_logger = LoggerFactory.getLogger(ModelWrapper.class);
 
-  private String m_file_name = null;
-
   private Model    m_raw_model      = null;
   private InfModel m_inferred_model = null;
 
@@ -48,20 +46,32 @@ public class ModelWrapper
     m_classes    = new HashSet<>();
   }
 
-  public void setFileName(String fileNameOrURI) {
-    m_file_name = fileNameOrURI;
+  public ModelWrapper(String file_path) {
+    this();
+    read(file_path);
   }
 
-  public void read() {
-    if (null == m_file_name || m_file_name == "") {
-      // XXX: No file name.
-      return;
+  public ModelWrapper(InputStream in) {
+    this();
+    read(in);
+  }
+
+  private void read(String file_path) {
+    InputStream in = FileManager.get().open(file_path);
+
+    if (null == in) {
+      throw new IllegalArgumentException( "File: " + file_path + " not found." );
     }
 
-    InputStream in = FileManager.get().open(m_file_name);
-    if (null == in) {
-      throw new IllegalArgumentException( "File: " + m_file_name + " not found." );
-    }
+    read(in);
+  }
+
+  private void read(InputStream in) {
+    if (null == in) return;
+
+    m_instances.clear();
+    m_properties.clear();
+    m_classes.clear();
 
     m_raw_model.read(in, null);
 
@@ -73,8 +83,8 @@ public class ModelWrapper
     acquireProperties();
     acquireClasses();
 
-    m_logger.info("Source: {}, #Instances: {}, #Properties: {}, #Classes: {}.",
-                   m_file_name, m_instances.size(), m_properties.size(), m_classes.size());
+    m_logger.info("#Instances: {}, #Properties: {}, #Classes: {}.",
+                   m_instances.size(), m_properties.size(), m_classes.size());
   }
 
   public void close() {
@@ -85,6 +95,10 @@ public class ModelWrapper
     if (m_inferred_model != null && !m_inferred_model.isClosed()) {
       m_inferred_model.close();
     }
+
+    m_instances.clear();
+    m_properties.clear();
+    m_classes.clear();
   }
 
   private Set<Resource> acquireResources(ResIterator it) {
@@ -125,17 +139,14 @@ public class ModelWrapper
   }
 
   public Set<Resource> getInstances() {
-    // XXX: ..
     return m_instances;
   }
 
   public Set<Resource> getProperties() {
-    // XXX: ..
     return m_properties;
   }
 
   public Set<Resource> getClasses() {
-    // XXX: ..
     return m_classes;
   }
 }

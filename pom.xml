@@ -96,9 +96,9 @@
           </executions>
          <configuration>
             <mainClass>cn.amss.semanticweb.matching.impl.LexicalMatcherImpl</mainClass>
-            <arguments>
-              <argument>arg1</argument>
-            </arguments>
+            <!-- <arguments> -->
+            <!--   <argument>arg1</argument> -->
+            <!-- </arguments> -->
             <!-- <systemProperties> -->
             <!--   <systemProperty> -->
             <!--     <key>m</key> -->

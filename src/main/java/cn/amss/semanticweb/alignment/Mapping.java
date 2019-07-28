@@ -28,6 +28,10 @@ public class Mapping
     return add(new MappingCell(entity1, entity2));
   }
 
+  public boolean add(String entity1, String entity2, String relation, String confidence) {
+    return add(new MappingCell(entity1, entity2, relation, confidence));
+  }
+
   public int size() {
     return m_mapping.size();
   }
@@ -41,6 +45,10 @@ public class Mapping
       content.append(m.getMappingCellElement());
     }
     return content.toString();
+  }
+
+  public final void clear() {
+    m_mapping.clear();
   }
 
   @Override

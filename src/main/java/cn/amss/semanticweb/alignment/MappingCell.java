@@ -16,11 +16,29 @@ public class MappingCell extends Relation
   private String m_entity1 = "";
   private String m_entity2 = "";
 
-  public MappingCell(String entity1, String entity2) {
+  public MappingCell(String entity1, String entity2, int relation, double confidence) {
     m_entity1    = entity1;
     m_entity2    = entity2;
-    m_relation   = EQUIVALENCE;
-    m_confidence = 1.0f;
+    m_relation   = relation;
+
+    setMeasure(confidence);
+  }
+
+  public MappingCell(String entity1, String entity2, String relation_text, String confidence_text) {
+    m_entity1    = entity1;
+    m_entity2    = entity2;
+    m_relation   = getRelationFromText(relation_text);
+
+    try {
+      double d = Double.parseDouble(confidence_text);
+      setMeasure(d);
+    } catch (Exception e) {
+      m_confidence = 0.0f;
+    }
+  }
+
+  public MappingCell(String entity1, String entity2) {
+    this(entity1, entity2, EQUIVALENCE, 1.0f);
   }
 
   public String getEntity1() {

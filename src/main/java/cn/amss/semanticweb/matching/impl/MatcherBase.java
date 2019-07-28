@@ -7,6 +7,8 @@
 
 package cn.amss.semanticweb.matching.impl;
 
+import java.io.InputStream;
+
 import cn.amss.semanticweb.model.ModelWrapper;
 
 public abstract class MatcherBase
@@ -22,16 +24,14 @@ public abstract class MatcherBase
     m_target_id = 1;
   }
 
-  protected ModelWrapper readModel(String path) {
-    ModelWrapper m = new ModelWrapper();
-    m.setFileName(path);
-    m.read();
-    return m;
+  public void init(InputStream source, InputStream target) {
+    m_source = new ModelWrapper(source);
+    m_target = new ModelWrapper(target);
   }
 
-  public void init(String source_path, String target_path) {
-    m_source = readModel(source_path);
-    m_target = readModel(target_path);
+  public void init(String source, String target) {
+    m_source = new ModelWrapper(source);
+    m_target = new ModelWrapper(target);
   }
 
   public void setSourceId(int source_id) {

@@ -33,6 +33,7 @@ import cn.amss.semanticweb.fca.Hermes;
 import cn.amss.semanticweb.model.ModelWrapper;
 import cn.amss.semanticweb.vocabulary.DBkWik;
 import cn.amss.semanticweb.matching.MatcherFactory;
+import java.io.InputStream;
 
 public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 {
@@ -232,20 +233,19 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   public static void main(String[] args) {
-    String source = "oaei/2018/kg/DarkScape_Wiki.xml";
-    String target = "oaei/2018/kg/Old_School_RuneScape_Wiki.xml";
+    String source = "/oaei/2018/kg/DarkScape_Wiki.xml";
+    String target = "/oaei/2018/kg/Old_School_RuneScape_Wiki.xml";
 
-    ModelWrapper source_model = new ModelWrapper();
-    source_model.setFileName(source);
-    source_model.read();
+    InputStream source_istream = LexicalMatcherImpl.class.getResourceAsStream(source);
+    InputStream target_istream = LexicalMatcherImpl.class.getResourceAsStream(target);
 
-    ModelWrapper target_model = new ModelWrapper();
-    target_model.setFileName(target);
-    target_model.read();
+    ModelWrapper source_model = new ModelWrapper(source_istream);
+    ModelWrapper target_model = new ModelWrapper(target_istream);
 
-    // Mapping classMappings = new Mapping();
-    // LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
-    // lm.matchClasses(source_model.getClasses(), target_model.getClasses(), classMappings);
+    Mapping classMappings = new Mapping();
+    LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
+    lm.matchClasses(source_model.getClasses(), target_model.getClasses(), classMappings);
+    System.out.println(classMappings);
 
     source_model.close();
     target_model.close();

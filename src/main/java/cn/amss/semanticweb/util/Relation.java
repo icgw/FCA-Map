@@ -26,6 +26,17 @@ public abstract class Relation extends Element
     return m_confidence;
   }
 
+  protected final void setMeasure(double confidence) {
+    if (confidence > 1.0f) {
+      m_confidence = 1.0f;
+    }
+    else if (confidence < 0.0f) {
+      m_confidence = 0.0f;
+    } else {
+      m_confidence = confidence;
+    }
+  }
+
   public final boolean isEQ() {
     return m_relation == EQUIVALENCE;
   }
@@ -44,6 +55,25 @@ public abstract class Relation extends Element
 
   private final static String measureElement(double m) {
     return String.format(getElementFormat("measure", "rdf:datatype=\"xsd:float\"", "%.1f"), m);
+  }
+
+  public final int getRelationFromText(String r) {
+    if (r == null || r.isEmpty()) return -1;
+
+    if (r.equals("=")) {
+      return EQUIVALENCE;
+    }
+    else if (r.equals("&lt;")) {
+      return SUBSUMES_BY;
+    }
+    else if (r.equals("&gt;")) {
+      return SUBSUMES;
+    }
+    else if (r.equals("?")) {
+      return -1;
+    }
+
+    return -1;
   }
 
   public final String getRelationElement() {

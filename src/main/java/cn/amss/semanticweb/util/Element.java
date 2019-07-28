@@ -19,6 +19,14 @@ public abstract class Element
     m_indent = i;
   }
 
+  protected final static String startElement(String e) {
+    return String.format("<%s>", e);
+  }
+
+  protected final static String endElement(String e) {
+    return String.format("</%s>", e);
+  }
+
   protected final static String getElementFormat(String name, String property, String content_format) {
     if (property == null || property.isEmpty()) {
       return String.format(META_ELEMENT_PATTERN, name, "\b", content_format);
