@@ -15,5 +15,5 @@ import cn.amss.semanticweb.model.ResourceWrapper;
 
 public interface LexicalMatcher extends Matcher
 {
-  // TODO:
+  // TODO: set delimiter_characters, delimiter_literal, use_porter_stemmer, to_lower_case.. (return delimiter??)
 }

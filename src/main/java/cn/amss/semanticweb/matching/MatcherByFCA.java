@@ -16,7 +16,7 @@ import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.model.ResourceWrapper;
 import cn.amss.semanticweb.matching.impl.MatcherBase;
 
-public abstract class MatcherByFCA extends MatcherBase implements Matcher
+public abstract class MatcherByFCA extends MatcherBase
 {
   protected int m_GSH_objects_limit    = 0;
   protected int m_GSH_attributes_limit = 0;

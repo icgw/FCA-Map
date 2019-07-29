@@ -11,15 +11,11 @@ import org.apache.jena.rdf.model.Resource;
 import java.util.Set;
 
 import cn.amss.semanticweb.alignment.Mapping;
+import cn.amss.semanticweb.matching.InstanceMatcher;
+import cn.amss.semanticweb.matching.PropertyMatcher;
+import cn.amss.semanticweb.matching.ClassMatcher;
 
-public interface Matcher
+public interface Matcher extends InstanceMatcher, PropertyMatcher, ClassMatcher
 {
   public void matchResources(Set<Resource> sources, Set<Resource> targets, Mapping mappings);
-
-  public void matchInstances(Set<Resource> sources, Set<Resource> targets, Mapping mappings);
-
-  public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping mappings);
-
-  public void matchClasses(Set<Resource> sources, Set<Resource> targets, Mapping mappings);
-
 }

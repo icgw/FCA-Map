@@ -10,6 +10,8 @@ package cn.amss.semanticweb.alignment;
 import java.util.Set;
 import java.util.HashSet;
 
+import org.apache.jena.rdf.model.Resource;
+
 import cn.amss.semanticweb.alignment.MappingCell;
 
 public class Mapping
@@ -26,6 +28,10 @@ public class Mapping
 
   public boolean add(String entity1, String entity2) {
     return add(new MappingCell(entity1, entity2));
+  }
+
+  public boolean add(Resource resource1, Resource resource2) {
+    return add(new MappingCell(resource1, resource2));
   }
 
   public boolean add(String entity1, String entity2, String relation, String confidence) {

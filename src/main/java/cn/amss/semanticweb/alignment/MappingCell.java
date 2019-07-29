@@ -8,6 +8,8 @@
 package cn.amss.semanticweb.alignment;
 
 import java.util.Objects;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
 
 import cn.amss.semanticweb.util.Relation;
 
@@ -16,9 +18,13 @@ public class MappingCell extends Relation
   private String m_entity1 = "";
   private String m_entity2 = "";
 
+  private Resource m_resource1 = null;
+  private Resource m_resource2 = null;
+
   public MappingCell(String entity1, String entity2, int relation, double confidence) {
     m_entity1    = entity1;
     m_entity2    = entity2;
+
     m_relation   = relation;
 
     setMeasure(confidence);
@@ -27,6 +33,7 @@ public class MappingCell extends Relation
   public MappingCell(String entity1, String entity2, String relation_text, String confidence_text) {
     m_entity1    = entity1;
     m_entity2    = entity2;
+
     m_relation   = getRelationFromText(relation_text);
 
     try {
@@ -37,16 +44,42 @@ public class MappingCell extends Relation
     }
   }
 
+  public MappingCell(Resource resource1, Resource resource2, String relation_text, String confidence_text) {
+    this(resource1.getURI(), resource2.getURI(), relation_text, confidence_text);
+    m_resource1 = resource1;
+    m_resource2 = resource2;
+  }
+
   public MappingCell(String entity1, String entity2) {
     this(entity1, entity2, EQUIVALENCE, 1.0f);
+  }
+
+  public MappingCell(Resource resource1, Resource resource2) {
+    this(resource1.getURI(), resource2.getURI());
+    m_resource1 = resource1;
+    m_resource2 = resource2;
   }
 
   public String getEntity1() {
     return m_entity1;
   }
 
+  public Resource getResource1() {
+    if (m_resource1 == null) {
+      return ResourceFactory.createResource(m_entity1);
+    }
+    return m_resource1;
+  }
+
   public String getEntity2() {
     return m_entity2;
+  }
+
+  public Resource getResource2() {
+    if (m_resource2 == null) {
+      return ResourceFactory.createResource(m_entity2);
+    }
+    return m_resource2;
   }
 
   private final static String entityElement(int n, String entity_uri) {

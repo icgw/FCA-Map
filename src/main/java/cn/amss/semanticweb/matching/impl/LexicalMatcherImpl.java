@@ -29,12 +29,6 @@ import cn.amss.semanticweb.lexicon.stemming.PorterStemmer;
 import cn.amss.semanticweb.text.Normalize;
 import cn.amss.semanticweb.fca.Hermes;
 
-// for test
-import cn.amss.semanticweb.model.ModelWrapper;
-import cn.amss.semanticweb.vocabulary.DBkWik;
-import cn.amss.semanticweb.matching.MatcherFactory;
-import java.io.InputStream;
-
 public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 {
   private static final String delimiter4uri = "/((resource)|(property)|(class))/";
@@ -46,7 +40,6 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   private static final boolean to_lower_case       = true;
 
   public LexicalMatcherImpl() {
-    // TODO:
   }
 
   private static Set<String> acquireAllTokens(String norm_str, boolean use_stemmer) {
@@ -151,16 +144,16 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     return rw.getFromId() == m_target_id;
   }
 
-  private void splitResourceWrapper(Set<String> lns, Map<String, Set<ResourceWrapper>> m, Set<String> source_uris, Set<String> target_uris) {
-    if (lns == null || m == null || source_uris == null || target_uris == null) return;
+  private void splitResourceWrapper(Set<String> lns, Map<String, Set<ResourceWrapper>> m, Set<Resource> source, Set<Resource> target) {
+    if (lns == null || m == null || source == null || target == null) return;
     for (String ln : lns) {
       Set<ResourceWrapper> rws = m.get(ln);
       if (rws != null && !rws.isEmpty()) {
         for (ResourceWrapper rw : rws) {
           if (isFromSource(rw)) {
-            source_uris.add(rw.getURI());
+            source.add(rw.getResource());
           } else if (isFromTarget(rw)) {
-            target_uris.add(rw.getURI());
+            target.add(rw.getResource());
           }
         }
       }
@@ -168,16 +161,16 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   private void extractMapping(Set<Set<String>> cluster, Map<String, Set<ResourceWrapper>> m, Mapping mappings) {
-    Set<String> source_uris = new HashSet<>();
-    Set<String> target_uris = new HashSet<>();
+    Set<Resource> source = new HashSet<>();
+    Set<Resource> target = new HashSet<>();
     for (Set<String> c : cluster) {
-      source_uris.clear();
-      target_uris.clear();
+      source.clear();
+      target.clear();
 
-      splitResourceWrapper(c, m, source_uris, target_uris);
+      splitResourceWrapper(c, m, source, target);
 
-      for (String s : source_uris) {
-        for (String t : target_uris) {
+      for (Resource s : source) {
+        for (Resource t : target) {
           mappings.add(s, t);
         }
       }
@@ -230,24 +223,5 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   @Override
   public void matchClasses(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
     matchResources(sources, targets, mappings);
-  }
-
-  public static void main(String[] args) {
-    String source = "/oaei/2018/kg/DarkScape_Wiki.xml";
-    String target = "/oaei/2018/kg/Old_School_RuneScape_Wiki.xml";
-
-    InputStream source_istream = LexicalMatcherImpl.class.getResourceAsStream(source);
-    InputStream target_istream = LexicalMatcherImpl.class.getResourceAsStream(target);
-
-    ModelWrapper source_model = new ModelWrapper(source_istream);
-    ModelWrapper target_model = new ModelWrapper(target_istream);
-
-    Mapping classMappings = new Mapping();
-    LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
-    lm.matchClasses(source_model.getClasses(), target_model.getClasses(), classMappings);
-    System.out.println(classMappings);
-
-    source_model.close();
-    target_model.close();
   }
 }
