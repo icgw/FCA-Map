@@ -136,14 +136,6 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     return context;
   }
 
-  private final boolean isFromSource(ResourceWrapper rw) {
-    return rw.getFromId() == m_source_id;
-  }
-
-  private final boolean isFromTarget(ResourceWrapper rw) {
-    return rw.getFromId() == m_target_id;
-  }
-
   private void splitResourceWrapper(Set<String> lns, Map<String, Set<ResourceWrapper>> m, Set<Resource> source, Set<Resource> target) {
     if (lns == null || m == null || source == null || target == null) return;
     for (String ln : lns) {

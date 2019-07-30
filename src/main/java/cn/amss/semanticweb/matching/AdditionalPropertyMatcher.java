@@ -12,5 +12,8 @@ import cn.amss.semanticweb.alignment.Mapping;
 public interface AdditionalPropertyMatcher extends PropertyMatcher
 {
   // TODO: s, t, inst.., outmapping.
-  boolean addInstanceAnchors(Mapping instance_anchors);
+  public boolean addInstanceAnchors(Mapping instance_anchors);
+
+  // TODO: clear instance anchors.
+  public void clear();
 }

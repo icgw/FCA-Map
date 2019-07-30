@@ -9,6 +9,7 @@ package cn.amss.semanticweb.matching;
 
 import cn.amss.semanticweb.matching.Matcher;
 import cn.amss.semanticweb.matching.impl.LexicalMatcherImpl;
+import cn.amss.semanticweb.matching.impl.AdditionalPropertyMatcherImpl;
 
 public class MatcherFactory
 {
@@ -17,6 +18,10 @@ public class MatcherFactory
 
   public static LexicalMatcher createLexicalMatcher() {
     return new LexicalMatcherImpl();
+  }
+
+  public static AdditionalPropertyMatcher createAdditionalPropertyMatcher() {
+    return new AdditionalPropertyMatcherImpl();
   }
 
   // TODO: StructuralMatcher..

@@ -105,9 +105,7 @@ public class ModelWrapper
     Set<Resource> resources = new HashSet<>();
     while (it.hasNext()) {
       Resource r = it.nextResource();
-      if (DBkWik.own(r)) {
-        resources.add(r);
-      }
+      resources.add(r);
     }
     return resources;
   }

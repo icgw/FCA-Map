@@ -9,6 +9,7 @@ package cn.amss.semanticweb.alignment;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.apache.jena.rdf.model.Resource;
 
@@ -24,6 +25,10 @@ public class Mapping
 
   public boolean add(MappingCell c) {
     return m_mapping.add(c);
+  }
+
+  public boolean addAll(Mapping m) {
+    return m_mapping.addAll(m.m_mapping);
   }
 
   public boolean add(String entity1, String entity2) {
@@ -55,6 +60,14 @@ public class Mapping
 
   public final void clear() {
     m_mapping.clear();
+  }
+
+  public Iterator<MappingCell> iterator() {
+    return m_mapping.iterator();
+  }
+
+  public boolean isEmpty() {
+    return m_mapping == null || m_mapping.isEmpty();
   }
 
   @Override

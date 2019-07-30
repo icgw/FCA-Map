@@ -10,6 +10,7 @@ package cn.amss.semanticweb.matching.impl;
 import java.io.InputStream;
 
 import cn.amss.semanticweb.model.ModelWrapper;
+import cn.amss.semanticweb.model.ResourceWrapper;
 
 public abstract class MatcherBase
 {
@@ -22,6 +23,14 @@ public abstract class MatcherBase
   public MatcherBase() {
     m_source_id = 0;
     m_target_id = 1;
+  }
+
+  protected final boolean isFromSource(ResourceWrapper rw) {
+    return rw.getFromId() == m_source_id;
+  }
+
+  protected final boolean isFromTarget(ResourceWrapper rw) {
+    return rw.getFromId() == m_target_id;
   }
 
   public void init(InputStream source, InputStream target) {
