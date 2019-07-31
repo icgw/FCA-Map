@@ -15,7 +15,7 @@ import org.apache.jena.rdf.model.Resource;
 
 import cn.amss.semanticweb.alignment.MappingCell;
 
-public class Mapping
+public class Mapping implements Iterable<MappingCell>
 {
   private Set<MappingCell> m_mapping = null;
 
@@ -62,12 +62,13 @@ public class Mapping
     m_mapping.clear();
   }
 
-  public Iterator<MappingCell> iterator() {
-    return m_mapping.iterator();
-  }
-
   public boolean isEmpty() {
     return m_mapping == null || m_mapping.isEmpty();
+  }
+
+  @Override
+  public Iterator<MappingCell> iterator() {
+    return m_mapping.iterator();
   }
 
   @Override

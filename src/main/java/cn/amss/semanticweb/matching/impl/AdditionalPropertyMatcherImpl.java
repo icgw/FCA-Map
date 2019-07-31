@@ -168,4 +168,10 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     m_instance_anchors.clear();
     m_resource_to_map_cell.clear();
   }
+
+  public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping instance_anchors, Mapping mappings) {
+    clear();
+    addInstanceAnchors(instance_anchors);
+    matchProperties(sources, targets, mappings);
+  }
 }
