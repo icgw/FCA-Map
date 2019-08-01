@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import cn.amss.semanticweb.fca.Hermes;
 import cn.amss.semanticweb.model.ResourceWrapper;
@@ -47,9 +46,7 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   private void initHashAnchors(Mapping anchors) {
     if (anchors == null || anchors.isEmpty()) return;
 
-    for (Iterator<MappingCell> it = anchors.iterator(); it.hasNext(); ) {
-      MappingCell c = it.next();
-
+    for (MappingCell c : anchors) {
       Resource r1 = c.getResource1();
       Resource r2 = c.getResource2();
 
@@ -169,7 +166,7 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   @Override
   public boolean addInstanceAnchors(Mapping instance_anchors) {
     boolean b = m_instance_anchors.addAll(instance_anchors);
-    if (true == b) {
+    if (b) {
       initHashAnchors(instance_anchors);
     }
     return b;

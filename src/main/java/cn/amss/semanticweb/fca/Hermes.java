@@ -331,18 +331,18 @@ public class Hermes <O, A>
   }
 
   public Set<Set<O>> listSimplifiedExtentsLimit(int limit_objects_size, int limit_attributes_size) {
-    Set<Set<O>> simlified_extents_limit = new HashSet<>();
+    Set<Set<O>> simplified_extents_limit = new HashSet<>();
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
         Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
         if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) &&
             (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size) &&
             simplified_concept != null) {
-          simlified_extents_limit.add(simplified_concept.getKey());
+          simplified_extents_limit.add(simplified_concept.getKey());
         }
       }
     }
-    return simlified_extents_limit;
+    return simplified_extents_limit;
   }
 
   public Set<Pair<Set<O>, Set<A>>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {
