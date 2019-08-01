@@ -23,9 +23,9 @@ public class ConfusionMatrix
   private int false_positive = 0;
   private int false_negative = 0;
 
-  private double precision = 0.0f;
-  private double recall    = 0.0f;
-  private double fmeasure  = 0.0f;
+  private double precision  = 0.0f;
+  private double recall     = 0.0f;
+  private double f1_measure = 0.0f;
 
   private static void add_to_map(Map<String, Set<String>> m, String key, String value) {
     Set<String> s = m.get(key);
@@ -48,7 +48,7 @@ public class ConfusionMatrix
 
   public ConfusionMatrix(Mapping system, Mapping reference, boolean left_duplicate_free, boolean right_duplicate_free) {
     true_positive = false_positive = false_negative = 0;
-    precision     = recall         = fmeasure       = 0.0f;
+    precision     = recall         = f1_measure     = 0.0f;
 
     Map<String, Set<String>> system_source_target = new HashMap<>();
     Map<String, Set<String>> system_target_source = new HashMap<>();
@@ -93,9 +93,9 @@ public class ConfusionMatrix
       }
     }
 
-    precision = divide_with_two_denominators(true_positive, true_positive, false_positive);
-    recall    = divide_with_two_denominators(true_positive, true_positive, false_negative);
-    fmeasure  = divide_with_two_denominators((2.0 * recall * precision), recall, precision);
+    precision  = divide_with_two_denominators(true_positive, true_positive, false_positive);
+    recall     = divide_with_two_denominators(true_positive, true_positive, false_negative);
+    f1_measure = divide_with_two_denominators((2.0 * recall * precision), recall, precision);
   }
 
   public int getTruePositive() {
@@ -118,7 +118,7 @@ public class ConfusionMatrix
     return recall;
   }
 
-  public double getFmeasure() {
-    return fmeasure;
+  public double getF1measure() {
+    return f1_measure;
   }
 }

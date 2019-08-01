@@ -7,9 +7,11 @@
 
 package cn.amss.semanticweb.matching.impl;
 
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.rdf.model.SimpleSelector;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -64,7 +66,17 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
                           Map<Resource, Set<MappingCell>> m,
                           Map<ResourceWrapper, Set<SubjectObject>> context) {
     for (Resource p : properties) {
-      for (StmtIterator it = p.listProperties(); it.hasNext(); ) {
+
+      StmtIterator it = p.getModel().listStatements(
+            new SimpleSelector(null, null, (RDFNode) null) {
+              @Override
+              public boolean selects(Statement s) {
+                return s.getPredicate().getURI().equals(p.getURI()) && s.getObject().isResource();
+              }
+            }
+          );
+
+      while (it.hasNext()) {
         Statement stmt = it.nextStatement();
 
         Resource subject = stmt.getSubject();

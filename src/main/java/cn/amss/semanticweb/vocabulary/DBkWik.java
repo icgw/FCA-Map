@@ -27,6 +27,7 @@ public class DBkWik
     return m.createProperty( prefix + local );
   }
 
+  //////////////////////////////////////////////////////////////////////////////
   public static boolean own(Resource r) {
     return r.getURI().startsWith(uri);
   }
@@ -35,6 +36,12 @@ public class DBkWik
     String that_uri = r.getURI();
     return that_uri.startsWith(uri) && that_uri.contains("/resource/");
   }
+
+  public static boolean ownAsTemplate(Resource r) {
+    String that_uri = r.getURI();
+    return that_uri.startsWith(uri) && that_uri.contains("/resource/Template:");
+  }
+  //////////////////////////////////////////////////////////////////////////////
 
   // NOTE: Define DBkWik Classes
   public static final Resource Image                 = Init.Image();

@@ -109,16 +109,13 @@ public class ModelWrapper
   }
 
   private void acquireInstances() {
-    // XXX: remove instances of DBkWik:Image and SKOS:Concept. Under consideration.
-    Set<Resource> m_intances = new HashSet<>();
-
+    // XXX: remove instances of DBkWik:Image and SKOS:Concept, Template. Under consideration.
     ResIterator it = m_inferred_model.listSubjects();
     while (it.hasNext()) {
       Resource r = it.nextResource();
-      if (!r.hasProperty(RDF.type, SKOS.Concept) &&
-          !r.hasProperty(RDF.type, DBkWik.Image) &&
-          !r.hasProperty(RDF.type, RDF.Property) &&
-          !r.hasProperty(RDF.type, OWL.Class)) {
+      if (DBkWik.ownAsResource(r) && !DBkWik.ownAsTemplate(r) &&
+          !r.hasProperty(RDF.type, SKOS.Concept) &&
+          !r.hasProperty(RDF.type, DBkWik.Image)) {
         m_instances.add(r);
       }
     }
