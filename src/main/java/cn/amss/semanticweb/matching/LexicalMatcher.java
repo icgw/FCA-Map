@@ -15,5 +15,9 @@ import cn.amss.semanticweb.model.ResourceWrapper;
 
 public interface LexicalMatcher extends Matcher
 {
-  // TODO: set delimiter_characters, delimiter_literal, use_porter_stemmer, to_lower_case.. (return delimiter??)
+  public void setExtractType(boolean b_GSH, boolean b_Lattice);
+
+  public void setGSHLimit(int objects_limit, int attributes_limit);
+
+  public void setLatticeLimit(int objects_limit, int attributes_limit);
 }

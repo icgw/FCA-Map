@@ -94,31 +94,31 @@ public class MappingCell extends Relation
     return entityElement(2, m_entity2);
   }
 
-  private final String getCellElementWithIndent(int indent) {
+  private final static String getCellElementWithIndent(int indent, String entity1, String entity2, String relation, String measure) {
     StringBuilder cell = new StringBuilder();
     cell.append(getElementWithIndentln("<Cell>", indent));
-    cell.append(getElementWithIndentln(getEntityElement1(), indent + 1));
-    cell.append(getElementWithIndentln(getEntityElement2(), indent + 1));
-    cell.append(getElementWithIndentln(getRelationElement(), indent + 1));
-    cell.append(getElementWithIndentln(getMeasureElement(), indent + 1));
+    cell.append(getElementWithIndentln(entity1, indent + 1));
+    cell.append(getElementWithIndentln(entity2, indent + 1));
+    cell.append(getElementWithIndentln(relation, indent + 1));
+    cell.append(getElementWithIndentln(measure, indent + 1));
     cell.append(getElementWithIndentln("</Cell>", indent));
     return cell.toString();
   }
 
-  private final String getMappingCellElementWithIndent(int indent) {
+  private final static String getMappingCellElementWithIndent(int indent, String entity1, String entity2, String relation, String measure) {
     StringBuilder mapping_cell = new StringBuilder();
     mapping_cell.append(getElementWithIndentln("<map>", indent));
-    mapping_cell.append(getCellElementWithIndent(indent + 1));
+    mapping_cell.append(getCellElementWithIndent(indent + 1, entity1, entity2, relation, measure));
     mapping_cell.append(getElementWithIndentln("</map>", indent));
     return mapping_cell.toString();
   }
 
   public final String getCellElement() {
-    return getCellElementWithIndent(m_indent);
+    return getCellElementWithIndent(m_indent, getEntityElement1(), getEntityElement2(), getRelationElement(), getMeasureElement());
   }
 
   public final String getMappingCellElement() {
-    return getMappingCellElementWithIndent(m_indent);
+    return getMappingCellElementWithIndent(m_indent, getEntityElement1(), getEntityElement2(), getRelationElement(), getMeasureElement());
   }
 
   @Override

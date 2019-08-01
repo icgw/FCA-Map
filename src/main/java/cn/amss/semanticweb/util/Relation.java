@@ -7,8 +7,6 @@
 
 package cn.amss.semanticweb.util;
 
-import cn.amss.semanticweb.util.Element;
-
 public abstract class Relation extends Element
 {
   protected final static int EQUIVALENCE = 0;

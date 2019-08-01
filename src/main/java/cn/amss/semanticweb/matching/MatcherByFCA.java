@@ -8,12 +8,8 @@
 package cn.amss.semanticweb.matching;
 
 import java.util.Set;
-import java.util.Map;
 
-import cn.amss.semanticweb.util.Pair;
 import cn.amss.semanticweb.fca.Hermes;
-import cn.amss.semanticweb.alignment.Mapping;
-import cn.amss.semanticweb.model.ResourceWrapper;
 import cn.amss.semanticweb.matching.impl.MatcherBase;
 
 public abstract class MatcherByFCA extends MatcherBase

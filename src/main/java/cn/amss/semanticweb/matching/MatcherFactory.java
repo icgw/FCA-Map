@@ -7,7 +7,6 @@
 
 package cn.amss.semanticweb.matching;
 
-import cn.amss.semanticweb.matching.Matcher;
 import cn.amss.semanticweb.matching.impl.LexicalMatcherImpl;
 import cn.amss.semanticweb.matching.impl.AdditionalPropertyMatcherImpl;
 

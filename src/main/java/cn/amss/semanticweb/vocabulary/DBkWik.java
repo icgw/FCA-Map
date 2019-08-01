@@ -52,20 +52,20 @@ public class DBkWik
   public static final Property wikiPageWikiLink      = Init.wikiPageWikiLink();
   public static final Property wikiPageWikiLinkText  = Init.wikiPageWikiLinkText();
 
-  public static class Init {
-    public static Resource Image()                 { return resource( "Image" ); }
+  private static class Init {
+    private static Resource Image()                 { return resource( "Image" ); }
 
-    public static Property wikiPageDisambiguates() { return property( "wikiPageDisambiguates" ); }
-    public static Property _abstract()             { return property( "abstract" ); }
-    public static Property thumbnail()             { return property( "thumbnail"); }
-    public static Property wikiPageExternalLink()  { return property( "wikiPageExternalLink" ); }
-    public static Property wikiPageID()            { return property( "wikiPageID" ); }
-    public static Property wikiPageLength()        { return property( "wikiPageLength" ); }
-    public static Property wikiPageOutDegree()     { return property( "wikiPageOutDegree" ); }
-    public static Property wikiPageRedirects()     { return property( "wikiPageRedirects" ); }
-    public static Property wikiPageUsesTemplate()  { return property( "wikiPageUsesTemplate" ); }
-    public static Property wikiPageWikiLink()      { return property( "wikiPageWikiLink" ); }
-    public static Property wikiPageWikiLinkText()  { return property( "wikiPageWikiLinkText" ); }
+    private static Property wikiPageDisambiguates() { return property( "wikiPageDisambiguates" ); }
+    private static Property _abstract()             { return property( "abstract" ); }
+    private static Property thumbnail()             { return property( "thumbnail"); }
+    private static Property wikiPageExternalLink()  { return property( "wikiPageExternalLink" ); }
+    private static Property wikiPageID()            { return property( "wikiPageID" ); }
+    private static Property wikiPageLength()        { return property( "wikiPageLength" ); }
+    private static Property wikiPageOutDegree()     { return property( "wikiPageOutDegree" ); }
+    private static Property wikiPageRedirects()     { return property( "wikiPageRedirects" ); }
+    private static Property wikiPageUsesTemplate()  { return property( "wikiPageUsesTemplate" ); }
+    private static Property wikiPageWikiLink()      { return property( "wikiPageWikiLink" ); }
+    private static Property wikiPageWikiLinkText()  { return property( "wikiPageWikiLinkText" ); }
   }
 
   public static String getURI() {

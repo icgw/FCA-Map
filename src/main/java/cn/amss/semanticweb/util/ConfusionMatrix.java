@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Arrays;
 
 import cn.amss.semanticweb.alignment.Mapping;
@@ -60,10 +59,10 @@ public class ConfusionMatrix
     }
 
     for (MappingCell mc : reference) {
-      if (mc.getEntity1().equals("null")) {
+      if (mc.getEntity2().equals("null")) {
         false_positive += system_source_target.getOrDefault(mc.getEntity1(), new HashSet<String>()).size();
       }
-      else if (mc.getEntity2().equals("null")) {
+      else if (mc.getEntity1().equals("null")) {
         false_positive += system_target_source.getOrDefault(mc.getEntity2(), new HashSet<String>()).size();
       }
       else {

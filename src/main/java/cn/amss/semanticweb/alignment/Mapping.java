@@ -13,8 +13,6 @@ import java.util.Iterator;
 
 import org.apache.jena.rdf.model.Resource;
 
-import cn.amss.semanticweb.alignment.MappingCell;
-
 public class Mapping implements Iterable<MappingCell>
 {
   private Set<MappingCell> m_mapping = null;
