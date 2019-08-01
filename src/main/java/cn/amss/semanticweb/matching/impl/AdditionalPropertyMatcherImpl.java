@@ -65,7 +65,7 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
                           int from_id,
                           Map<Resource, Set<MappingCell>> m,
                           Map<ResourceWrapper, Set<SubjectObject>> context) {
-    for (Resource p : properties) {
+    for (final Resource p : properties) {
 
       StmtIterator it = p.getModel().listStatements(
             new SimpleSelector(null, null, (RDFNode) null) {
