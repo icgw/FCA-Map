@@ -7,7 +7,6 @@
 
 package cn.amss.semanticweb.matching.impl;
 
-import org.apache.jena.util.Tokenizer;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Property;
@@ -20,6 +19,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import cn.amss.semanticweb.matching.LexicalMatcher;
 import cn.amss.semanticweb.matching.MatcherByFCA;
@@ -34,7 +34,6 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   private static final String delimiter4uri = "/((resource)|(property)|(class))/";
 
   private static final String delimiter_characters = " :,.";
-  private static final String delimiter_literal    = "";
   private static final boolean return_delimiter    = false;
   private static final boolean use_porter_stemmer  = true;
   private static final boolean to_lower_case       = true;
@@ -43,7 +42,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   private static Set<String> acquireAllTokens(String norm_str, boolean use_stemmer) {
-    Tokenizer tokenizer = new Tokenizer(norm_str, delimiter_characters, delimiter_literal, return_delimiter);
+    StringTokenizer tokenizer = new StringTokenizer(norm_str, delimiter_characters, return_delimiter);
     Set<String> tokens  = new HashSet<>();
     while (tokenizer.hasMoreTokens()) {
       String token = tokenizer.nextToken();

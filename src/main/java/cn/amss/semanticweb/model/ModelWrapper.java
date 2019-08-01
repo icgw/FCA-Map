@@ -30,6 +30,8 @@ public class ModelWrapper
   final Logger m_logger = LoggerFactory.getLogger(ModelWrapper.class);
 
   private Model    m_raw_model      = null;
+
+  private boolean  m_inferred       = false;
   private InfModel m_inferred_model = null;
 
   private Set<Resource> m_instances  = null;
@@ -74,7 +76,9 @@ public class ModelWrapper
     m_raw_model.read(in, null);
 
     // NOTE: You can change it and add other reasoning rules.
-    m_inferred_model = ModelFactory.createRDFSModel(m_raw_model);
+    if (m_inferred) {
+      m_inferred_model = ModelFactory.createRDFSModel(m_raw_model);
+    }
 
     // NOTE: acquire instances, properties and classes.
     acquireInstances();
@@ -110,7 +114,14 @@ public class ModelWrapper
 
   private void acquireInstances() {
     // XXX: remove instances of DBkWik:Image and SKOS:Concept, Template. Under consideration.
-    ResIterator it = m_inferred_model.listSubjects();
+    ResIterator it = null;
+
+    if (m_inferred) {
+      it = m_inferred_model.listSubjects();
+    } else {
+      it = m_raw_model.listSubjects();
+    }
+
     while (it.hasNext()) {
       Resource r = it.nextResource();
       if (DBkWik.ownAsResource(r) && !DBkWik.ownAsTemplate(r) &&
@@ -122,12 +133,26 @@ public class ModelWrapper
   }
 
   private void acquireProperties() {
-    ResIterator it = m_inferred_model.listResourcesWithProperty(RDF.type, RDF.Property);
+    ResIterator it = null;
+
+    if (m_inferred) {
+      it = m_inferred_model.listResourcesWithProperty(RDF.type, RDF.Property);
+    } else {
+      it = m_raw_model.listResourcesWithProperty(RDF.type, RDF.Property);
+    }
+
     m_properties = acquireResources(it);
   }
 
   private void acquireClasses() {
-    ResIterator it = m_inferred_model.listResourcesWithProperty(RDF.type, OWL.Class);
+    ResIterator it = null;
+
+    if (m_inferred) {
+      it = m_inferred_model.listResourcesWithProperty(RDF.type, OWL.Class);
+    } else {
+      it = m_raw_model.listResourcesWithProperty(RDF.type, OWL.Class);
+    }
+
     m_classes = acquireResources(it);
   }
 
