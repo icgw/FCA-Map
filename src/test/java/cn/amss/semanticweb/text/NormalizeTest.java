@@ -23,4 +23,13 @@ public class NormalizeTest
     assertEquals( Normalize.normalizeCaseStyle(s2), "UNDERSCORED STRING" );
     assertEquals( Normalize.normalizeCaseStyle(s3), "camel Cased and UNDERSCORED" );
   }
+
+  @Test
+  public void testStripDiacritics() {
+    String s1 = "Björn";
+    assertEquals( Normalize.stripDiacritics(s1), "Bjorn" );
+
+    String s2 = "vídeo";
+    assertEquals( Normalize.stripDiacritics(s2), "video" );
+  }
 }
