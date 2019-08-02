@@ -33,10 +33,13 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 {
   private static final String delimiter4uri = "/((resource)|(property)|(class))/";
 
-  private static final String delimiter_characters = " :,.";
+  private static final String delimiter_characters = " \t-({[)}]_!@#%&*\\:;\"',.?/~+=|<>$`^";
   private static final boolean return_delimiter    = false;
   private static final boolean use_porter_stemmer  = true;
   private static final boolean to_lower_case       = true;
+
+  private static final boolean use_normalize_case_style = true;
+  private static final boolean use_strip_diacritics     = true;
 
   public LexicalMatcherImpl() {
   }
@@ -128,7 +131,16 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     if (labelOrNames == null) return context;
 
     for (String ln : labelOrNames) {
-      String norm_ln = Normalize.normalizeCaseStyle(ln);
+      String norm_ln = ln;
+
+      if (use_normalize_case_style) {
+        norm_ln = Normalize.normalizeCaseStyle(norm_ln);
+      }
+
+      if (use_strip_diacritics) {
+        norm_ln = Normalize.stripDiacritics(norm_ln);
+      }
+
       context.put(ln, acquireAllTokens(norm_ln, use_porter_stemmer));
     }
 

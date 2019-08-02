@@ -260,10 +260,8 @@ public class PorterStemmer
 
   public void setCurrent(String value) {
     for (char ch : value.toCharArray()) {
-      if (Character.isLetter(ch)) {
-        ch = Character.toLowerCase(ch);
-        add(ch);
-      }
+      ch = Character.toLowerCase(ch);
+      add(ch);
     }
   }
 

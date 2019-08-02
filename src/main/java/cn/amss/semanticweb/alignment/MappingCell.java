@@ -137,4 +137,9 @@ public class MappingCell extends Relation
   public int hashCode() {
     return Objects.hash(m_entity1, m_entity2, m_relation, m_confidence);
   }
+
+  @Override
+  public String toString() {
+    return getMappingCellElement();
+  }
 }
