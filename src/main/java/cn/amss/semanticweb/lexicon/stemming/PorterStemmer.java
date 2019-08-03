@@ -18,30 +18,30 @@ public class PorterStemmer
 {
   private static final int INC = 50;
 
-  private char[] word = null;
+  private char[] b = null;
   private int offset = 0, end = 0;
   private int j = 0, k = 0;
 
   public PorterStemmer() {
-    word = new char[ INC ];
+    b = new char[ INC ];
     offset = end = 0;
   }
 
   private void add(char ch) {
-    if (word.length == offset) {
-      char[] new_word = new char [ offset + INC ];
+    if (b.length == offset) {
+      char[] tmp = new char [ offset + INC ];
       for (int i = 0; i < offset; ++i) {
-        new_word[i] = word[i];
+        tmp[i] = b[i];
       }
-      word = new_word;
+      b = tmp;
     }
-    word[offset++] = ch;
+    b[offset++] = ch;
   }
 
   private final boolean isConsonant(int i) {
-    if (word[i] == 'a' || word[i] == 'e' || word[i] == 'i' || word[i] == 'o' || word[i] == 'u') {
+    if (b[i] == 'a' || b[i] == 'e' || b[i] == 'i' || b[i] == 'o' || b[i] == 'u') {
       return false;
-    } else if (word[i] == 'y') {
+    } else if (b[i] == 'y') {
       return ((i == 0) ? (true) : (!isConsonant(i - 1)));
     }
     return true;
@@ -84,13 +84,13 @@ public class PorterStemmer
 
   private final boolean doubleConsonant(int i) {
     if (i < 1) return false;
-    if (word[i] != word[i - 1]) return false;
+    if (b[i] != b[i - 1]) return false;
     return isConsonant(i);
   }
 
   private final boolean consonantVowelConsonant(int i) {
     if (i < 2 || !isConsonant(i) || isConsonant(i - 1) || !isConsonant(i - 2)) return false;
-    int ch = word[i];
+    int ch = b[i];
     if (ch == 'w' || ch == 'x' || ch == 'y') return false;
     return true;
   }
@@ -100,7 +100,7 @@ public class PorterStemmer
     int o = k - l + 1;
     if (o < 0) return false;
     for (int i = 0; i < l; ++i) {
-      if (word[o + i] != suffix.charAt(i)) return false;
+      if (b[o + i] != suffix.charAt(i)) return false;
     }
     j = k - l;
     return true;
@@ -109,7 +109,7 @@ public class PorterStemmer
   private final void append(String s) {
     int l = s.length();
     for (int i = 0, o = j + 1; i < l; ++i, ++o) {
-      word[o] = s.charAt(i);
+      b[o] = s.charAt(i);
     }
     k = j + l;
   }
@@ -121,12 +121,12 @@ public class PorterStemmer
   }
 
   private final void step1() {
-    if (word[k] == 's') {
+    if (b[k] == 's') {
       if (endsWith("sses")) {
         k -= 2;
       } else if (endsWith("ies")) {
         append("i");
-      } else if (word[k - 1] != 's') {
+      } else if (b[k - 1] != 's') {
         --k;
       }
     }
@@ -145,7 +145,7 @@ public class PorterStemmer
         append("ize");
       } else if (doubleConsonant(k)) {
         --k;
-        int ch = word[k];
+        int ch = b[k];
         if (ch == 'l' || ch == 's' || ch == 'z') ++k;
       } else if (numOfConsonantSeq() == 1 && consonantVowelConsonant(k)) {
         append("e");
@@ -155,13 +155,13 @@ public class PorterStemmer
 
   private final void step2() {
     if (endsWith("y") && vowelInStem()) {
-      word[k] = 'i';
+      b[k] = 'i';
     }
   }
 
   private final void step3() {
     if (k == 0) return;
-    switch (word[k - 1]) {
+    switch (b[k - 1]) {
       case 'a': if (endsWith("ational")) { down("ate"); break; }
                 if (endsWith("tional")) { down("tion"); break; }
                 break;
@@ -194,7 +194,7 @@ public class PorterStemmer
   }
 
   private final void step4() {
-    switch (word[k]) {
+    switch (b[k]) {
       case 'e': if (endsWith("icate")) { down("ic"); break; }
                 if (endsWith("ative")) { down(""); break; }
                 if (endsWith("alize")) { down("al"); break; }
@@ -211,7 +211,7 @@ public class PorterStemmer
 
   private final void step5() {
     if (0 == k) return ;
-    switch (word[k - 1]) {
+    switch (b[k - 1]) {
       case 'a': if (endsWith("al")) break;
                 return;
       case 'c': if (endsWith("ance")) break;
@@ -229,7 +229,7 @@ public class PorterStemmer
                 if (endsWith("ment")) break;
                 if (endsWith("ent")) break;
                 return;
-      case 'o': if (endsWith("ion") && j >= 0 && (word[j] == 's' || word[j] == 't')) break;
+      case 'o': if (endsWith("ion") && j >= 0 && (b[j] == 's' || b[j] == 't')) break;
                 if (endsWith("ou")) break;
                 return;
       case 's': if (endsWith("ism")) break;
@@ -251,11 +251,11 @@ public class PorterStemmer
 
   private final void step6() {
     j = k;
-    if (word[k] == 'e') {
+    if (b[k] == 'e') {
       int a = numOfConsonantSeq();
       if (a > 1 || a == 1 && !consonantVowelConsonant(k - 1)) --k;
     }
-    if (word[k] == 'l' && doubleConsonant(k) && numOfConsonantSeq() > 1) --k;
+    if (b[k] == 'l' && doubleConsonant(k) && numOfConsonantSeq() > 1) --k;
   }
 
   public void setCurrent(String value) {
@@ -274,7 +274,7 @@ public class PorterStemmer
   }
 
   public String getCurrent() {
-    return new String(word, 0, end);
+    return new String(b, 0, end);
   }
 
   public String mutate(String value) {

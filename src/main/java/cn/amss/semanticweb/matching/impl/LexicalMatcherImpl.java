@@ -28,11 +28,10 @@ import cn.amss.semanticweb.model.ResourceWrapper;
 import cn.amss.semanticweb.lexicon.stemming.PorterStemmer;
 import cn.amss.semanticweb.text.Normalize;
 import cn.amss.semanticweb.fca.Hermes;
+import cn.amss.semanticweb.vocabulary.DBkWik;
 
 public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 {
-  private static final String delimiter4uri = "/((resource)|(property)|(class))/";
-
   private static final String delimiter_characters = " \t-({[)}]_!@#%&*\\:;\"',.?/~+=|<>$`^";
   private static final boolean return_delimiter    = false;
   private static final boolean use_porter_stemmer  = true;
@@ -96,9 +95,9 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     }
 
     if (labelOrName.isEmpty()) {
-      String[] parts = resource.getURI().split(delimiter4uri);
-      if (parts.length > 1) {
-        labelOrName.add(parts[1]);
+      String name = DBkWik.getName(resource.getURI());
+      if (!name.isEmpty()) {
+        labelOrName.add(name);
       }
     }
 

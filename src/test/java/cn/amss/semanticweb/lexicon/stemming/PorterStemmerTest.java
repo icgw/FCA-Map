@@ -22,10 +22,10 @@ public class PorterStemmerTest
   public void testMutate() throws IOException {
     PorterStemmer stemmer = new PorterStemmer();
 
-    InputStream sample = this.getClass().getResourceAsStream("/porter/voc.txt");
+    InputStream sample = this.getClass().getResourceAsStream("/porter/voc-50l.txt");
     BufferedReader br1 = new BufferedReader(new InputStreamReader(sample));
 
-    InputStream output = this.getClass().getResourceAsStream("/porter/output.txt");
+    InputStream output = this.getClass().getResourceAsStream("/porter/output-50l.txt");
     BufferedReader br2 = new BufferedReader(new InputStreamReader(output));
 
     String s = null, o = null;

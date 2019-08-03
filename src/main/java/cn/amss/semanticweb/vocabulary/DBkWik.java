@@ -12,12 +12,18 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Property;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class DBkWik
 {
   private static final Model m       = ModelFactory.createDefaultModel();
 
   private static final String uri    = "http://dbkwik.webdatacommons.org/";
   private static final String prefix = uri + "ontology/";
+
+  // NOTE: DBkWik.uri/{wiki}/{type}/{name}
+  private static final Pattern p = Pattern.compile(uri + "(.+?)/(.+?)/(.*)");
 
   protected static final Resource resource(String local) {
     return m.createResource( prefix + local );
@@ -27,17 +33,39 @@ public class DBkWik
     return m.createProperty( prefix + local );
   }
 
+  public static final String getWiki(String uri) {
+    Matcher m = p.matcher(uri);
+    if (m.find()) {
+      return m.group(1);
+    }
+    return "";
+  }
+
+  public static final String getType(String uri) {
+    if (uri.equals("null")) return "null";
+
+    Matcher m = p.matcher(uri);
+    if (m.find()) {
+      return m.group(2);
+    }
+    return "";
+  }
+
+  public static final String getName(String uri) {
+    Matcher m = p.matcher(uri);
+    if (m.find()) {
+      return m.group(3);
+    }
+    return "";
+  }
+
   //////////////////////////////////////////////////////////////////////////////
-  public static boolean own(Resource r) {
-    return r.getURI().startsWith(uri);
-  }
-
-  public static boolean ownAsResource(Resource r) {
+  public static final boolean ownAsResource(Resource r) {
     String that_uri = r.getURI();
-    return that_uri.startsWith(uri) && that_uri.contains("/resource/");
+    return getType(that_uri).equals("resource");
   }
 
-  public static boolean ownAsTemplate(Resource r) {
+  public static final boolean ownAsTemplate(Resource r) {
     String that_uri = r.getURI();
     return that_uri.startsWith(uri) && that_uri.contains("/resource/Template:");
   }
