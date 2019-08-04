@@ -3,7 +3,11 @@
  * Copyright (C) 2019 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the MIT license.
- *
+ */
+
+package cn.amss.semanticweb.lexicon.stemming;
+
+/**
  *  Porter stemmer in Java. The original paper is in
  *
  *      Porter, 1980, An algorithm for suffix stripping, Program, Vol. 14,
@@ -11,9 +15,6 @@
  *
  *  See also http://www.tartarus.org/~martin/PorterStemmer
  */
-
-package cn.amss.semanticweb.lexicon.stemming;
-
 public class PorterStemmer
 {
   private static final int INC = 50;

@@ -30,6 +30,11 @@ import cn.amss.semanticweb.text.Normalize;
 import cn.amss.semanticweb.fca.Hermes;
 import cn.amss.semanticweb.vocabulary.DBkWik;
 
+/**
+ * Lexical Matcher based on formal concept analysis.
+ *
+ * @author Guowei Chen (icgw@outlook.com)
+ */
 public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 {
   private static final String delimiter_characters = " \t-({[)}]_!@#%&*\\:;\"',.?/~+=|<>$`^";

@@ -15,6 +15,12 @@ import java.util.Iterator;
 
 import cn.amss.semanticweb.util.Pair;
 
+/**
+ * Hermes: a simple and efficient algorithm for building the AOC-poset of a binary relation
+ *   Anne Berry, Alain Gutierrez, Marianne Huchard, Amedeo Napoli, Alain Sigayret
+ *
+ * @author Guowei Chen (icgw@outlook.com)
+ */
 public class Hermes <O, A>
 {
   private Map<Integer, Set<Integer>> object2Attributes = null;
@@ -28,14 +34,25 @@ public class Hermes <O, A>
 
   private int dividing = 0;
 
-  // Rc: Clarified Relation.
+  /**
+   * Rc: Clarified Relation.
+   */
   private Map<Set<Integer>, Set<Integer>> clarified = null;
-  // Dom: Domination Relation.
+
+  /**
+   * Dom: Domination Relatin.
+   */
   private Map<Set<Integer>, Set<Integer>> domination = null;
-  // Rces: the simplification of Rce, which is the juxtaposition of Rc with Dom.
+
+  /**
+   * Rces: The simplification of Rce, which is the juxtaposition of Rc with Dom.
+   */
   private Map<Set<Integer>, Set<Integer>> simplification = null;
 
 
+  /**
+   * Create new Hermes.
+   */
   public Hermes() {
     object2Attributes = new HashMap<Integer, Set<Integer>>();
     attribute2Objects = new HashMap<Integer, Set<Integer>>();
@@ -47,6 +64,12 @@ public class Hermes <O, A>
     A2Attribute = new HashMap<>();
   }
 
+  /**
+   * Initiate the map of attribute's id to objects' id and object's id to attributes' id.
+   *
+   * @param relations add binary relation of formal context
+   * @param relations no side effect
+   */
   private void init(Set<Pair<Integer, Integer>> relations) {
     for (Pair<Integer, Integer> pair : relations) {
       int object_id = pair.getKey(), attribute_id = pair.getValue();
@@ -313,12 +336,21 @@ public class Hermes <O, A>
     return parent_attributes;
   }
 
+  /**
+   * Extract the simplified concepts within particular limits.
+   *
+   * @param limit_objects_size limit the size of objects of simplified concept
+   * @param limit_attributes_size  limit the size of attributes of simplified concept
+   * @return the simplified concept, where its size of objects and attributes both are less than limit
+   */
   public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
     Set<Pair<Set<O>, Set<A>>> simplified_concepts_limit = new HashSet<>();
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
         Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) && (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size) && simplified_concept != null) {
+        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) &&
+            (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size) &&
+            simplified_concept != null) {
           simplified_concepts_limit.add(simplified_concept);
         }
       }
@@ -345,6 +377,13 @@ public class Hermes <O, A>
     return simplified_extents_limit;
   }
 
+  /**
+   * Extract the concepts within particular limits.
+   *
+   * @param limit_objects_size limit the size of objects of concept
+   * @param limit_attributes_size limit the size of attribtes of concept
+   * @return the concept which has limited size of objects and attributes
+   */
   public Set<Concept<O, A>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {
     Set<Concept<O, A>> concepts_limit = new HashSet<>();
 
@@ -411,7 +450,9 @@ public class Hermes <O, A>
     }
 
     for (Set<Integer> attributes : set_of_attributes) {
-      Pair<Set<Integer>, Set<Integer>> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
+      Pair<Set<Integer>, Set<Integer>> concept_id = computeConceptId(attributes,
+                                                                     limit_objects_size,
+                                                                     limit_attributes_size);
       Set<O> extent = retransform(concept_id.getKey(), object2O);
       if (extent != null && (!concept_id.getKey().isEmpty() || !concept_id.getValue().isEmpty())) {
         extents_limit.add(extent);
