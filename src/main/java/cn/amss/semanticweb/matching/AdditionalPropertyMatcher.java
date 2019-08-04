@@ -22,7 +22,5 @@ public interface AdditionalPropertyMatcher extends PropertyMatcher
 
   public boolean addInstanceAnchors(Mapping instance_anchors);
 
-  public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping instance_anchors, Mapping mappings);
-
-  public void clear();
+  public boolean addPropertyAnchors(Mapping property_anchors);
 }

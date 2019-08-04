@@ -29,6 +29,7 @@ import cn.amss.semanticweb.matching.AdditionalPropertyMatcher;
 public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements AdditionalPropertyMatcher
 {
   private Mapping m_instance_anchors = null;
+  private Mapping m_property_anchors = null;
 
   private Map<Resource, Set<MappingCell>> m_resource_to_map_cell = null;
 
@@ -40,6 +41,7 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
 
   public AdditionalPropertyMatcherImpl() {
     m_instance_anchors     = new Mapping();
+    m_property_anchors     = new Mapping();
     m_resource_to_map_cell = new HashMap<>();
   }
 
@@ -95,11 +97,24 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     }
   }
 
-  private Map<ResourceWrapper, Set<SubjectObject>> constructContext(Set<Resource> sources, Set<Resource> targets) {
+  private Map<ResourceWrapper, Set<SubjectObject>> constructContext(Set<Resource> sources,
+                                                                    Set<Resource> targets,
+                                                                    Mapping property_anchors) {
     Map<ResourceWrapper, Set<SubjectObject>> context = new HashMap<>();
 
     addContext(sources, m_source_id, m_resource_to_map_cell, context);
     addContext(targets, m_target_id, m_resource_to_map_cell, context);
+
+    if (property_anchors == null) return context;
+
+    for (MappingCell mc : property_anchors) {
+      Set<SubjectObject> v1 = context.get(new ResourceWrapper(mc.getResource1(), m_source_id));
+      Set<SubjectObject> v2 = context.get(new ResourceWrapper(mc.getResource2(), m_target_id));
+      if (v1 != null && v2 != null) {
+        v1.addAll(v2);
+        v2.addAll(v1);
+      }
+    }
 
     return context;
   }
@@ -137,7 +152,7 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   @Override
   public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
     initHashAnchors(m_instance_anchors);
-    Map<ResourceWrapper, Set<SubjectObject>> context = constructContext(sources, targets);
+    Map<ResourceWrapper, Set<SubjectObject>> context = constructContext(sources, targets, m_property_anchors);
 
     Hermes<ResourceWrapper, SubjectObject> hermes = new Hermes<>();
     hermes.init(context);
@@ -173,14 +188,12 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   }
 
   @Override
-  public void clear() {
-    m_instance_anchors.clear();
-    m_resource_to_map_cell.clear();
+  public boolean addPropertyAnchors(Mapping property_anchors) {
+    return m_property_anchors.addAll(property_anchors);
   }
 
-  public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping instance_anchors, Mapping mappings) {
-    clear();
-    addInstanceAnchors(instance_anchors);
-    matchProperties(sources, targets, mappings);
+  private void clear() {
+    m_instance_anchors.clear();
+    m_resource_to_map_cell.clear();
   }
 }

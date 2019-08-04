@@ -176,11 +176,11 @@ public class Hermes <O, A>
     }
   }
 
-  private Pair<Set<Integer>, Set<Integer>> simplifiedConceptIdFrom(Set<Integer> s) {
+  private Concept<Integer, Integer> simplifiedConceptIdFrom(Set<Integer> s) {
     Set<Integer> objects    = new HashSet<>();
     Set<Integer> attributes = new HashSet<>();
 
-    if (s == null || s.isEmpty()) return new Pair<>(objects, attributes);
+    if (s == null || s.isEmpty()) return new Concept<Integer, Integer>(objects, attributes);
 
     for (int i : s) {
       if (i < dividing) {
@@ -190,7 +190,7 @@ public class Hermes <O, A>
       }
     }
 
-    return new Pair<>(objects, attributes);
+    return new Concept<Integer, Integer>(objects, attributes);
   }
 
   private <T> Set<T> retransform(Set<Integer> sid, Map<Integer, T> m) {
@@ -208,19 +208,19 @@ public class Hermes <O, A>
     return origin;
   }
 
-  private Pair<Set<O>, Set<A>> retransform(Pair<Set<Integer>, Set<Integer>> pair) {
-    if (pair == null) {
+  private Concept<O, A> retransform(Concept<Integer, Integer> concept_id) {
+    if (concept_id == null) {
       return null;
     }
 
-    Set<O> objects = retransform(pair.getKey(), object2O);
+    Set<O> objects = retransform(concept_id.getExtent(), object2O);
 
-    Set<A> attributes = retransform(pair.getValue(), attribute2A);
+    Set<A> attributes = retransform(concept_id.getIntent(), attribute2A);
 
-    return new Pair<>(objects, attributes);
+    return new Concept<O, A>(objects, attributes);
   }
 
-  private Pair<Set<O>, Set<A>> simplifiedConceptFrom(Set<Integer> s) {
+  private Concept<O, A> simplifiedConceptFrom(Set<Integer> s) {
     return retransform(simplifiedConceptIdFrom(s));
   }
 
@@ -267,41 +267,41 @@ public class Hermes <O, A>
     return relative(objects, object2Attributes);
   }
 
-  private Pair<Set<Integer>, Set<Integer>> computeConceptId(Set<Integer> attributes,
-                                                            int limit_objects_size,
-                                                            int limit_attributes_size) {
+  private Concept<Integer, Integer> computeConceptId(Set<Integer> attributes,
+                                                     int limit_objects_size,
+                                                     int limit_attributes_size) {
     Set<Integer> extent_id = new HashSet<>();
     Set<Integer> intent_id = new HashSet<>();
 
-    if (attributes == null) return new Pair<>(extent_id, intent_id);
+    if (attributes == null) return new Concept<Integer, Integer>(extent_id, intent_id);
 
     intent_id.addAll(attributes);
 
     if (attributes.isEmpty() && object2Attributes != null) {
       Set<Integer> all_objects = object2Attributes.keySet();
       if (limit_objects_size > 0 && all_objects.size() > limit_objects_size) {
-        return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+        return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
       }
-      return new Pair<Set<Integer>, Set<Integer>>(all_objects, intent_id);
+      return new Concept<Integer, Integer>(all_objects, intent_id);
     }
 
     if (limit_attributes_size > 0 && attributes.size() > limit_attributes_size) {
-      return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+      return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
     }
 
     extent_id = relativeObjects(attributes);
 
     if (limit_objects_size > 0 && extent_id.size() > limit_objects_size) {
-      return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+      return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
     }
 
     Set<Integer> relative_intent = relativeAttributes(extent_id);
 
     if (!intent_id.equals(relative_intent)) {
-      return new Pair<Set<Integer>, Set<Integer>>(new HashSet<Integer>(), new HashSet<Integer>());
+      return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
     }
 
-    return new Pair<Set<Integer>, Set<Integer>>(extent_id, intent_id);
+    return new Concept<Integer, Integer>(extent_id, intent_id);
   }
 
   private Set<Integer> computeParentAttributes(Set<Integer> s, Set<Integer> attributes) {
@@ -345,8 +345,8 @@ public class Hermes <O, A>
     return simplified_extents_limit;
   }
 
-  public Set<Pair<Set<O>, Set<A>>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {
-    Set<Pair<Set<O>, Set<A>>> concepts_limit = new HashSet<>();
+  public Set<Concept<O, A>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {
+    Set<Concept<O, A>> concepts_limit = new HashSet<>();
 
     Set<Set<Integer>> set_of_attributes = new HashSet<>();
     if (simplification != null) {
@@ -373,8 +373,8 @@ public class Hermes <O, A>
     }
 
     for (Set<Integer> attributes : set_of_attributes) {
-      Pair<Set<Integer>, Set<Integer>> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
-      Pair<Set<O>, Set<A>> concept = retransform(concept_id);
+      Concept<Integer, Integer> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
+      Concept<O, A> concept = retransform(concept_id);
       if (concept != null && (!concept_id.getKey().isEmpty() || !concept_id.getValue().isEmpty())) {
         concepts_limit.add(concept);
       }
@@ -421,7 +421,7 @@ public class Hermes <O, A>
     return extents_limit;
   }
 
-  public Set<Pair<Set<O>, Set<A>>> listAllConcepts() {
+  public Set<Concept<O, A>> listAllConcepts() {
     return listConceptsLimit(0, 0);
   }
 
