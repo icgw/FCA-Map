@@ -149,6 +149,11 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     }
   }
 
+  private void clear() {
+    m_instance_anchors.clear();
+    m_resource_to_map_cell.clear();
+  }
+
   @Override
   public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
     initHashAnchors(m_instance_anchors);
@@ -190,10 +195,5 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   @Override
   public boolean addPropertyAnchors(Mapping property_anchors) {
     return m_property_anchors.addAll(property_anchors);
-  }
-
-  private void clear() {
-    m_instance_anchors.clear();
-    m_resource_to_map_cell.clear();
   }
 }

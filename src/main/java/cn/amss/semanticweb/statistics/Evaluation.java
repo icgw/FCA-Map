@@ -21,8 +21,6 @@ import cn.amss.semanticweb.util.ConfusionMatrix;
 
 public class Evaluation
 {
-  final Logger m_logger = LoggerFactory.getLogger(Evaluation.class);
-
   private static final Set<String> CLASS_TYPES = new HashSet<>(Arrays.asList("class", "null"));
   private static final Set<String> PROPERTY_TYPES = new HashSet<>(Arrays.asList("property", "null"));
   private static final Set<String> INSTANCE_TYPES = new HashSet<>(Arrays.asList("resource", "null"));
@@ -72,19 +70,26 @@ public class Evaluation
   }
 
   public void printResult(boolean left_duplicate_free, boolean right_duplicate_free) {
-    ConfusionMatrix instances_eval  = new ConfusionMatrix(m_instance_system, m_instance_reference, true, true);
-    ConfusionMatrix properties_eval = new ConfusionMatrix(m_property_system, m_property_reference, true, true);
-    ConfusionMatrix classes_eval    = new ConfusionMatrix(m_class_system, m_class_reference, true, true);
-    ConfusionMatrix overall_eval    = new ConfusionMatrix(m_system, m_reference, true, true);
+    ConfusionMatrix instances_eval  = new ConfusionMatrix(m_instance_system, m_instance_reference,
+                                                          left_duplicate_free, right_duplicate_free);
 
-    m_logger.info("Instance. pre: {}, f1m: {}, rec: {}%n" +
-                  "Property. pre: {}, f1m: {}, rec: {}%n" +
-                  "Class.    pre: {}, f1m: {}, rec: {}%n" +
-                  "Overall. %pre: {}, f1m: {}, rec: {}%n",
+    ConfusionMatrix properties_eval = new ConfusionMatrix(m_property_system, m_property_reference,
+                                                          left_duplicate_free, right_duplicate_free);
 
-                  instances_eval.getPrecision(),    instances_eval.getF1measure(),    instances_eval.getRecall(),
-                  properties_eval.getPrecision(),   properties_eval.getF1measure(),   properties_eval.getRecall(),
-                  classes_eval.getPrecision(),      classes_eval.getF1measure(),      classes_eval.getRecall(),
-                  overall_eval.getPrecision(),      overall_eval.getF1measure(),      overall_eval.getRecall());
+    ConfusionMatrix classes_eval    = new ConfusionMatrix(m_class_system, m_class_reference,
+                                                          left_duplicate_free, right_duplicate_free);
+
+    ConfusionMatrix overall_eval    = new ConfusionMatrix(m_system, m_reference,
+                                                          left_duplicate_free, right_duplicate_free);
+
+    System.out.printf("Instance. pre: %.2f, f1m: %.2f, rec: %.2f%n" +
+                      "Property. pre: %.2f, f1m: %.2f, rec: %.2f%n" +
+                      "Class.    pre: %.2f, f1m: %.2f, rec: %.2f%n" +
+                      "Overall.  pre: %.2f, f1m: %.2f, rec: %.2f%n",
+
+                      instances_eval.getPrecision(),    instances_eval.getF1measure(),    instances_eval.getRecall(),
+                      properties_eval.getPrecision(),   properties_eval.getF1measure(),   properties_eval.getRecall(),
+                      classes_eval.getPrecision(),      classes_eval.getF1measure(),      classes_eval.getRecall(),
+                      overall_eval.getPrecision(),      overall_eval.getF1measure(),      overall_eval.getRecall());
   }
 }
