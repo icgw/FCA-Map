@@ -82,14 +82,14 @@ public class Evaluation
     ConfusionMatrix overall_eval    = new ConfusionMatrix(m_system, m_reference,
                                                           left_duplicate_free, right_duplicate_free);
 
-    System.out.printf("Instance. pre: %.2f, f1m: %.2f, rec: %.2f%n" +
-                      "Property. pre: %.2f, f1m: %.2f, rec: %.2f%n" +
-                      "Class.    pre: %.2f, f1m: %.2f, rec: %.2f%n" +
-                      "Overall.  pre: %.2f, f1m: %.2f, rec: %.2f%n",
+    System.out.printf("Instance. pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n" +
+                      "Property. pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n" +
+                      "Class.    pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n" +
+                      "Overall.  pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n",
 
-                      instances_eval.getPrecision(),    instances_eval.getF1measure(),    instances_eval.getRecall(),
-                      properties_eval.getPrecision(),   properties_eval.getF1measure(),   properties_eval.getRecall(),
-                      classes_eval.getPrecision(),      classes_eval.getF1measure(),      classes_eval.getRecall(),
-                      overall_eval.getPrecision(),      overall_eval.getF1measure(),      overall_eval.getRecall());
+    instances_eval.getPrecision(),  instances_eval.getF1measure(),  instances_eval.getRecall(),  m_instance_system.size(),
+    properties_eval.getPrecision(), properties_eval.getF1measure(), properties_eval.getRecall(), m_property_system.size(),
+    classes_eval.getPrecision(),    classes_eval.getF1measure(),    classes_eval.getRecall(),    m_class_system.size(),
+    overall_eval.getPrecision(),    overall_eval.getF1measure(),    overall_eval.getRecall(),    m_system.size());
   }
 }
