@@ -29,6 +29,10 @@ public class Mapping implements Iterable<MappingCell>
     return m_mapping.addAll(m.m_mapping);
   }
 
+  public boolean addAll(Set<MappingCell> m) {
+    return m_mapping.addAll(m);
+  }
+
   public boolean add(String entity1, String entity2) {
     return add(new MappingCell(entity1, entity2));
   }

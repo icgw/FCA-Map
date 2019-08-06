@@ -7,14 +7,15 @@
 
 package cn.amss.semanticweb.enhancement;
 
+import cn.amss.semanticweb.enhancement.impl.ClassRefinerImpl;
+
 public class RefinerFactory
 {
   private RefinerFactory() {
   }
 
   public static ClassRefiner createClassRefiner() {
-    // TODO:
-    return null;
+    return new ClassRefinerImpl();
   }
 
   // TODO: property, instance
