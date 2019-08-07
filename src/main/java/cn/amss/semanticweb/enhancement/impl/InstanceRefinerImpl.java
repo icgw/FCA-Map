@@ -35,8 +35,9 @@ public class InstanceRefinerImpl extends RefinerByFCA implements InstanceRefiner
       Statement stmt = it.nextStatement();
       Property predicate = stmt.getPredicate();
       RDFNode object = stmt.getObject();
-      resources.add(predicate.asResource());
-      if (object.isResource()) {
+
+      if (predicate.isResource() && object.isResource()) {
+        resources.add(predicate.asResource());
         resources.add(object.asResource());
       }
     }
