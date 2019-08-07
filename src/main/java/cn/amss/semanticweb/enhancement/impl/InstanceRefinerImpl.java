@@ -10,6 +10,7 @@ package cn.amss.semanticweb.enhancement.impl;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -53,7 +54,17 @@ public class InstanceRefinerImpl extends RefinerByFCA implements InstanceRefiner
 
   @Override
   protected Set<MappingCell> extractRefinement(Hermes<MappingCell, Resource> hermes) {
-    return extractAllObjectInGSHLimit(hermes);
+    Set<MappingCell> mappings = new HashSet<>();
+
+    if (m_extract_from_GSH) {
+      mappings.addAll(extractAllObjectInGSHLimit(hermes));
+    }
+
+    if (m_extract_from_Lattice) {
+      mappings.addAll(extractAllObjectInLatticeLimit(hermes));
+    }
+
+    return mappings;
   }
 
 

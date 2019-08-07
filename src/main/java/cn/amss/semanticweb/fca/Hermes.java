@@ -40,7 +40,7 @@ public class Hermes <O, A>
   private Map<Set<Integer>, Set<Integer>> clarified = null;
 
   /**
-   * Dom: Domination Relatin.
+   * Dom: Domination Relation.
    */
   private Map<Set<Integer>, Set<Integer>> domination = null;
 
@@ -381,7 +381,7 @@ public class Hermes <O, A>
    * Extract the concepts within particular limits.
    *
    * @param limit_objects_size limit the size of objects of concept
-   * @param limit_attributes_size limit the size of attribtes of concept
+   * @param limit_attributes_size limit the size of attributes of concept
    * @return the concept which has limited size of objects and attributes
    */
   public Set<Concept<O, A>> listConceptsLimit(int limit_objects_size, int limit_attributes_size) {

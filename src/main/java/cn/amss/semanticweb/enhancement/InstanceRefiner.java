@@ -11,6 +11,12 @@ import cn.amss.semanticweb.alignment.Mapping;
 
 public interface InstanceRefiner
 {
+  public void setRefineType(boolean b_GSH, boolean b_Lattice);
+
+  public void setGSHLimits(int limit_objects_size, int limit_attributes_size);
+
+  public void setLatticeLimits(int limit_objects_size, int limit_attributes_size);
+
   public void addPropertyAnchors(Mapping property_anchors);
 
   public void addClassAnchors(Mapping class_anchors);
