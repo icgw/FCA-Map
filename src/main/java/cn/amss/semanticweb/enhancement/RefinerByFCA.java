@@ -11,8 +11,9 @@ import java.util.Set;
 import java.util.HashSet;
 
 import cn.amss.semanticweb.fca.Hermes;
+import cn.amss.semanticweb.enhancement.impl.RefinerBase;
 
-public abstract class RefinerByFCA
+public abstract class RefinerByFCA extends RefinerBase
 {
   protected int m_GSH_limit_object_size    = 2;
   protected int m_GSH_limit_attribute_size = 0;

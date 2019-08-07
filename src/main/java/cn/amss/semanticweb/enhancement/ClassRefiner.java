@@ -13,5 +13,5 @@ public interface ClassRefiner
 {
   public void addInstanceAnchors(Mapping instance_anchors);
 
-  public void validateClassAnchors(Mapping class_anchors, Mapping mappings);
+  public void validateClassAnchors(Mapping class_anchors, Mapping enhanced_class_mappings);
 }
