@@ -10,10 +10,10 @@ package cn.amss.semanticweb.util;
 public abstract class Element
 {
   private final static String META_ELEMENT_PATTERN = "<%1$s %2$s>%3$s</%1$s>";
-  private final static String META_INDENT = "%%%ds%%s%%n";
-  private final static int INDENT_SIZE = 2;
+  private final static String META_INDENT          = "%%%ds%%s%%n";
+  private final static int INDENT_SIZE             = 2;
 
-  protected static int m_indent = 0;
+  protected static int m_indent                    = 0;
 
   public final static void setIndent(int i) {
     m_indent = i;

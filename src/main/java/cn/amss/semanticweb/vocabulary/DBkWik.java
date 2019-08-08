@@ -22,7 +22,9 @@ public class DBkWik
   private static final String uri    = "http://dbkwik.webdatacommons.org/";
   private static final String prefix = uri + "ontology/";
 
-  // NOTE: DBkWik.uri/{wiki}/{type}/{name}
+  /**
+   * NOTE: naming rule "DBkWik.uri/{wiki}/{type}/{name}"
+   */
   private static final Pattern p = Pattern.compile(uri + "(.+?)/(.+?)/(.*)");
 
   protected static final Resource resource(String local) {
@@ -33,6 +35,12 @@ public class DBkWik
     return m.createProperty( prefix + local );
   }
 
+  /**
+   * get the wiki name of uri of DBkWik
+   *
+   * @param uri DBkWik type uri
+   * @return the wiki of the uri
+   */
   public static final String getWiki(String uri) {
     Matcher m = p.matcher(uri);
     if (m.find()) {
@@ -41,6 +49,12 @@ public class DBkWik
     return "";
   }
 
+  /**
+   * get the type of uri of DBkWik
+   *
+   * @param uri DBkWik type uri
+   * @return the type of the uri or empty string if not DBkWik type
+   */
   public static final String getType(String uri) {
     if (uri.equals("null")) return "null";
 
@@ -51,6 +65,12 @@ public class DBkWik
     return "";
   }
 
+  /**
+   * get the uri's name of uri of DBkWik
+   *
+   * @param uri DBkWik type uri
+   * @return the name of the uri
+   */
   public static final String getName(String uri) {
     Matcher m = p.matcher(uri);
     if (m.find()) {
@@ -71,10 +91,14 @@ public class DBkWik
   }
   //////////////////////////////////////////////////////////////////////////////
 
-  // NOTE: Define DBkWik Classes
+  /**
+   * NOTE: DBkWik Classes
+   */
   public static final Resource Image                 = Init.Image();
 
-  // NOTE: Define DBkWik Properties
+  /**
+   * NOTE: DBkWik Properties
+   */
   public static final Property wikiPageDisambiguates = Init.wikiPageDisambiguates();
   public static final Property _abstract             = Init._abstract();
   public static final Property thumbnail             = Init.thumbnail();

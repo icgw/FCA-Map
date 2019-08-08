@@ -12,14 +12,8 @@ import org.apache.jena.rdf.model.Resource;
 
 import cn.amss.semanticweb.alignment.Mapping;
 
-public interface AdditionalPropertyMatcher extends PropertyMatcher
+public interface AdditionalPropertyMatcher extends PropertyMatcher, MatcherSetting
 {
-  public void setExtractType(boolean b_GSH, boolean b_Lattice);
-
-  public void setGSHLimit(int objects_limit, int attributes_limit);
-
-  public void setLatticeLimit(int objects_limit, int attributes_limit);
-
   public boolean addInstanceAnchors(Mapping instance_anchors);
 
   public boolean addPropertyAnchors(Mapping property_anchors);

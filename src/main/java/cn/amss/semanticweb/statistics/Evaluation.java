@@ -21,7 +21,7 @@ import cn.amss.semanticweb.util.ConfusionMatrix;
 
 public class Evaluation
 {
-  private static final Set<String> CLASS_TYPES = new HashSet<>(Arrays.asList("class", "null"));
+  private static final Set<String> CLASS_TYPES    = new HashSet<>(Arrays.asList("class", "null"));
   private static final Set<String> PROPERTY_TYPES = new HashSet<>(Arrays.asList("property", "null"));
   private static final Set<String> INSTANCE_TYPES = new HashSet<>(Arrays.asList("resource", "null"));
 

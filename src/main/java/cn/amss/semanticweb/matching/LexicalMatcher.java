@@ -13,11 +13,7 @@ import java.util.Map;
 import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.model.ResourceWrapper;
 
-public interface LexicalMatcher extends Matcher
+public interface LexicalMatcher extends Matcher, MatcherSetting
 {
-  public void setExtractType(boolean b_GSH, boolean b_Lattice);
-
-  public void setGSHLimit(int objects_limit, int attributes_limit);
-
-  public void setLatticeLimit(int objects_limit, int attributes_limit);
+  // TODO: lexical setting methods.
 }
