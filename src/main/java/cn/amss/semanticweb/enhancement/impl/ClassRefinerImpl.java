@@ -48,7 +48,7 @@ public class ClassRefinerImpl extends RefinerByFCA implements ClassRefiner
 
   @Override
   protected Set<MappingCell> extractRefinement(Hermes<MappingCell, Resource> hermes) {
-    return extractAllObjectInGSHLimit(hermes);
+    return refineAllObjectInGSHLimit(hermes);
   }
 
   @Override

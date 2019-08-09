@@ -34,8 +34,8 @@ public class InstanceRefinerImpl extends RefinerByFCA implements InstanceRefiner
       Property predicate = stmt.getPredicate();
       RDFNode object     = stmt.getObject();
 
-      if (predicate.isResource() && object.isResource()) {
-        resources.add(predicate.asResource());
+      resources.add(predicate.asResource());
+      if (object.isResource()) {
         resources.add(object.asResource());
       }
     }
@@ -61,12 +61,12 @@ public class InstanceRefinerImpl extends RefinerByFCA implements InstanceRefiner
   protected Set<MappingCell> extractRefinement(Hermes<MappingCell, Resource> hermes) {
     Set<MappingCell> mappings = new HashSet<>();
 
-    if (m_extract_from_GSH) {
-      mappings.addAll(extractAllObjectInGSHLimit(hermes));
+    if (m_refine_from_GSH) {
+      mappings.addAll(refineAllObjectInGSHLimit(hermes));
     }
 
-    if (m_extract_from_Lattice) {
-      mappings.addAll(extractAllObjectInLatticeLimit(hermes));
+    if (m_refine_from_Lattice) {
+      mappings.addAll(refineAllObjectInLatticeLimit(hermes));
     }
 
     return mappings;
