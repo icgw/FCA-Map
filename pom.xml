@@ -6,7 +6,7 @@
 
   <groupId>cn.amss.semanticweb</groupId>
   <artifactId>FCAMap-KG</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-ALPHA</version>
 
   <name>FCAMap-KG</name>
   <url>https://github.com/icgw/FCAMap-KG</url>
@@ -25,11 +25,12 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14 -->
+    <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
     <dependency>
         <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-jdk14</artifactId>
+        <artifactId>slf4j-log4j12</artifactId>
         <version>1.7.26</version>
+        <scope>test</scope>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
@@ -94,17 +95,8 @@
               </goals>
             </execution>
           </executions>
-         <configuration>
+          <configuration>
             <mainClass>cn.amss.semanticweb.matching.impl.LexicalMatcherImpl</mainClass>
-            <!-- <arguments> -->
-            <!--   <argument>arg1</argument> -->
-            <!-- </arguments> -->
-            <!-- <systemProperties> -->
-            <!--   <systemProperty> -->
-            <!--     <key>m</key> -->
-            <!--     <value>m</value> -->
-            <!--   </systemProperty> -->
-            <!-- </systemProperties> -->
           </configuration>
         </plugin>
       </plugins>
