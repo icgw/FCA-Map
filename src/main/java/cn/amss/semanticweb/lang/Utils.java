@@ -9,10 +9,22 @@ package cn.amss.semanticweb.lang;
 
 public class Utils
 {
-  public Utils() {
+  private Utils() {
   }
 
-  public static final String escapeXML10(String uri) {
-    return "";
+  public static final String escapeXml(String s) {
+    return s.replaceAll("&", "&amp;")
+            .replaceAll(">", "&gt;")
+            .replaceAll("<", "&lt;")
+            .replaceAll("\"", "&quot;")
+            .replaceAll("'", "&apos;");
+  }
+
+  public static final String unescapeXml(String s) {
+    return s.replaceAll("&amp;", "&")
+            .replaceAll("&gt;", ">")
+            .replaceAll("&lt", "<")
+            .replaceAll("&quot;", "\"")
+            .replaceAll("'", "&apos;");
   }
 }
