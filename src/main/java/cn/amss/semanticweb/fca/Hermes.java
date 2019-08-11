@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Arrays;
 
 import cn.amss.semanticweb.util.Pair;
 
@@ -64,6 +65,24 @@ public class Hermes <O, A>
     A2Attribute = new HashMap<>();
   }
 
+  private final static <K, V> void add(Map<K, Set<V>> m, K k, V v) {
+    Set<V> s = m.get(k);
+    if (null != s) {
+      s.add(v);
+    } else {
+      m.put(k, new HashSet<V>(Arrays.asList(v)));
+    }
+  }
+
+  private final static <K, V> void addAll(Map<K, Set<V>> m, K k, Set<V> v) {
+    Set<V> s = m.get(k);
+    if (null != s) {
+      s.addAll(v);
+    } else {
+      m.put(k, v);
+    }
+  }
+
   /**
    * Initiate the map of attribute's id to objects' id and object's id to attributes' id.
    *
@@ -73,11 +92,9 @@ public class Hermes <O, A>
   private void init(Set<Pair<Integer, Integer>> relations) {
     for (Pair<Integer, Integer> pair : relations) {
       int object_id = pair.getKey(), attribute_id = pair.getValue();
-      object2Attributes.putIfAbsent(object_id, new HashSet<Integer>());
-      object2Attributes.get(object_id).add(attribute_id);
 
-      attribute2Objects.putIfAbsent(attribute_id, new HashSet<Integer>());
-      attribute2Objects.get(attribute_id).add(object_id);
+      add(object2Attributes, object_id, attribute_id);
+      add(attribute2Objects, attribute_id, object_id);
     }
   }
 
@@ -115,8 +132,7 @@ public class Hermes <O, A>
   private static Map<Set<Integer>, Set<Integer>> invert(Map<Integer, Set<Integer>> m) {
     Map<Set<Integer>, Set<Integer>> invert_m = new HashMap<>();
     for (Map.Entry<Integer, Set<Integer>> r : m.entrySet()) {
-      invert_m.putIfAbsent(r.getValue(), new HashSet<Integer>());
-      invert_m.get(r.getValue()).add(r.getKey());
+      add(invert_m, r.getValue(), r.getKey());
     }
     return invert_m;
   }
@@ -156,9 +172,10 @@ public class Hermes <O, A>
       Set<Set<Integer>> key_set = objects_to_attributes.keySet();
       for (Map.Entry<Set<Integer>, Set<Integer>> r : objects_to_attributes.entrySet()) {
         Set<Integer> tmp = r.getKey();
-        domination_relations.putIfAbsent(r.getValue(), new HashSet<Integer>());
 
+        domination_relations.putIfAbsent(r.getValue(), new HashSet<Integer>());
         Set<Integer> current = domination_relations.get(r.getValue());
+
         for (Set<Integer> k : key_set) {
           if (k.containsAll(tmp)) {
             current.addAll(objects_to_attributes.get(k));
@@ -194,8 +211,7 @@ public class Hermes <O, A>
 
     simplification = new HashMap<>(clarified);
     for (Map.Entry<Set<Integer>, Set<Integer>> r : domination.entrySet()) {
-      simplification.putIfAbsent(r.getValue(), new HashSet<Integer>());
-      simplification.get(r.getValue()).addAll(r.getKey());
+      addAll(simplification, r.getValue(), r.getKey());
     }
   }
 

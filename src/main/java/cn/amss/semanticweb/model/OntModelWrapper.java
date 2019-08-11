@@ -28,14 +28,13 @@ import org.apache.jena.util.iterator.ExtendedIterator;
 import cn.amss.semanticweb.vocabulary.DBkWik;
 
 /**
- * The wrapper of ontology model, which store the instances,
- * properites and classes.
+ * The wrapper of ontology model, which store the instances, properites and classes.
  *
  * @author Guowei Chen (icgw@outlook.com)
  */
 public class OntModelWrapper
 {
-  final Logger m_logger = LoggerFactory.getLogger(OntModelWrapper.class);
+  final static Logger m_logger = LoggerFactory.getLogger(OntModelWrapper.class);
 
   private Model m_raw_model   = null;
   private OntModel m_ontology = null;
@@ -55,11 +54,21 @@ public class OntModelWrapper
     m_classes    = new HashSet<>();
   }
 
+  /**
+   * Initial ontology model from input stream
+   *
+   * @param in the input stream of the ontology
+   */
   public OntModelWrapper(InputStream in) {
     this();
     read(in);
   }
 
+  /**
+   * Initial ontology model from an ontology file
+   *
+   * @param file the file path of the onotology
+   */
   public OntModelWrapper(String file) {
     this();
     InputStream in = FileManager.get().open(file);
@@ -70,6 +79,11 @@ public class OntModelWrapper
     read(in);
   }
 
+  /**
+   * Read model from input stream and acquired the specified instances, properties and classes
+   *
+   * @param in input stream of model
+   */
   private void read(InputStream in) {
     if (null == in) return;
 
@@ -82,23 +96,46 @@ public class OntModelWrapper
     acquireProperties();
     acquireClasses();
 
-    m_logger.info("#Instances: {}, #Properties: {}, #Classes: {}.",
-        m_instances.size(), m_properties.size(), m_classes.size());
+    if (m_logger.isInfoEnabled()) {
+      m_logger.info("#Instances: {}, #Properties: {}, #Classes: {}.",
+          m_instances.size(), m_properties.size(), m_classes.size());
+    }
   }
 
+  /**
+   * Check whether the individual should be skipped
+   *
+   * @param i individual
+   * @return true means the individual should be ignored
+   */
   private static final boolean isSkipInstance(Individual i) {
     return i.hasProperty(RDF.type, SKOS.Concept) ||
            i.hasProperty(RDF.type, DBkWik.Image);
   }
 
+  /**
+   * Check whether the property should be skipped
+   *
+   * @param p property
+   * @return true means the property should be ignored
+   */
   private static final boolean isSkipProperty(OntProperty p) {
     return false;
   }
 
+  /**
+   * Check whether the class should be skipped
+   *
+   * @param c class
+   * @return true means the class should be ignored
+   */
   private static final boolean isSkipClass(OntClass c) {
     return false;
   }
 
+  /**
+   * Acquire the instances and skip the ignored one
+   */
   private void acquireInstances() {
     for (ExtendedIterator<Individual> it = m_ontology.listIndividuals(); it.hasNext(); ) {
       Individual i = it.next();
@@ -107,6 +144,9 @@ public class OntModelWrapper
     }
   }
 
+  /**
+   * Acquire the properties and skip the ignored one
+   */
   private void acquireProperties() {
     for (ExtendedIterator<OntProperty> it = m_ontology.listAllOntProperties(); it.hasNext(); ) {
       OntProperty p = it.next();
@@ -115,6 +155,9 @@ public class OntModelWrapper
     }
   }
 
+  /**
+   * Acquire the classes and skip the ignored one
+   */
   private void acquireClasses() {
     for (ExtendedIterator<OntClass> it = m_ontology.listClasses(); it.hasNext(); ) {
       OntClass c = it.next();
@@ -123,12 +166,18 @@ public class OntModelWrapper
     }
   }
 
+  /**
+   * Clear the instances, properites and classes in the model wrapper
+   */
   private final void clear() {
     m_instances.clear();
     m_properties.clear();
     m_classes.clear();
   }
 
+  /**
+   * Close the model wrapper
+   */
   public final void close() {
     if (m_raw_model != null && !m_raw_model.isClosed()) {
       m_raw_model.close();
@@ -141,14 +190,29 @@ public class OntModelWrapper
     clear();
   }
 
+  /**
+   * Get the hash set of instances
+   *
+   * @return m_instances
+   */
   public Set<Individual> getInstances() {
     return m_instances;
   }
 
+  /**
+   * Get the hash set of properites
+   *
+   * @return m_properties
+   */
   public Set<OntProperty> getProperties() {
     return m_properties;
   }
 
+  /**
+   * Get the hash set of classes
+   *
+   * @return m_classes
+   */
   public Set<OntClass> getClasses() {
     return m_classes;
   }
