@@ -29,7 +29,7 @@ public abstract class Element
 
   protected final static String getElementFormat(String name, String property, String content_format) {
     if (property == null || property.isEmpty()) {
-      return String.format(META_ELEMENT_PATTERN, name, "\b", content_format);
+      return String.format("<%1$s>%2$s</%1$s>", name, content_format);
     }
     return String.format(META_ELEMENT_PATTERN, name, property, content_format);
   }
