@@ -15,6 +15,11 @@ import org.apache.jena.rdf.model.Property;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+/**
+ * The static vocabulary of DBkWik
+ *
+ * @author Guowei Chen (icgw@outlook.com)
+ */
 public class DBkWik
 {
   private static final Model m       = ModelFactory.createDefaultModel();

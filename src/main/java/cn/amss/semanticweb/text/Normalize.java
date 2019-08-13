@@ -11,12 +11,23 @@ import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.text.Normalizer;
 
+/**
+ * Transform a text string into a normal style
+ *
+ * @author Guowei Chen (icgw@outlook.com)
+ */
 public class Normalize
 {
   private static final String RE_CAMELCASE_OR_UNDERSCORE = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|_";
 
   private static final Pattern DIACRITICS_AND_FRIENDS = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+");
 
+  /**
+   * Transform camel case or underscore case style into a normal case style
+   *
+   * @param s a text string
+   * @return a normal string
+   */
   public static final String normalizeCaseStyle(String s) {
     if (s == null || s.isEmpty()) {
       return s;
@@ -31,6 +42,12 @@ public class Normalize
     return sj.toString();
   }
 
+  /**
+   * Remove the diacritics style letter
+   *
+   * @param s the string contains diacritics
+   * @return a string without diacritics
+   */
   public static final String stripDiacritics(String s) {
     s = Normalizer.normalize(s, Normalizer.Form.NFD);
     s = DIACRITICS_AND_FRIENDS.matcher(s).replaceAll("");

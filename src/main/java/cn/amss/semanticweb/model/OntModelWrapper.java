@@ -167,7 +167,7 @@ public class OntModelWrapper
   }
 
   /**
-   * Clear the instances, properites and classes in the model wrapper
+   * Clear the instances, properties and classes in the model wrapper
    */
   private final void clear() {
     m_instances.clear();
@@ -200,7 +200,7 @@ public class OntModelWrapper
   }
 
   /**
-   * Get the hash set of properites
+   * Get the hash set of properties
    *
    * @return m_properties
    */
