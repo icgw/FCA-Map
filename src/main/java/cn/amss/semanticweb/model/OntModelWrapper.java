@@ -28,7 +28,7 @@ import org.apache.jena.util.iterator.ExtendedIterator;
 import cn.amss.semanticweb.vocabulary.DBkWik;
 
 /**
- * The wrapper of ontology model, which store the instances, properites and classes.
+ * The wrapper of ontology model, which store the instances, properties and classes.
  *
  * @author Guowei Chen (icgw@outlook.com)
  */
@@ -44,7 +44,7 @@ public class OntModelWrapper
   private Set<OntClass> m_classes       = null;
 
   /**
-   * Intial member variables
+   * Initial member variables
    */
   public OntModelWrapper() {
     m_raw_model = ModelFactory.createDefaultModel();
@@ -67,7 +67,7 @@ public class OntModelWrapper
   /**
    * Initial ontology model from an ontology file
    *
-   * @param file the file path of the onotology
+   * @param file the file path or url of the ontology
    */
   public OntModelWrapper(String file) {
     this();
@@ -90,7 +90,7 @@ public class OntModelWrapper
     clear();
 
     m_raw_model.read(in, null);
-    m_ontology = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, m_raw_model);
+    m_ontology = ModelFactory.createOntologyModel(OntModelSpec.OWL_LITE_MEM, m_raw_model);
 
     acquireInstances();
     acquireProperties();
@@ -130,7 +130,7 @@ public class OntModelWrapper
    * @return true means the class should be ignored
    */
   private static final boolean isSkipClass(OntClass c) {
-    return false;
+    return c.isAnon();
   }
 
   /**
