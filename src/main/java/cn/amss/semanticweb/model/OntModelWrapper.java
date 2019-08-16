@@ -21,6 +21,8 @@ import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntProperty;
+import org.apache.jena.ontology.ObjectProperty;
+import org.apache.jena.ontology.DatatypeProperty;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.util.FileManager;
 import org.apache.jena.util.iterator.ExtendedIterator;
@@ -40,7 +42,11 @@ public class OntModelWrapper
   private OntModel m_ontology = null;
 
   private Set<Individual> m_instances   = null;
-  private Set<OntProperty> m_properties = null;
+
+  private Set<OntProperty> m_properties               = null;
+  private Set<DatatypeProperty> m_datatype_properties = null;
+  private Set<ObjectProperty> m_object_properties     = null;
+
   private Set<OntClass> m_classes       = null;
 
   /**
@@ -90,7 +96,7 @@ public class OntModelWrapper
     clear();
 
     m_raw_model.read(in, null);
-    m_ontology = ModelFactory.createOntologyModel(OntModelSpec.OWL_LITE_MEM, m_raw_model);
+    m_ontology = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, m_raw_model);
 
     acquireInstances();
     acquireProperties();
@@ -145,13 +151,35 @@ public class OntModelWrapper
   }
 
   /**
-   * Acquire the properties and skip the ignored one
+   * Acquire all ontology properties and skip the ignored one
    */
   private void acquireProperties() {
     for (ExtendedIterator<OntProperty> it = m_ontology.listAllOntProperties(); it.hasNext(); ) {
       OntProperty p = it.next();
       if (isSkipProperty(p)) continue;
       m_properties.add(p);
+    }
+  }
+
+  /**
+   * Acquire datatype properties and skip the ignored one
+   */
+  private void acquireDatatypeProperties() {
+    for (ExtendedIterator<DatatypeProperty> it = m_ontology.listDatatypeProperties(); it.hasNext(); ) {
+      DatatypeProperty p = it.next();
+      if (isSkipProperty(p)) continue;
+      m_datatype_properties.add(p);
+    }
+  }
+
+  /**
+   * Acquire object properties and skip the ignored one
+   */
+  private void acquireObjectProperties() {
+    for (ExtendedIterator<ObjectProperty> it = m_ontology.listObjectProperties(); it.hasNext(); ) {
+      ObjectProperty p = it.next();
+      if (isSkipProperty(p)) continue;
+      m_object_properties.add(p);
     }
   }
 
