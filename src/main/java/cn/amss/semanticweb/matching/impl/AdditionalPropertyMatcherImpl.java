@@ -12,11 +12,13 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.rdf.model.SimpleSelector;
+import org.apache.jena.vocabulary.RDF;
 
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Arrays;
 
 import cn.amss.semanticweb.fca.Hermes;
 import cn.amss.semanticweb.model.ResourceWrapper;
@@ -30,10 +32,11 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
 {
   private Mapping m_instance_anchors = null;
   private Mapping m_property_anchors = null;
+  private Mapping m_class_anchors    = null;
 
   private Map<Resource, Set<MappingCell>> m_resource_to_map_cell = null;
 
-  private class SubjectObject extends Pair<MappingCell, MappingCell> {
+  private static class SubjectObject extends Pair<MappingCell, MappingCell> {
     public SubjectObject(MappingCell subject_align, MappingCell object_align) {
       super(subject_align, object_align);
     }
@@ -42,22 +45,71 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   public AdditionalPropertyMatcherImpl() {
     m_instance_anchors     = new Mapping();
     m_property_anchors     = new Mapping();
+    m_class_anchors        = new Mapping();
     m_resource_to_map_cell = new HashMap<>();
   }
 
-  private void initHashAnchors(Mapping anchors) {
+  private static final <O, A> void add(Map<O, Set<A>> context, O k, A v) {
+    Set<A> s = context.get(k);
+    if (s != null) {
+      s.add(v);
+    } else {
+      context.put(k, new HashSet<A>(Arrays.asList(v)));
+    }
+  }
+
+  private void addHashAnchors(Mapping anchors) {
     if (anchors == null || anchors.isEmpty()) return;
 
     for (MappingCell c : anchors) {
       Resource r1 = c.getResource1();
       Resource r2 = c.getResource2();
 
-      m_resource_to_map_cell.putIfAbsent(r1, new HashSet<MappingCell>());
-      m_resource_to_map_cell.putIfAbsent(r2, new HashSet<MappingCell>());
-
-      m_resource_to_map_cell.get(r1).add(c);
-      m_resource_to_map_cell.get(r2).add(c);
+      add(m_resource_to_map_cell, r1, c);
+      add(m_resource_to_map_cell, r2, c);
     }
+  }
+
+
+  private static final void deriveClassMappingsFromResource(Resource r, Map<Resource, Set<MappingCell>> m, Set<MappingCell> s) {
+    for (StmtIterator it = r.listProperties(RDF.type); it.hasNext(); ) {
+      Statement stmt = it.nextStatement();
+      if (stmt.getObject().isResource()) {
+        Set<MappingCell> v = m.get(stmt.getObject());
+        if (v != null) {
+          s.addAll(s);
+        }
+      }
+    }
+  }
+
+  private static final void addContextFromSO(Map<ResourceWrapper, Set<SubjectObject>> context,
+                                             ResourceWrapper p,
+                                             Set<MappingCell> subject_mappings,
+                                             Set<MappingCell> object_mappings) {
+    if (subject_mappings == null || object_mappings == null) return;
+    for (MappingCell s : subject_mappings) {
+      for (MappingCell o : object_mappings) {
+        add(context, p, new SubjectObject(s, o));
+      }
+    }
+  }
+
+  private static final void addContextFromSO(Map<ResourceWrapper, Set<SubjectObject>> context,
+                                             ResourceWrapper p,
+                                             Map<Resource, Set<MappingCell>> m,
+                                             Resource subject,
+                                             Resource object) {
+    Set<MappingCell> subject_instance_mappings = m.get(subject);
+    Set<MappingCell> object_instance_mappings = m.get(object);
+    addContextFromSO(context, p, subject_instance_mappings, object_instance_mappings);
+
+    Set<MappingCell> subject_class_mappings = new HashSet<MappingCell>();
+    deriveClassMappingsFromResource(subject, m, subject_class_mappings);
+
+    Set<MappingCell> object_class_mappings = new HashSet<MappingCell>();
+    deriveClassMappingsFromResource(object, m, object_class_mappings);
+    addContextFromSO(context, p, subject_class_mappings, object_class_mappings);
   }
 
   private void addContext(Set<Resource> properties,
@@ -81,18 +133,8 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
         Resource subject = stmt.getSubject();
         Resource object  = stmt.getObject().asResource();
 
-        Set<MappingCell> subject_mappings = m.get(subject);
-        Set<MappingCell> object_mappings  = m.get(object);
-
-        if (subject_mappings != null && object_mappings != null) {
-          for (MappingCell s : subject_mappings) {
-            for (MappingCell o : object_mappings) {
-              ResourceWrapper rw = new ResourceWrapper(p, from_id);
-              context.putIfAbsent(rw, new HashSet<SubjectObject>());
-              context.get(rw).add(new SubjectObject(s, o));
-            }
-          }
-        }
+        ResourceWrapper rw = new ResourceWrapper(p, from_id);
+        addContextFromSO(context, rw, m, subject, object);
       }
     }
   }
@@ -156,7 +198,7 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
 
   @Override
   public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
-    initHashAnchors(m_instance_anchors);
+    addHashAnchors(m_instance_anchors);
     Map<ResourceWrapper, Set<SubjectObject>> context = constructContext(sources, targets, m_property_anchors);
 
     Hermes<ResourceWrapper, SubjectObject> hermes = new Hermes<>();
@@ -187,7 +229,7 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   public boolean addInstanceAnchors(Mapping instance_anchors) {
     boolean b = m_instance_anchors.addAll(instance_anchors);
     if (b) {
-      initHashAnchors(instance_anchors);
+      addHashAnchors(instance_anchors);
     }
     return b;
   }
@@ -195,5 +237,14 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   @Override
   public boolean addPropertyAnchors(Mapping property_anchors) {
     return m_property_anchors.addAll(property_anchors);
+  }
+
+  @Override
+  public boolean addClassAnchors(Mapping class_anchors) {
+    boolean b = m_class_anchors.addAll(class_anchors);
+    if (b) {
+      addHashAnchors(class_anchors);
+    }
+    return b;
   }
 }

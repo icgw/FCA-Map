@@ -17,4 +17,6 @@ public interface AdditionalPropertyMatcher extends PropertyMatcher, MatcherSetti
   public boolean addInstanceAnchors(Mapping instance_anchors);
 
   public boolean addPropertyAnchors(Mapping property_anchors);
+
+  public boolean addClassAnchors(Mapping class_anchors);
 }
