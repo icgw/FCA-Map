@@ -94,14 +94,14 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
     if (labelOrName.isEmpty()) {
       String name = resource.getLocalName();
-      if (!name.equals("")) {
+      if (name != null && !name.equals("")) {
         labelOrName.add(name);
       }
     }
 
     if (labelOrName.isEmpty()) {
       String name = DBkWik.getName(resource.getURI());
-      if (!name.isEmpty()) {
+      if (name != null && !name.isEmpty()) {
         labelOrName.add(name);
       }
     }

@@ -466,9 +466,9 @@ public class Hermes <O, A>
     }
 
     for (Set<Integer> attributes : set_of_attributes) {
-      Pair<Set<Integer>, Set<Integer>> concept_id = computeConceptId(attributes,
-                                                                     limit_objects_size,
-                                                                     limit_attributes_size);
+      Concept<Integer, Integer> concept_id = computeConceptId(attributes,
+                                                              limit_objects_size,
+                                                              limit_attributes_size);
       Set<O> extent = retransform(concept_id.getKey(), object2O);
       if (extent != null && (!concept_id.getKey().isEmpty() || !concept_id.getValue().isEmpty())) {
         extents_limit.add(extent);
