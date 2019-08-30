@@ -55,9 +55,11 @@ public class OntModelWrapper
   public OntModelWrapper() {
     m_raw_model = ModelFactory.createDefaultModel();
 
-    m_instances  = new HashSet<>();
-    m_properties = new HashSet<>();
-    m_classes    = new HashSet<>();
+    m_instances           = new HashSet<>();
+    m_properties          = new HashSet<>();
+    m_datatype_properties = new HashSet<>();
+    m_object_properties   = new HashSet<>();
+    m_classes             = new HashSet<>();
   }
 
   /**
@@ -100,11 +102,17 @@ public class OntModelWrapper
 
     acquireInstances();
     acquireProperties();
+
+    // XXX:
+    acquireObjectProperties();
+    acquireDatatypeProperties();
+    ////////////////////////////
+
     acquireClasses();
 
     if (m_logger.isInfoEnabled()) {
-      m_logger.info("#Instances: {}, #Properties: {}, #Classes: {}.",
-          m_instances.size(), m_properties.size(), m_classes.size());
+      m_logger.info("#Instances: {}, #Properties: {}, #Classes: {}.", m_instances.size(), m_properties.size(), m_classes.size());
+      m_logger.info("#DatatypeProperties: {}, #ObjectProperties: {}.", m_datatype_properties.size(), m_object_properties.size());
     }
   }
 
@@ -200,6 +208,8 @@ public class OntModelWrapper
   private final void clear() {
     m_instances.clear();
     m_properties.clear();
+    m_datatype_properties.clear();
+    m_object_properties.clear();
     m_classes.clear();
   }
 
