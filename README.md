@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/github/license/icgw/FCAMap-KG)](LICENSE)
 
-> Matching Instance and Schema among Knowledge Graphs by Formal Concept Analaysis
+> Ontology matching system based on formal concept analysis.
 
 This is a long descrition.
 
@@ -27,7 +27,7 @@ This is a long descrition.
 
 ## Install
 
-This module depends upon a knowledge of [Markdown]().
+This module depends upon Jena and JDK 8.
 
 ```
 ```
@@ -55,9 +55,11 @@ See [the contributing file](CONTRIBUTING.md)!
 
 PRs accepted.
 
-Small note: If editing the Readme, please conform to the [standard-readme](https://github.com/icgw/FCAMAP-KG) specification.
-
 ### Any optional sections
+
+## Acknowledgements
+
+This work has been supported by the National Key Research and Development Program of China under grant 2016YFB1000902, and the Natural Science Foundation of China grant 61621003.
 
 ## Reference
 
