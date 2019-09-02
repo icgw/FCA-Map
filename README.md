@@ -4,7 +4,7 @@
 
 > Ontology matching system based on formal concept analysis.
 
-This is a long descrition.
+This is a long description.
 
 ## Table of Contents
 
@@ -27,7 +27,7 @@ This is a long descrition.
 
 ## Install
 
-This module depends upon Jena and JDK 8.
+This module depends upon Maven, Jena and JDK 8.
 
 ```
 ```
@@ -38,8 +38,6 @@ This module depends upon Jena and JDK 8.
 
 ```
 ```
-
-Note: The `license` badge image link at the top of this file should be updated with the correct `:user` and `:repo`.
 
 ### Any optional sections
 
@@ -63,11 +61,11 @@ This work has been supported by the National Key Research and Development Progra
 
 ## Reference
 
-1. **Identifying Mappings among Knowledge Graphs by Formal Concept Analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: [paper]()
+1. **Identifying Mappings among Knowledge Graphs by Formal Concept Analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: [paper](http://disi.unitn.it/~pavel/om2019/papers/om2019_LTpaper3.pdf)
 
 2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166 [paper](http://ceur-ws.org/Vol-2288/oaei18_paper7.pdf)
 
-3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018) [paper](https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9)
+3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018) [paper](https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9)
 
 ## License
 
