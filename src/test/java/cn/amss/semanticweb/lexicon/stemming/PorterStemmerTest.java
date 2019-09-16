@@ -30,7 +30,7 @@ public class PorterStemmerTest
 
     String s = null, o = null;
     while ( (s = br1.readLine()) != null && (o = br2.readLine()) != null ) {
-      assertEquals ( stemmer.mutate(s), o );
+      assertEquals ( o, stemmer.mutate(s) );
     }
   }
 }

@@ -25,6 +25,7 @@ import java.io.InputStream;
 
 import cn.amss.semanticweb.vocabulary.DBkWik;
 
+@Deprecated
 public class ModelWrapper
 {
   final Logger m_logger = LoggerFactory.getLogger(ModelWrapper.class);
