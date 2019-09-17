@@ -486,7 +486,7 @@ public class Hermes <O, A>
     if (object2Attributes != null) {
       object2Attributes.clear();
     }
- 
+
     if (attribute2Objects != null) {
       attribute2Objects.clear();
     }
@@ -506,7 +506,7 @@ public class Hermes <O, A>
     if (A2Attribute != null) {
       A2Attribute.clear();
     }
- 
+
     if (clarified != null) {
       clarified.clear();
     }

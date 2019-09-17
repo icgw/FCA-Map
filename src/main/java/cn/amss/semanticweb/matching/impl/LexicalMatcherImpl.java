@@ -44,6 +44,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
   private static final boolean use_normalize_case_style = true;
   private static final boolean use_strip_diacritics     = true;
+  private static final boolean use_remove_S             = true;
 
   public LexicalMatcherImpl() {
   }
@@ -143,6 +144,10 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
       if (use_strip_diacritics) {
         norm_ln = Normalize.stripDiacritics(norm_ln);
+      }
+
+      if (use_remove_S) {
+        norm_ln = Normalize.removeS(norm_ln);
       }
 
       context.put(ln, acquireAllTokens(norm_ln, use_porter_stemmer));
