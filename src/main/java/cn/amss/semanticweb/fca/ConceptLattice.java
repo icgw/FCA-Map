@@ -211,4 +211,16 @@ public class ConceptLattice <O, A>
 
     return dotLanguage.toString();
   }
+
+  public Map<Concept<O, A>, Set<Concept<O, A>>> getSupSubConcepts() {
+    Map<Concept<O, A>, Set<Concept<O, A>>> supsub = new HashMap<>();
+    for (Map.Entry<Integer, Set<Integer>> e : topDown.entrySet()) {
+      Set<Concept<O, A>> values = new HashSet<>();
+      for (int i : e.getValue()) {
+        values.add(id2Concept.get(i));
+      }
+      supsub.put(id2Concept.get(e.getKey()), values);
+    }
+    return supsub;
+  }
 }
