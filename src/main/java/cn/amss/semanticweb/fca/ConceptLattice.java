@@ -89,7 +89,7 @@ public class ConceptLattice <O, A>
     tConcepts.addAll(concepts);
 
     int idx = 0;
-    for (Concept<O, A> c : concepts) {
+    for (Concept<O, A> c : tConcepts) {
       id2Concept.put(idx, c);
       concept2Id.put(c, idx);
       ++idx;
@@ -120,7 +120,7 @@ public class ConceptLattice <O, A>
     return isDownUp(id2Concept.get(downId), id2Concept.get(upId));
   }
 
-  public void buildTopDown(Set<Concept<O, A>> concepts) {
+  public void buildTopDown() {
     Queue<Integer> parentIdQueue = new LinkedList<Integer>();
     for (int cId = 0; cId < numberOfConcepts; ++cId) {
       if (cId == topId) continue;
@@ -164,9 +164,9 @@ public class ConceptLattice <O, A>
     }
   }
 
-  public void buildBottomUp(Set<Concept<O, A>> concepts) {
+  public void buildBottomUp() {
     if (topDown == null || topDown.isEmpty()) {
-      buildTopDown(concepts);
+      buildTopDown();
     }
 
     for (Map.Entry<Integer, Set<Integer>> e : topDown.entrySet()) {
