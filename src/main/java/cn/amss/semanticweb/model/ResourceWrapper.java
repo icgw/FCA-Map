@@ -11,6 +11,7 @@ import org.apache.jena.rdf.model.Resource;
 
 import java.util.Objects;
 
+@Deprecated
 public class ResourceWrapper
 {
   private Resource m_resource;
