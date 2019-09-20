@@ -7,9 +7,10 @@
 
 package cn.amss.semanticweb.model;
 
+import org.apache.jena.rdf.model.Resource;
 import java.util.Objects;
 
-public class DataWrapper <T>
+public class DataWrapper <T extends Resource>
 {
   private T m_data;
   private int m_from_id;

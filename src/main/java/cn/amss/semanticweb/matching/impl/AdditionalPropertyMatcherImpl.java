@@ -83,10 +83,10 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     }
   }
 
-  private static final void addContextFromSO(Map<ResourceWrapper, Set<SubjectObject>> context,
-                                             ResourceWrapper p,
-                                             Set<MappingCell> subject_mappings,
-                                             Set<MappingCell> object_mappings) {
+  private static final <T extends Resource> void addContextFromSO(Map<ResourceWrapper<T>, Set<SubjectObject>> context,
+                                                                  ResourceWrapper<T> p,
+                                                                  Set<MappingCell> subject_mappings,
+                                                                  Set<MappingCell> object_mappings) {
     if (subject_mappings == null || object_mappings == null) return;
     for (MappingCell s : subject_mappings) {
       for (MappingCell o : object_mappings) {
@@ -95,11 +95,11 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     }
   }
 
-  private static final void addContextFromSO(Map<ResourceWrapper, Set<SubjectObject>> context,
-                                             ResourceWrapper p,
-                                             Map<Resource, Set<MappingCell>> m,
-                                             Resource subject,
-                                             Resource object) {
+  private static final <T extends Resource> void addContextFromSO(Map<ResourceWrapper<T>, Set<SubjectObject>> context,
+                                                                  ResourceWrapper<T> p,
+                                                                  Map<Resource, Set<MappingCell>> m,
+                                                                  Resource subject,
+                                                                  Resource object) {
     Set<MappingCell> subject_instance_mappings = m.get(subject);
     Set<MappingCell> object_instance_mappings = m.get(object);
     addContextFromSO(context, p, subject_instance_mappings, object_instance_mappings);
@@ -112,11 +112,11 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     addContextFromSO(context, p, subject_class_mappings, object_class_mappings);
   }
 
-  private void addContext(Set<Resource> properties,
-                          int from_id,
-                          Map<Resource, Set<MappingCell>> m,
-                          Map<ResourceWrapper, Set<SubjectObject>> context) {
-    for (final Resource p : properties) {
+  private <T extends Resource> void addContext(Set<T> properties,
+                                               int from_id,
+                                               Map<Resource, Set<MappingCell>> m,
+                                               Map<ResourceWrapper<T>, Set<SubjectObject>> context) {
+    for (final T p : properties) {
 
       StmtIterator it = p.getModel().listStatements(
             new SimpleSelector(null, null, (RDFNode) null) {
@@ -133,16 +133,16 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
         Resource subject = stmt.getSubject();
         Resource object  = stmt.getObject().asResource();
 
-        ResourceWrapper rw = new ResourceWrapper(p, from_id);
+        ResourceWrapper<T> rw = new ResourceWrapper<T>(p, from_id);
         addContextFromSO(context, rw, m, subject, object);
       }
     }
   }
 
-  private Map<ResourceWrapper, Set<SubjectObject>> constructContext(Set<Resource> sources,
-                                                                    Set<Resource> targets,
-                                                                    Mapping property_anchors) {
-    Map<ResourceWrapper, Set<SubjectObject>> context = new HashMap<>();
+  private <T extends Resource> Map<ResourceWrapper<T>, Set<SubjectObject>> constructContext(Set<T> sources,
+                                                                                            Set<T> targets,
+                                                                                            Mapping property_anchors) {
+    Map<ResourceWrapper<T>, Set<SubjectObject>> context = new HashMap<>();
 
     addContext(sources, m_source_id, m_resource_to_map_cell, context);
     addContext(targets, m_target_id, m_resource_to_map_cell, context);
@@ -150,8 +150,8 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     if (property_anchors == null) return context;
 
     for (MappingCell mc : property_anchors) {
-      Set<SubjectObject> v1 = context.get(new ResourceWrapper(mc.getResource1(), m_source_id));
-      Set<SubjectObject> v2 = context.get(new ResourceWrapper(mc.getResource2(), m_target_id));
+      Set<SubjectObject> v1 = context.get(new ResourceWrapper<Resource>(mc.getResource1(), m_source_id));
+      Set<SubjectObject> v2 = context.get(new ResourceWrapper<Resource>(mc.getResource2(), m_target_id));
       if (v1 != null && v2 != null) {
         v1.addAll(v2);
         v2.addAll(v1);
@@ -161,10 +161,10 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     return context;
   }
 
-  private void splitResource(Set<ResourceWrapper> rws, Set<Resource> source, Set<Resource> target) {
+  private <T extends Resource> void splitResource(Set<ResourceWrapper<T>> rws, Set<T> source, Set<T> target) {
     if (rws == null || source == null || target == null) return;
 
-    for (ResourceWrapper rw : rws) {
+    for (ResourceWrapper<T> rw : rws) {
       if (isFromSource(rw)) {
         source.add(rw.getResource());
       }
@@ -174,17 +174,17 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     }
   }
 
-  private void extractMapping(Set<Set<ResourceWrapper>> cluster, Mapping mappings) {
-    Set<Resource> source = new HashSet<>();
-    Set<Resource> target = new HashSet<>();
-    for (Set<ResourceWrapper> rws : cluster) {
+  private <T extends Resource> void extractMapping(Set<Set<ResourceWrapper<T>>> cluster, Mapping mappings) {
+    Set<T> source = new HashSet<>();
+    Set<T> target = new HashSet<>();
+    for (Set<ResourceWrapper<T>> rws : cluster) {
       source.clear();
       target.clear();
 
       splitResource(rws, source, target);
 
-      for (Resource s : source) {
-        for (Resource t : target) {
+      for (T s : source) {
+        for (T t : target) {
           mappings.add(s, t);
         }
       }
@@ -197,15 +197,15 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   }
 
   @Override
-  public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
+  public <T extends Resource> void matchProperties(Set<T> sources, Set<T> targets, Mapping mappings) {
     addHashAnchors(m_instance_anchors);
-    Map<ResourceWrapper, Set<SubjectObject>> context = constructContext(sources, targets, m_property_anchors);
+    Map<ResourceWrapper<T>, Set<SubjectObject>> context = constructContext(sources, targets, m_property_anchors);
 
-    Hermes<ResourceWrapper, SubjectObject> hermes = new Hermes<>();
+    Hermes<ResourceWrapper<T>, SubjectObject> hermes = new Hermes<>();
     hermes.init(context);
     hermes.compute();
 
-    Set<Set<ResourceWrapper>> simplified_extents = null, extents = null;
+    Set<Set<ResourceWrapper<T>>> simplified_extents = null, extents = null;
     if (extract_from_GSH) {
       simplified_extents = extractExtentsFromGSH(hermes);
     }

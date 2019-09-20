@@ -56,13 +56,11 @@ public abstract class MatcherBase
     }
   }
 
-  @Deprecated
-  protected final boolean isFromSource(ResourceWrapper rw) {
+  protected final boolean isFromSource(ResourceWrapper<?> rw) {
     return rw.getFromId() == m_source_id;
   }
 
-  @Deprecated
-  protected final boolean isFromTarget(ResourceWrapper rw) {
+  protected final boolean isFromTarget(ResourceWrapper<?> rw) {
     return rw.getFromId() == m_target_id;
   }
 
@@ -89,12 +87,10 @@ public abstract class MatcherBase
   }
 
   public void close() {
-    if (m_source != null) {
-      m_source.close();
-    }
-
-    if (m_target != null) {
-      m_target.close();
+    if (ontology2Id != null || !ontology2Id.isEmpty()) {
+      for (OntModelWrapper ont : ontology2Id.keySet()) {
+        ont.close();
+      }
     }
   }
 }

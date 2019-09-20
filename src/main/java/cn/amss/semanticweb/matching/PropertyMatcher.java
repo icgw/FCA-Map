@@ -15,5 +15,5 @@ import cn.amss.semanticweb.alignment.Mapping;
 
 public interface PropertyMatcher
 {
-  public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping mappings);
+  public <T extends Resource> void matchProperties(Set<T> sources, Set<T> targets, Mapping mappings);
 }

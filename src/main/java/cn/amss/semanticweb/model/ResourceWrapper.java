@@ -11,18 +11,17 @@ import org.apache.jena.rdf.model.Resource;
 
 import java.util.Objects;
 
-@Deprecated
-public class ResourceWrapper
+public class ResourceWrapper <T extends Resource>
 {
-  private Resource m_resource;
-  private int      m_from_id;
+  private T   m_resource;
+  private int m_from_id;
 
-  public ResourceWrapper(Resource resource, int id) {
+  public ResourceWrapper(T resource, int id) {
     m_resource = resource;
     m_from_id  = id;
   }
 
-  public Resource getResource() {
+  public T getResource() {
     return m_resource;
   }
 
@@ -43,7 +42,7 @@ public class ResourceWrapper
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    ResourceWrapper that = (ResourceWrapper) o;
+    ResourceWrapper<?> that = (ResourceWrapper<?>) o;
     return m_from_id == that.m_from_id && Objects.equals(m_resource, that.m_resource);
   }
 

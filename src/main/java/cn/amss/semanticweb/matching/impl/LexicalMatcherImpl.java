@@ -114,19 +114,25 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     return labelOrName;
   }
 
-  private void constructLabelOrName2ResourcesTable(Set<Resource> resources, Map<String, Set<ResourceWrapper>> m, int from_id, boolean b_lowercase) {
+  private <T extends Resource> void constructLabelOrName2ResourcesTable(Set<T> resources,
+                                                                        Map<String, Set<ResourceWrapper<T>>> m,
+                                                                        int from_id,
+                                                                        boolean b_lowercase) {
     if (resources == null || m == null) return;
 
-    for (Resource r : resources) {
+    for (T r : resources) {
       Set<String> labelOrNames = acquireLabelOrName(r, b_lowercase);
       for (String ln : labelOrNames) {
-        m.putIfAbsent(ln, new HashSet<ResourceWrapper>());
-        m.get(ln).add(new ResourceWrapper(r, from_id));
+        m.putIfAbsent(ln, new HashSet<ResourceWrapper<T>>());
+        m.get(ln).add(new ResourceWrapper<T>(r, from_id));
       }
     }
   }
 
-  private void constructLabelOrName2ResourcesTable(Set<Resource> sources, Set<Resource> targets, Map<String, Set<ResourceWrapper>> m, boolean b_lowercase) {
+  private <T extends Resource> void constructLabelOrName2ResourcesTable(Set<T> sources,
+                                                                        Set<T> targets,
+                                                                        Map<String, Set<ResourceWrapper<T>>> m,
+                                                                        boolean b_lowercase) {
     constructLabelOrName2ResourcesTable(sources, m, m_source_id, b_lowercase);
     constructLabelOrName2ResourcesTable(targets, m, m_target_id, b_lowercase);
   }
@@ -156,12 +162,15 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     return context;
   }
 
-  private void splitResourceWrapper(Set<String> lns, Map<String, Set<ResourceWrapper>> m, Set<Resource> source, Set<Resource> target) {
+  private <T extends Resource> void splitResourceWrapper(Set<String> lns,
+                                                         Map<String, Set<ResourceWrapper<T>>> m,
+                                                         Set<Resource> source,
+                                                         Set<Resource> target) {
     if (lns == null || m == null || source == null || target == null) return;
     for (String ln : lns) {
-      Set<ResourceWrapper> rws = m.get(ln);
+      Set<ResourceWrapper<T>> rws = m.get(ln);
       if (rws != null && !rws.isEmpty()) {
-        for (ResourceWrapper rw : rws) {
+        for (ResourceWrapper<T> rw : rws) {
           if (isFromSource(rw)) {
             source.add(rw.getResource());
           } else if (isFromTarget(rw)) {
@@ -172,7 +181,9 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     }
   }
 
-  private void extractMapping(Set<Set<String>> cluster, Map<String, Set<ResourceWrapper>> m, Mapping mappings) {
+  private <T extends Resource> void extractMapping(Set<Set<String>> cluster,
+                                                   Map<String, Set<ResourceWrapper<T>>> m,
+                                                   Mapping mappings) {
     Set<Resource> source = new HashSet<>();
     Set<Resource> target = new HashSet<>();
     for (Set<String> c : cluster) {
@@ -190,10 +201,10 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   @Override
-  public void matchResources(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
+  public <T extends Resource> void matchResources(Set<T> sources, Set<T> targets, Mapping mappings) {
     if (sources == null || targets == null || mappings == null) return;
 
-    Map<String, Set<ResourceWrapper>> labelOrName2Resources = new HashMap<>();
+    Map<String, Set<ResourceWrapper<T>>> labelOrName2Resources = new HashMap<>();
     constructLabelOrName2ResourcesTable(sources, targets, labelOrName2Resources, to_lower_case);
 
     Set<String> labelOrNames         = labelOrName2Resources.keySet();
@@ -223,17 +234,17 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   @Override
-  public void matchInstances(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
+  public <T extends Resource> void matchInstances(Set<T> sources, Set<T> targets, Mapping mappings) {
     matchResources(sources, targets, mappings);
   }
 
   @Override
-  public void matchProperties(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
+  public <T extends Resource> void matchProperties(Set<T> sources, Set<T> targets, Mapping mappings) {
     matchResources(sources, targets, mappings);
   }
 
   @Override
-  public void matchClasses(Set<Resource> sources, Set<Resource> targets, Mapping mappings) {
+  public <T extends Resource> void matchClasses(Set<T> sources, Set<T> targets, Mapping mappings) {
     matchResources(sources, targets, mappings);
   }
 }

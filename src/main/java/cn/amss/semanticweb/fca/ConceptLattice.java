@@ -7,8 +7,6 @@
 
 package cn.amss.semanticweb.fca;
 
-import cn.amss.semanticweb.fca.Concept;
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -213,14 +211,14 @@ public class ConceptLattice <O, A>
   }
 
   public Map<Concept<O, A>, Set<Concept<O, A>>> getSupSubConcepts() {
-    Map<Concept<O, A>, Set<Concept<O, A>>> supsub = new HashMap<>();
+    Map<Concept<O, A>, Set<Concept<O, A>>> supSub = new HashMap<>();
     for (Map.Entry<Integer, Set<Integer>> e : topDown.entrySet()) {
       Set<Concept<O, A>> values = new HashSet<>();
       for (int i : e.getValue()) {
         values.add(id2Concept.get(i));
       }
-      supsub.put(id2Concept.get(e.getKey()), values);
+      supSub.put(id2Concept.get(e.getKey()), values);
     }
-    return supsub;
+    return supSub;
   }
 }
