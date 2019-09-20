@@ -103,7 +103,7 @@ public class OntModelWrapper
     acquireInstances();
     acquireProperties();
 
-    // XXX:
+    // XXX: wait to improve
     acquireObjectProperties();
     acquireDatatypeProperties();
     ////////////////////////////
@@ -111,8 +111,8 @@ public class OntModelWrapper
     acquireClasses();
 
     if (m_logger.isInfoEnabled()) {
-      m_logger.info("#Instances: {}, #Properties: {}, #Classes: {}.", m_instances.size(), m_properties.size(), m_classes.size());
-      m_logger.info("#DatatypeProperties: {}, #ObjectProperties: {}.", m_datatype_properties.size(), m_object_properties.size());
+      m_logger.info("#Instances: {}, #Properties: {}, #DatatypeProperties: {}, #ObjectProperties: {}, #Classes: {}.",
+                    m_instances.size(), m_properties.size(), m_datatype_properties.size(), m_object_properties.size(), m_classes.size());
     }
   }
 
