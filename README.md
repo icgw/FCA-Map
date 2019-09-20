@@ -1,6 +1,7 @@
-# FCAMap-KG
+FCA-Map
+=======
 
-[![license](https://img.shields.io/github/license/icgw/FCAMap-KG)](LICENSE)
+[![license](https://img.shields.io/github/license/icgw/FCA-Map)](LICENSE)
 ![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/org.apache.maven/maven-repository-metadata/3.6.1)
 
 > Ontology matching system based on formal concept analysis.

@@ -242,8 +242,26 @@ public class OntModelWrapper
    *
    * @return m_properties
    */
-  public Set<OntProperty> getProperties() {
+  public Set<OntProperty> getOntProperties() {
     return m_properties;
+  }
+
+  /**
+   * Get the hash set of datatype properties
+   *
+   * @return m_datatype_properties
+   */
+  public Set<DatatypeProperty> getDatatypeProperties() {
+    return m_datatype_properties;
+  }
+
+  /**
+   * Get the hash set of object properties
+   *
+   * @return m_object_properties
+   */
+  public Set<ObjectProperty> getObjectProperties() {
+    return m_object_properties;
   }
 
   /**
@@ -251,7 +269,7 @@ public class OntModelWrapper
    *
    * @return m_classes
    */
-  public Set<OntClass> getClasses() {
+  public Set<OntClass> getOntClasses() {
     return m_classes;
   }
 }
