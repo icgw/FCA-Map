@@ -2,6 +2,7 @@ FCA-Map: Mapping ontologies by formal concept analysis
 ======================================================
 
 [![license](https://img.shields.io/github/license/icgw/FCA-Map)](LICENSE)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/icgw/FCA-Map/master)
 ![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/org.apache.maven/maven-repository-metadata/3.6.1)
 
 > Ontology matching system based on formal concept analysis.

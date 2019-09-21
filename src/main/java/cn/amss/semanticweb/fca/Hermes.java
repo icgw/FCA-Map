@@ -343,13 +343,39 @@ public class Hermes <O, A>
     return new Concept<Integer, Integer>(extent_id, intent_id);
   }
 
-  private Set<Integer> computeParentAttributes(Set<Integer> s, Set<Integer> attributes) {
-    Pair<Set<Integer>, Set<Integer>> simplified_concept = simplifiedConceptIdFrom(s);
+  private static void attributeIdClosure(Set<Set<Integer>> set_of_attributes) {
+    // XXX: wait to improve
+    Map<Integer, Set<Set<Integer>>> m = new HashMap<>();
+    for (Set<Integer> attributes : set_of_attributes) {
+      for (int i : attributes) {
+        add(m, i, attributes);
+      }
+    }
 
-    Set<Integer> parent_attributes = new HashSet<>(attributes);
-    parent_attributes.removeAll(simplified_concept.getValue());
+    boolean bIncrease;
+    do {
+      bIncrease = false;
+      Set<Set<Integer>> copy = new HashSet<>(set_of_attributes);
 
-    return parent_attributes;
+      for (Set<Integer> s1 : copy) {
+        Set<Set<Integer>> related_set_of_attributes = new HashSet<>();
+        for (int i : s1) {
+          related_set_of_attributes.addAll(m.get(i));
+        }
+
+        for (Set<Integer> s2 : related_set_of_attributes) {
+          Set<Integer> s3 = new HashSet<>(s2);
+          s3.retainAll(s1);
+          if (!set_of_attributes.contains(s3)) {
+            set_of_attributes.add(s3);
+            for (int k : s3) {
+              add(m, k, s3);
+            }
+            bIncrease = true;
+          }
+        }
+      }
+    } while (bIncrease);
   }
 
   /**
@@ -393,6 +419,27 @@ public class Hermes <O, A>
     return simplified_extents_limit;
   }
 
+  private void addTopBottomAttributes(Set<Set<Integer>> set_of_attributes,
+                                      int limit_objects_size,
+                                      int limit_attributes_size) {
+    if (attribute2Objects != null) {
+      Set<Integer> total_attributes = attribute2Objects.keySet();
+
+      Set<Integer> top_attributes =  new HashSet<>(total_attributes);
+      for (Set<Integer> attributes : set_of_attributes) {
+        top_attributes.retainAll(attributes);
+      }
+
+      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
+        set_of_attributes.add(total_attributes);
+      }
+
+      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
+        set_of_attributes.add(top_attributes);
+      }
+    }
+  }
+
   /**
    * Extract the concepts within particular limits.
    *
@@ -407,25 +454,16 @@ public class Hermes <O, A>
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
         Set<Integer> attributes = r.getKey();
-        Set<Integer> s          = r.getValue();
 
         if (limit_attributes_size <= 0 || attributes.size() < limit_attributes_size) {
           set_of_attributes.add(attributes);
         }
-
-        Set<Integer> parent_attributes = computeParentAttributes(s, attributes);
-        if (limit_attributes_size <= 0 || parent_attributes.size() < limit_attributes_size) {
-          set_of_attributes.add(parent_attributes);
-        }
       }
     }
 
-    if (attribute2Objects != null) {
-      Set<Integer> total_attributes = attribute2Objects.keySet();
-      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
-        set_of_attributes.add(total_attributes);
-      }
-    }
+    attributeIdClosure(set_of_attributes);
+
+    addTopBottomAttributes(set_of_attributes, limit_objects_size, limit_attributes_size);
 
     for (Set<Integer> attributes : set_of_attributes) {
       Concept<Integer, Integer> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
@@ -445,25 +483,16 @@ public class Hermes <O, A>
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
         Set<Integer> attributes = r.getKey();
-        Set<Integer> s          = r.getValue();
 
         if (limit_attributes_size <= 0 || attributes.size() < limit_attributes_size) {
           set_of_attributes.add(attributes);
         }
-
-        Set<Integer> parent_attributes = computeParentAttributes(s, attributes);
-        if (limit_attributes_size <= 0 || parent_attributes.size() < limit_attributes_size) {
-          set_of_attributes.add(parent_attributes);
-        }
       }
     }
 
-    if (attribute2Objects != null) {
-      Set<Integer> total_attributes = attribute2Objects.keySet();
-      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
-        set_of_attributes.add(total_attributes);
-      }
-    }
+    attributeIdClosure(set_of_attributes);
+
+    addTopBottomAttributes(set_of_attributes, limit_objects_size, limit_attributes_size);
 
     for (Set<Integer> attributes : set_of_attributes) {
       Concept<Integer, Integer> concept_id = computeConceptId(attributes,
