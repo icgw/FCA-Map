@@ -14,7 +14,6 @@ Formal concept analysis (FCA) is a well developed mathematical model for analyzi
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
-- [API](#api)
 - [Contributing](#contributing)
 - [Reference](#reference)
 - [License](#license)
