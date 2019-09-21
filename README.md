@@ -11,7 +11,6 @@ Formal concept analysis (FCA) is a well developed mathematical model for analyzi
 
 ## Table of Contents
 
-- [Security](#security)
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
@@ -19,10 +18,6 @@ Formal concept analysis (FCA) is a well developed mathematical model for analyzi
 - [Contributing](#contributing)
 - [Reference](#reference)
 - [License](#license)
-
-## Security
-
-### Any optional sections
 
 ## Background
 
@@ -48,29 +43,16 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 ## Install
 
 This module depends upon:
-1. Maven 3.6.1
-2. Jena 3.12.0
-3. Java 1.8.0\_161
+- Maven 3.6.1
+- Jena 3.12.0
+- Java 1.8.0\_161
 
-```
-```
-
-### Any optional sections
+This program is developed using [IntelliJ IDEA](https://www.jetbrains.com/idea/). (Recommended)
 
 ## Usage
 
 ```
 ```
-
-### Initial Context
-
-## API
-
-### Constructing of the set of formal concepts
-
-## More optional sections
-
-## Constructiong of concept lattices
 
 ## Contributing
 
@@ -80,7 +62,7 @@ PRs accepted.
 
 ### FCA-Map for matching biomedical ontologies
 
-See [FCA-Map@liweizhuo001](https://github.com/liweizhuo001/FCA-Map) (**no longer maintaining**), which system is primarily developed by _Zhao, Mengyi_.
+See [FCA-Map@liweizhuo001](https://github.com/liweizhuo001/FCA-Map) (**no longer maintaining**), which system is primarily developed by _Mengyi Zhao_.
 
 ## Acknowledgements
 
