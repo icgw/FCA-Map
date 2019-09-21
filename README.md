@@ -26,7 +26,24 @@ Formal concept analysis (FCA) is a well developed mathematical model for analyzi
 
 ## Background
 
-### Any optional sections
+Formal Concept Analysis is based on mathematical order theory, in particular on the theory of complete lattices (See the [book](https://www.springer.com/gp/book/9783540627715)). The following is an example of formal concept analysis. 
+
+### Formal Context
+
+|   | a | b | c | d | e | f | g | h | i |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | ✖ | ✖ |   |   |   |   | ✖ |   |   |
+| 2 | ✖ | ✖ |   |   |   |   | ✖ | ✖ |   |
+| 3 | ✖ | ✖ | ✖ |   |   |   | ✖ | ✖ |   |
+| 4 | ✖ |   | ✖ |   |   |   | ✖ | ✖ | ✖ |
+| 5 | ✖ | ✖ |   | ✖ |   | ✖ |   |   |   |
+| 6 | ✖ | ✖ | ✖ | ✖ |   | ✖ |   |   |   |
+| 7 | ✖ |   | ✖ | ✖ | ✖ |   |   |   |   |
+| 8 | ✖ |   | ✖ | ✖ |   | ✖ |   |   |   |
+
+### Concept Lattices (derived from the above context)
+
+![complete-lattice](./.assets/example-complete-lattice.svg)
 
 ## Install
 
