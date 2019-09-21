@@ -30,16 +30,16 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 
 ### Formal Context
 
-|   | a | b | c | d | e | f | g | h | i |
-|---|---|---|---|---|---|---|---|---|---|
-| 1 | ✖ | ✖ |   |   |   |   | ✖ |   |   |
-| 2 | ✖ | ✖ |   |   |   |   | ✖ | ✖ |   |
-| 3 | ✖ | ✖ | ✖ |   |   |   | ✖ | ✖ |   |
-| 4 | ✖ |   | ✖ |   |   |   | ✖ | ✖ | ✖ |
-| 5 | ✖ | ✖ |   | ✖ |   | ✖ |   |   |   |
-| 6 | ✖ | ✖ | ✖ | ✖ |   | ✖ |   |   |   |
-| 7 | ✖ |   | ✖ | ✖ | ✖ |   |   |   |   |
-| 8 | ✖ |   | ✖ | ✖ |   | ✖ |   |   |   |
+|               | needs water to live | lives in water | lives on land | needs chlorophyll to produce food | two seed leaves | one seed leaf | can move around | has limbs | suckles its offspring |
+|:-------------:|:-------------------:|:--------------:|:-------------:|:---------------------------------:|:---------------:|:-------------:|:---------------:|:---------:|:---------------------:|
+|     Leech     |          ✖          |       ✖        |               |                                   |                 |               |        ✖        |           |                       |
+|     Bream     |          ✖          |       ✖        |               |                                   |                 |               |        ✖        |     ✖     |                       |
+|     Frog      |          ✖          |       ✖        |       ✖       |                                   |                 |               |        ✖        |     ✖     |                       |
+|      Dog      |          ✖          |                |       ✖       |                                   |                 |               |        ✖        |     ✖     |           ✖           |
+| Spike -- weed |          ✖          |       ✖        |               |                 ✖                 |                 |       ✖       |                 |           |                       |
+|     Reed      |          ✖          |       ✖        |       ✖       |                 ✖                 |                 |       ✖       |                 |           |                       |
+|     Bean      |          ✖          |                |       ✖       |                 ✖                 |        ✖        |               |                 |           |                       |
+|     Maize     |          ✖          |                |       ✖       |                 ✖                 |                 |       ✖       |                 |           |                       |
 
 ### Concept Lattices (derived from the above context)
 
