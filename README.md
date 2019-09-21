@@ -1,12 +1,12 @@
-FCA-Map
-=======
+FCA-Map: Mapping ontologies by formal concept analysis
+======================================================
 
 [![license](https://img.shields.io/github/license/icgw/FCA-Map)](LICENSE)
 ![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/org.apache.maven/maven-repository-metadata/3.6.1)
 
 > Ontology matching system based on formal concept analysis.
 
-This is a long description.
+Formal concept analysis (FCA) is a well developed mathematical model for analyzing data and structuring concepts.
 
 ## Table of Contents
 
@@ -44,21 +44,25 @@ This module depends upon:
 ```
 ```
 
-### Any optional sections
+### Initial Context
 
 ## API
 
-### Any optional sections
+### Constructing of the set of formal concepts
 
 ## More optional sections
 
+## Constructiong of concept lattices
+
 ## Contributing
 
-See [the contributing file](CONTRIBUTING.md)!
+See [the contributing file](CONTRIBUTING.md).
 
 PRs accepted.
 
-### Any optional sections
+### FCA-Map for matching biomedical ontologies
+
+See [FCA-Map@liweizhuo001](https://github.com/liweizhuo001/FCA-Map) (**no longer maintaining**), which system is primarily developed by _Zhao, Mengyi_.
 
 ## Acknowledgements
 
@@ -72,6 +76,10 @@ This work has been supported by the National Key Research and Development Progra
 
 3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018). [[paper](https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9)]
 
+## Maintainer
+
+[@icgw](https://github.com/icgw)
+
 ## License
 
-[GPLv3 © Guowei Chen.](LICENSE)
+[GPLv3](LICENSE) © Guowei Chen

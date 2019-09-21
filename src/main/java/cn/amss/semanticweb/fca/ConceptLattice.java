@@ -20,6 +20,7 @@ import java.util.Iterator;
 
 /**
  * A concept lattice.
+ * Here, this algorithm of constructing concept lattice is designed by Guowei Chen.
  *
  * @author Guowei Chen (icgw@outlook.com)
  */
@@ -36,6 +37,9 @@ public class ConceptLattice <O, A>
   Map<Integer, Set<Integer>> topDown  = null;
   Map<Integer, Set<Integer>> bottomUp = null;
 
+  /**
+   * Initial concept lattice.
+   */
   private ConceptLattice() {
     id2Concept       = new HashMap<>();
     concept2Id       = new HashMap<>();
@@ -43,6 +47,12 @@ public class ConceptLattice <O, A>
     bottomUp         = new HashMap<>();
   }
 
+  /**
+   * initial concept lattice with the set of formal concepts.
+   *
+   * @param concepts the set of concepts
+   * @param concepts no side effect
+   */
   public ConceptLattice(Set<Concept<O, A>> concepts) {
     this();
 
@@ -60,12 +70,32 @@ public class ConceptLattice <O, A>
     init(concepts, top, bottom);
   }
 
+  /**
+   * initial concept lattice with the set of formal concepts, top concept and bottom concept.
+   *
+   * @param concepts the set of concepts
+   * @param concepts no side effect
+   * @param top the top concept
+   * @param top no side effect
+   * @param bottom the bottom concept
+   * @param bottom no side effect
+   */
   public ConceptLattice(Set<Concept<O, A>> concepts, Concept<O, A> top, Concept<O, A> bottom) {
     this();
     init(concepts, top, bottom);
   }
 
-  public void init(Set<Concept<O, A>> concepts, Concept<O, A> top, Concept<O, A> bottom) {
+  /**
+   * initial implement method.
+   *
+   * @param concepts the set of concepts
+   * @param concepts no side effect
+   * @param top the top concept
+   * @param top no side effect
+   * @param bottom the bottom concept
+   * @param bottom no side effect
+   */
+  private void init(Set<Concept<O, A>> concepts, Concept<O, A> top, Concept<O, A> bottom) {
     TreeSet<Concept<O, A>> tConcepts = new TreeSet<>(new Comparator<Concept<O, A>>() {
       @Override
       public int compare(Concept<O, A> a, Concept<O, A> b) {
@@ -99,25 +129,61 @@ public class ConceptLattice <O, A>
     bottomId = concept2Id.getOrDefault(bottom, -2);
   }
 
+  /**
+   * Check whether the concepts exist hierarchical direct order.
+   *
+   * @param up the up concept
+   * @param up no side effect
+   * @param down the down concept
+   * @param down no side effect
+   * @return true means the order exist, otherwise false
+   */
   private boolean isUpDown(Concept<O, A> up, Concept<O, A> down) {
     if (up == null || down == null || up.equals(down)) return false;
     return up.getExtent().containsAll(down.getExtent());
   }
+
+  /**
+   * Check whether the identity (Integer) of concepts exist hierarchical direct order.
+   *
+   * @param upId the id of up concept
+   * @param downId the id of down concept
+   * @return true or false
+   */
   private boolean isUpDown(int upId, int downId) {
     if (upId == downId) return false;
     return isUpDown(id2Concept.get(upId), id2Concept.get(downId));
   }
 
+  /**
+   * Check whether the concepts exist hierarchical direct order.
+   *
+   * @param down the down concept
+   * @param down no side effect
+   * @param up the up concept
+   * @param up no side effect
+   * @return true/false
+   */
   private boolean isDownUp(Concept<O, A> down, Concept<O, A> up) {
     if (down == null || up == null || down.equals(up)) return false;
     return down.getIntent().containsAll(up.getIntent());
   }
 
+  /**
+   * Check whether the identity (Integer) of concepts exist hierarchical direct order.
+   *
+   * @param downId the id of down concept
+   * @param upId the id of up concept
+   * @return true/false
+   */
   private boolean isDownUp(int downId, int upId) {
     if (downId == upId) return false;
     return isDownUp(id2Concept.get(downId), id2Concept.get(upId));
   }
 
+  /**
+   * Build concept lattice from top to bottom.
+   */
   public void buildTopDown() {
     Queue<Integer> parentIdQueue = new LinkedList<Integer>();
     for (int cId = 0; cId < numberOfConcepts; ++cId) {
@@ -162,6 +228,9 @@ public class ConceptLattice <O, A>
     }
   }
 
+  /**
+   * Build concept lattice from bottom to top.
+   */
   public void buildBottomUp() {
     if (topDown == null || topDown.isEmpty()) {
       buildTopDown();
@@ -181,6 +250,11 @@ public class ConceptLattice <O, A>
     }
   }
 
+  /**
+   * Output the DOT language of the concept lattice.
+   *
+   * @return a string of dot language
+   */
   public String dotLangFormat() {
     if (topDown == null || topDown.isEmpty()) return "graph { }";
 
@@ -210,6 +284,11 @@ public class ConceptLattice <O, A>
     return dotLanguage.toString();
   }
 
+  /**
+   * Get the concept lattice.
+   *
+   * @return the hash map of concept lattice
+   */
   public Map<Concept<O, A>, Set<Concept<O, A>>> getSupSubConcepts() {
     Map<Concept<O, A>, Set<Concept<O, A>>> supSub = new HashMap<>();
     for (Map.Entry<Integer, Set<Integer>> e : topDown.entrySet()) {
