@@ -1,5 +1,5 @@
-FCA-Map: Mapping ontologies by formal concept analysis
-======================================================
+FCA-Map: Identifying Mappings by formal concept analysis
+========================================================
 
 [![license](https://img.shields.io/github/license/icgw/FCA-Map)](LICENSE)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/icgw/FCA-Map/master)
