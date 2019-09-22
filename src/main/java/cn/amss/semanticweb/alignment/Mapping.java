@@ -9,6 +9,7 @@ package cn.amss.semanticweb.alignment;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Iterator;
 
 import org.apache.jena.rdf.model.Resource;
@@ -76,5 +77,19 @@ public class Mapping implements Iterable<MappingCell>
   @Override
   public String toString() {
     return getContent(0);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(m_mapping);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Mapping that = (Mapping) o;
+    return Objects.equals(m_mapping, that.m_mapping);
   }
 }
