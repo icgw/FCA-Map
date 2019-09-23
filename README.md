@@ -1,4 +1,4 @@
-FCA-Map: Identifying Mappings by formal concept analysis
+FCA-Map: Identifying Mappings by Formal Concept Analysis
 ========================================================
 
 [![license](https://img.shields.io/github/license/icgw/FCA-Map)](LICENSE)
@@ -50,7 +50,37 @@ It is developed using [IntelliJ IDEA](https://www.jetbrains.com/idea/). (Recomme
 
 ## Usage
 
-```
+```java
+// Demo.java
+
+import cn.amss.semanticweb.alignment.Mapping;
+import cn.amss.semanticweb.model.OntModelWrapper;
+import cn.amss.semanticweb.matching.LexicalMatcher;
+import cn.amss.semanticweb.matching.MatcherFactory;
+
+public class Demo {
+  public static void main(String[] args) {
+    String srcURL = "http://oaei.ontologymatching.org/2019/conference/data/Conference.owl";
+    String tgtURL = "http://oaei.ontologymatching.org/2019/conference/data/ekaw.owl";
+
+    OntModelWrapper source = new OntModelWrapper(srcURL);
+    OntModelWrapper target = new OntModelWrapper(tgtURL);
+
+    LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
+    lm.setExtractType(true, true);
+
+    Mapping mappings = new Mapping();
+
+    lm.setSourceOntModelWrapper(source);
+    lm.setTargetOntModelWrapper(target);
+
+    lm.mapOntClasses(mappings);
+    lm.mapDatatypeProperties(mappings);
+    lm.mapObjectProperties(mappings);
+
+    System.out.println(mappings);
+  }
+}
 ```
 
 ## Contributing
