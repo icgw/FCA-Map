@@ -41,12 +41,12 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 
 ## Install
 
-This module depends upon:
+This program depends upon:
 - Maven 3.6.1
 - Jena 3.12.0
 - Java 1.8.0\_161
 
-This program is developed using [IntelliJ IDEA](https://www.jetbrains.com/idea/). (Recommended)
+It is developed using [IntelliJ IDEA](https://www.jetbrains.com/idea/). (Recommended)
 
 ## Usage
 
@@ -69,11 +69,11 @@ This work has been supported by the National Key Research and Development Progra
 
 ## References
 
-1. **Identifying Mappings among Knowledge Graphs by Formal Concept Analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . [[paper](http://disi.unitn.it/~pavel/om2019/papers/om2019_LTpaper3.pdf)]
+1. **Identifying Mappings among Knowledge Graphs by Formal Concept Analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . [[paper][1]]
 
-2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166. [[paper](http://ceur-ws.org/Vol-2288/oaei18_paper7.pdf)]
+2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166. [[paper][2]]
 
-3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018). [[paper](https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9)]
+3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018). [[paper][3]]
 
 ## Maintainer
 
@@ -82,3 +82,7 @@ This work has been supported by the National Key Research and Development Progra
 ## License
 
 [GPLv3](LICENSE) © Guowei Chen
+
+[1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
+[2]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
+[3]: https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9

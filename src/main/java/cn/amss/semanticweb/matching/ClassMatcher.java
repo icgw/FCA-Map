@@ -15,5 +15,8 @@ import cn.amss.semanticweb.alignment.Mapping;
 
 public interface ClassMatcher
 {
+  @Deprecated
   public <T extends Resource> void matchClasses(Set<T> sources, Set<T> targets, Mapping mappings);
+
+  public void mapOntClasses(Mapping mappings);
 }

@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 import cn.amss.semanticweb.matching.LexicalMatcher;
@@ -43,8 +44,9 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   private static final boolean to_lower_case       = true;
 
   private static final boolean use_normalize_case_style = true;
-  private static final boolean use_strip_diacritics     = true;
   private static final boolean use_remove_S             = true;
+
+  private static boolean use_strip_diacritics = true;
 
   public LexicalMatcherImpl() {
   }
@@ -164,8 +166,8 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
   private <T extends Resource> void splitResourceWrapper(Set<String> lns,
                                                          Map<String, Set<ResourceWrapper<T>>> m,
-                                                         Set<Resource> source,
-                                                         Set<Resource> target) {
+                                                         Set<T> source,
+                                                         Set<T> target) {
     if (lns == null || m == null || source == null || target == null) return;
     for (String ln : lns) {
       Set<ResourceWrapper<T>> rws = m.get(ln);
@@ -181,11 +183,33 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     }
   }
 
+  private <T extends Resource> void splitResourceWrapper(Set<String> lns,
+                                                         Map<String, Set<ResourceWrapper<T>>> m,
+                                                         Set<T> source,
+                                                         Set<T> target,
+                                                         Set<T> intermediate) {
+    if (lns == null || m == null || source == null || target == null) return;
+    for (String ln : lns) {
+      Set<ResourceWrapper<T>> rws = m.get(ln);
+      if (rws != null && !rws.isEmpty()) {
+        for (ResourceWrapper<T> rw : rws) {
+          if (isFromSource(rw)) {
+            source.add(rw.getResource());
+          } else if (isFromTarget(rw)) {
+            target.add(rw.getResource());
+          } else {
+            intermediate.add(rw.getResource());
+          }
+        }
+      }
+    }
+  }
+
   private <T extends Resource> void extractMapping(Set<Set<String>> cluster,
                                                    Map<String, Set<ResourceWrapper<T>>> m,
                                                    Mapping mappings) {
-    Set<Resource> source = new HashSet<>();
-    Set<Resource> target = new HashSet<>();
+    Set<T> source = new HashSet<>();
+    Set<T> target = new HashSet<>();
     for (Set<String> c : cluster) {
       source.clear();
       target.clear();
@@ -200,8 +224,71 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     }
   }
 
+  private static <K, V> void add(Map<K, Set<V>> m, K k, V v) {
+    Set<V> vs = m.get(k);
+    if (vs == null) {
+      m.put(k, new HashSet<>(Arrays.asList(v)));
+    } else {
+      vs.add(v);
+    }
+  }
+
+  private <T extends Resource> void extractIntermediate2SourceTarget(Set<Set<String>> cluster,
+                                                                     Map<String, Set<ResourceWrapper<T>>> m,
+                                                                     Map<T, Set<T>> intermediate2Source,
+                                                                     Map<T, Set<T>> intermediate2Target) {
+    Set<T> source = new HashSet<>();
+    Set<T> target = new HashSet<>();
+    Set<T> intermediate = new HashSet<>();
+
+    for (Set<String> c : cluster) {
+      source.clear();
+      target.clear();
+      intermediate.clear();
+
+      splitResourceWrapper(c, m, source, target, intermediate);
+
+      if ( !intermediate.isEmpty() && (!source.isEmpty() || !target.isEmpty()) ) {
+        for (T i : intermediate) {
+          for (T s : source) {
+            add(intermediate2Source, i, s);
+          }
+
+          for (T t : target) {
+            add(intermediate2Target, i, t);
+          }
+        }
+      }
+    }
+  }
+
+  private <T extends Resource> void extractMapping4MultiSources(Set<Set<String>> cluster,
+                                                                Map<String, Set<ResourceWrapper<T>>> m,
+                                                                Mapping mappings) {
+    Map<T, Set<T>> intermediate2Source = new HashMap<>();
+    Map<T, Set<T>> intermediate2Target = new HashMap<>();
+
+    extractIntermediate2SourceTarget(cluster, m, intermediate2Source, intermediate2Target);
+
+    Set<T> intermediate = new HashSet<>();
+
+    intermediate.addAll(intermediate2Source.keySet());
+    intermediate.retainAll(intermediate2Target.keySet());
+
+    for (T i : intermediate) {
+      Set<T> source = intermediate2Source.get(i);
+      Set<T> target = intermediate2Target.get(i);
+
+      for (T s : source) {
+        for (T t : target) {
+          mappings.add(s, t);
+        }
+      }
+    }
+  }
+
   @Override
-  public <T extends Resource> void matchResources(Set<T> sources, Set<T> targets, Mapping mappings) {
+  protected <T extends Resource> void matchResources(Set<T> sources, Set<T> targets, Mapping mappings) {
     if (sources == null || targets == null || mappings == null) return;
 
     Map<String, Set<ResourceWrapper<T>>> labelOrName2Resources = new HashMap<>();
@@ -234,6 +321,69 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   @Override
+  protected <T extends Resource> void matchResources(Map<Integer, Set<T>> id2Resources, Mapping mappings) {
+    if (id2Resources == null || mappings == null) return;
+
+    Map<String, Set<ResourceWrapper<T>>> labelOrName2Resources = new HashMap<>();
+    for (Map.Entry<Integer, Set<T>> e : id2Resources.entrySet()) {
+      constructLabelOrName2ResourcesTable(e.getValue(), labelOrName2Resources, e.getKey(), to_lower_case);
+    }
+
+    Set<String> labelOrNames         = labelOrName2Resources.keySet();
+    Map<String, Set<String>> context = constructContextLexicalForm(labelOrNames);
+    Hermes<String, String> hermes    = new Hermes<>();
+    hermes.init(context);
+    hermes.compute();
+
+    Set<Set<String>> simplified_extents = null, extents = null;
+    if (extract_from_GSH) {
+      simplified_extents = extractExtentsFromGSH(hermes);
+    }
+
+    if (extract_from_Lattice) {
+      extents = extractExtentsFromLattice(hermes);
+    }
+
+    if (simplified_extents != null) {
+      extractMapping(simplified_extents, labelOrName2Resources, mappings);
+    }
+
+    if (extents != null) {
+      extractMapping(extents, labelOrName2Resources, mappings);
+      if (m_number_of_ontologies > 2) {
+        extractMapping4MultiSources(extents, labelOrName2Resources, mappings);
+      }
+    }
+
+    hermes.close();
+  }
+
+  @Override
+  public void mapInstances(Mapping mappings) {
+    matchResources(id2Instances, mappings);
+  }
+
+  @Override
+  public void mapOntClasses(Mapping mappings) {
+    matchResources(id2OntClasses, mappings);
+  }
+
+  @Override
+  public void mapOntProperties(Mapping mappings) {
+    matchResources(id2OntProperties, mappings);
+  }
+
+  @Override
+  public void mapDatatypeProperties(Mapping mappings) {
+    matchResources(id2DatatypeProperties, mappings);
+  }
+
+  @Override
+  public void mapObjectProperties(Mapping mappings) {
+    matchResources(id2ObjectProperties, mappings);
+  }
+
+  @Override
   public <T extends Resource> void matchInstances(Set<T> sources, Set<T> targets, Mapping mappings) {
     matchResources(sources, targets, mappings);
   }
@@ -246,5 +396,10 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   @Override
   public <T extends Resource> void matchClasses(Set<T> sources, Set<T> targets, Mapping mappings) {
     matchResources(sources, targets, mappings);
+  }
+
+  @Override
+  public void setUseStripDiacritics(boolean b) {
+    use_strip_diacritics = b;
   }
 }

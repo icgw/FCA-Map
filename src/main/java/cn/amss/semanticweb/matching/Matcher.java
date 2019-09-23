@@ -11,8 +11,13 @@ import org.apache.jena.rdf.model.Resource;
 import java.util.Set;
 
 import cn.amss.semanticweb.alignment.Mapping;
+import cn.amss.semanticweb.model.OntModelWrapper;
 
 public interface Matcher extends InstanceMatcher, PropertyMatcher, ClassMatcher
 {
-  public <T extends Resource> void matchResources(Set<T> sources, Set<T> targets, Mapping mappings);
+  public void setSourceOntModelWrapper(OntModelWrapper source);
+
+  public void setTargetOntModelWrapper(OntModelWrapper target);
+
+  public void addIntermediateOntModelWrapper(OntModelWrapper intermediate);
 }

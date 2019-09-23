@@ -226,6 +226,21 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   }
 
   @Override
+  public void mapOntProperties(Mapping mappings) {
+    // TODO:
+  }
+
+  @Override
+  public void mapDatatypeProperties(Mapping mappings) {
+    // TODO:
+  }
+
+  @Override
+  public void mapObjectProperties(Mapping mappings) {
+    // TODO:
+  }
+
+  @Override
   public boolean addInstanceAnchors(Mapping instance_anchors) {
     boolean b = m_instance_anchors.addAll(instance_anchors);
     if (b) {

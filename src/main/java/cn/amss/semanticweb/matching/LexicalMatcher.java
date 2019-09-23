@@ -15,5 +15,5 @@ import cn.amss.semanticweb.model.ResourceWrapper;
 
 public interface LexicalMatcher extends Matcher, MatcherSetting
 {
-  // TODO: lexical setting methods.
+  public void setUseStripDiacritics(boolean b);
 }

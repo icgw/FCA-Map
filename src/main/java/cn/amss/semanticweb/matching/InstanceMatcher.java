@@ -15,5 +15,8 @@ import cn.amss.semanticweb.alignment.Mapping;
 
 public interface InstanceMatcher
 {
+  @Deprecated
   public <T extends Resource> void matchInstances(Set<T> sources, Set<T> targets, Mapping mappings);
+
+  public void mapInstances(Mapping mappings);
 }
