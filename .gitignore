@@ -11,6 +11,7 @@ buildNumber.properties
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
 
-# Avoid all the .DS_Store files
+# Ignoring .DS_Store files, .idea files
 .DS_Store
 */.DS_Store
+.idea
