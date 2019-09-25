@@ -64,8 +64,15 @@ public class ConceptLattice <O, A>
       all_attributes.addAll(c.getIntent());
     }
 
-    Concept<O, A> top    = new Concept<>(all_objects, new HashSet<>());
-    Concept<O, A> bottom = new Concept<>(new HashSet<>(), all_attributes);
+    Set<A> top_attributes = new HashSet<>(all_attributes);
+    Set<O> bottom_objects = new HashSet<>(all_objects);
+    for (Concept<O, A> c : concepts) {
+      top_attributes.retainAll(c.getIntent());
+      bottom_objects.retainAll(c.getExtent());
+    }
+
+    Concept<O, A> top    = new Concept<>(all_objects, top_attributes);
+    Concept<O, A> bottom = new Concept<>(bottom_objects, all_attributes);
 
     init(concepts, top, bottom);
   }
