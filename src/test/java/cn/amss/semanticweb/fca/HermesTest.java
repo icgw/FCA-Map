@@ -137,7 +137,7 @@ public class HermesTest
     assertEquals( answer, algorithm.listAllConcepts() );
 
     // case 2.
- 
+
     Map<String, Set<String>> context2 = new HashMap<>();
     context2.put("1", new HashSet<>(Arrays.asList("a", "b", "g")));
     context2.put("2", new HashSet<>(Arrays.asList("a", "b", "g", "h")));

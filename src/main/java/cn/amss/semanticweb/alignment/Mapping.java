@@ -34,6 +34,14 @@ public class Mapping implements Iterable<MappingCell>
     return m_mapping.addAll(m);
   }
 
+  public boolean removeAll(Mapping m) {
+    return m_mapping.removeAll(m.m_mapping);
+  }
+
+  public boolean removeAll(Set<MappingCell> m) {
+    return m_mapping.removeAll(m);
+  }
+
   public boolean add(String entity1, String entity2) {
     return add(new MappingCell(entity1, entity2));
   }

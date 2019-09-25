@@ -383,15 +383,15 @@ public class Hermes <O, A>
    *
    * @param limit_objects_size limit the size of objects of simplified concept
    * @param limit_attributes_size  limit the size of attributes of simplified concept
-   * @return the simplified concept, where its size of objects and attributes both are less than limit
+   * @return the simplified concept, where its size of objects and attributes both are less than and equals limit
    */
   public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
     Set<Pair<Set<O>, Set<A>>> simplified_concepts_limit = new HashSet<>();
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
         Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) &&
-            (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size) &&
+        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() <= limit_objects_size) &&
+            (limit_attributes_size <= 0 || simplified_concept.getValue().size() <= limit_attributes_size) &&
             simplified_concept != null) {
           simplified_concepts_limit.add(simplified_concept);
         }
@@ -409,8 +409,8 @@ public class Hermes <O, A>
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
         Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() < limit_objects_size) &&
-            (limit_attributes_size <= 0 || simplified_concept.getValue().size() < limit_attributes_size) &&
+        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() <= limit_objects_size) &&
+            (limit_attributes_size <= 0 || simplified_concept.getValue().size() <= limit_attributes_size) &&
             simplified_concept != null) {
           simplified_extents_limit.add(simplified_concept.getKey());
         }
@@ -419,9 +419,7 @@ public class Hermes <O, A>
     return simplified_extents_limit;
   }
 
-  private void addTopBottomAttributes(Set<Set<Integer>> set_of_attributes,
-                                      int limit_objects_size,
-                                      int limit_attributes_size) {
+  private void addTopBottomAttributes(Set<Set<Integer>> set_of_attributes, int limit_attributes_size) {
     if (attribute2Objects != null) {
       Set<Integer> total_attributes = attribute2Objects.keySet();
 
@@ -430,11 +428,11 @@ public class Hermes <O, A>
         top_attributes.retainAll(attributes);
       }
 
-      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
+      if (limit_attributes_size <= 0 || total_attributes.size() <= limit_attributes_size) {
         set_of_attributes.add(total_attributes);
       }
 
-      if (limit_attributes_size <= 0 || total_attributes.size() < limit_attributes_size) {
+      if (limit_attributes_size <= 0 || total_attributes.size() <= limit_attributes_size) {
         set_of_attributes.add(top_attributes);
       }
     }
@@ -455,7 +453,7 @@ public class Hermes <O, A>
       for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
         Set<Integer> attributes = r.getKey();
 
-        if (limit_attributes_size <= 0 || attributes.size() < limit_attributes_size) {
+        if (limit_attributes_size <= 0 || attributes.size() <= limit_attributes_size) {
           set_of_attributes.add(attributes);
         }
       }
@@ -463,7 +461,7 @@ public class Hermes <O, A>
 
     attributeIdClosure(set_of_attributes);
 
-    addTopBottomAttributes(set_of_attributes, limit_objects_size, limit_attributes_size);
+    addTopBottomAttributes(set_of_attributes, limit_attributes_size);
 
     for (Set<Integer> attributes : set_of_attributes) {
       Concept<Integer, Integer> concept_id = computeConceptId(attributes, limit_objects_size, limit_attributes_size);
@@ -484,7 +482,7 @@ public class Hermes <O, A>
       for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
         Set<Integer> attributes = r.getKey();
 
-        if (limit_attributes_size <= 0 || attributes.size() < limit_attributes_size) {
+        if (limit_attributes_size <= 0 || attributes.size() <= limit_attributes_size) {
           set_of_attributes.add(attributes);
         }
       }
@@ -492,7 +490,7 @@ public class Hermes <O, A>
 
     attributeIdClosure(set_of_attributes);
 
-    addTopBottomAttributes(set_of_attributes, limit_objects_size, limit_attributes_size);
+    addTopBottomAttributes(set_of_attributes, limit_attributes_size);
 
     for (Set<Integer> attributes : set_of_attributes) {
       Concept<Integer, Integer> concept_id = computeConceptId(attributes,
