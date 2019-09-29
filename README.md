@@ -24,15 +24,15 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 
 ### Formal Context
 
-|                        | ![Human][hm] | ![Male][ml] | ![Female][fml] | ![Scientist][sci] | ![Avenger][ag] | ![Villain][vln] | ![Asgardian][asg] | ![Infinity Stones User][inf] |
-|:----------------------:|:------------:|:-----------:|:--------------:|:-----------------:|:--------------:|:---------------:|:-----------------:|:----------------------------:|
-|    ![Iron Man][im]     |     :x:      |     :x:     |                |        :x:        |      :x:       |                 |                   |             :x:              |
-|      ![Thor][tr]       |              |     :x:     |                |                   |      :x:       |                 |        :x:        |                              |
-|   ![Black Widow][bw]   |     :x:      |             |      :x:       |                   |      :x:       |                 |                   |                              |
-|      ![Hulk][hk]       |     :x:      |     :x:     |                |        :x:        |      :x:       |                 |                   |             :x:              |
-| ![Captain America][ca] |     :x:      |     :x:     |                |                   |      :x:       |                 |                   |                              |
-|     ![Thanos][ts]      |              |     :x:     |                |                   |                |       :x:       |                   |             :x:              |
-|      ![Hela][hl]       |              |             |      :x:       |                   |                |       :x:       |        :x:        |                              |
+|                        | ![Human][hm] Human | ![Male][ml] Male | ![Female][fml] Female | ![Scientist][sci] Scientist | ![Avenger][ag] Avenger | ![Villain][vln] Villain | ![Asgardian][asg] Asgardian | ![Infinity Stones User][inf] Infinity Stones User |
+|:----------------------:|:------------------:|:----------------:|:---------------------:|:---------------------------:|:----------------------:|:-----------------------:|:---------------------------:|:-------------------------------------------------:|
+|    ![Iron Man][im]     |         ✖️          |        ✖️         |                       |              ✖️              |           ✖️            |                         |                             |                         ✖️                         |
+|      ![Thor][tr]       |                    |        ✖️         |                       |                             |           ✖️            |                         |              ✖️              |                                                   |
+|   ![Black Widow][bw]   |         ✖️          |                  |           ✖️           |                             |           ✖️            |                         |                             |                                                   |
+|      ![Hulk][hk]       |         ✖️          |        ✖️         |                       |              ✖️              |           ✖️            |                         |                             |                         ✖️                         |
+| ![Captain America][ca] |         ✖️          |        ✖️         |                       |                             |           ✖️            |                         |                             |                                                   |
+|     ![Thanos][ts]      |                    |        ✖️         |                       |                             |                        |            ✖️            |                             |                         ✖️                         |
+|      ![Hela][hl]       |                    |                  |           ✖️           |                             |                        |            ✖️            |              ✖️              |                         |                         |
 
 ### Concept Lattices (derived from the above context)
 
