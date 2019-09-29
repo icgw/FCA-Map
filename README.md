@@ -24,19 +24,19 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 
 ### Formal Context
 
-|                                                                                                            | <img src=".assets/human.png" alt="human" width="50" height="50"> <br/> human | <img src=".assets/male.png" alt="male" width="50" height="50"> <br/> male | <img src=".assets/female.png" alt="female" width="50" height="50"> <br/> female | <img src=".assets/scientist.png" alt="scientist" width="50" height="50"> <br/> scientist | <img src=".assets/avenger.png" alt="avenger" width="50" height="50"> <br/> avenger | <img src=".assets/villain.png" alt="villain" width="50" height="50"> <br/> villain | <img src=".assets/asgardian.png" alt="asgardian" width="50" height="50"> <br/> asagrdian | <img src=".assets/infinity.png" alt="infinity stones user" width="50" height="50"> <br/> infinity stones user |
-|:----------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
-|           <img src=".assets/iron-man.png" alt="iron man" width="50" height="50"> <br/> Iron Man            |                                      ✖                                       |                                     ✖                                     |                                                                                 |                                            ✖                                             |                                         ✖                                          |                                                                                    |                                                                                          |                                                       ✖                                                       |
-|                 <img src=".assets/thor.png" alt="thor" width="50" height="50"> <br/> Thor                  |                                                                              |                                     ✖                                     |                                                                                 |                                                                                          |                                         ✖                                          |                                                                                    |                                            ✖                                             |                                                                                                               |
-|     <img src=".assets/black-widow.png" alt="black widow" width="50" height="50"> <br/> Black Widow      |                                      ✖                                       |                                                                           |                                        ✖                                        |                                                                                          |                                         ✖                                          |                                                                                    |                                                                                          |                                                                                                               |
-|                 <img src=".assets/hulk.png" alt="hulk" width="50" height="50"> <br/> Hulk                  |                                      ✖                                       |                                     ✖                                     |                                                                                 |                                            ✖                                             |                                         ✖                                          |                                                                                    |                                                                                          |                                                       ✖                                                       |
-| <img src=".assets/captain-america.png" alt="captain america" width="50" height="50"> <br/> Captain America |                                      ✖                                       |                                     ✖                                     |                                                                                 |                                                                                          |                                         ✖                                          |                                                                                    |                                                                                          |                                                                                                               |
-|              <img src=".assets/thanos.png" alt="thanos" width="50" height="50"> <br/> Thanos               |                                                                              |                                     ✖                                     |                                                                                 |                                                                                          |                                                                                    |                                         ✖                                          |                                                                                          |                                                       ✖                                                       |
-|                 <img src=".assets/hela.png" alt="hela" width="50" height="50"> <br/> Hela                  |                                                                              |                                                                           |                                        ✖                                        |                                                                                          |                                                                                    |                                         ✖                                          |                                            ✖                                             |                                                                                                               |
+|                        | ![Human][hm] | ![Male][ml] | ![Female][fml] | ![Scientist][sci] | ![Avenger][ag] | ![Villain][vln] | ![Asgardian][asg] | ![Infinity Stones User][inf] |
+|:----------------------:|:------------:|:-----------:|:--------------:|:-----------------:|:--------------:|:---------------:|:-----------------:|:----------------------------:|
+|    ![Iron Man][im]     |     :x:      |     :x:     |                |        :x:        |      :x:       |                 |                   |             :x:              |
+|      ![Thor][tr]       |              |     :x:     |                |                   |      :x:       |                 |        :x:        |                              |
+|   ![Black Widow][bw]   |     :x:      |             |      :x:       |                   |      :x:       |                 |                   |                              |
+|      ![Hulk][hk]       |     :x:      |     :x:     |                |        :x:        |      :x:       |                 |                   |             :x:              |
+| ![Captain America][ca] |     :x:      |     :x:     |                |                   |      :x:       |                 |                   |                              |
+|     ![Thanos][ts]      |              |     :x:     |                |                   |                |       :x:       |                   |             :x:              |
+|      ![Hela][hl]       |              |             |      :x:       |                   |                |       :x:       |        :x:        |                              |
 
 ### Concept Lattices (derived from the above context)
 
-![complete-lattice](./.assets/example-complete-lattice.svg)
+![complete-lattice](./.assets/example-concept-lattice-marvel.svg)
 
 ## Install
 
@@ -112,6 +112,21 @@ This work has been supported by the National Key Research and Development Progra
 
 [GPLv3](LICENSE) © Guowei Chen
 
+[im]: .assets/iron-man.png
+[tr]: .assets/thor.png
+[bw]: .assets/black-widow.png
+[hk]: .assets/hulk.png
+[ca]: .assets/captain-america.png
+[ts]: .assets/thanos.png
+[hl]: .assets/hela.png
+[hm]: .assets/human.png
+[ml]: .assets/male.png
+[fml]: .assets/female.png
+[sci]: .assets/scientist.png
+[ag]: .assets/avenger.png
+[vln]: .assets/villain.png
+[asg]: .assets/asgardian.png
+[inf]: .assets/infinity.png
 [1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
 [2]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
 [3]: https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9
