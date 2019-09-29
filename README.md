@@ -24,15 +24,15 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 
 ### Formal Context
 
-|                        | ![Human][hm] Human | ![Male][ml] Male | ![Female][fml] Female | ![Scientist][sci] Scientist | ![Avenger][ag] Avenger | ![Villain][vln] Villain | ![Asgardian][asg] Asgardian | ![Infinity Stones User][inf] Infinity Stones User |
-|:----------------------:|:------------------:|:----------------:|:---------------------:|:---------------------------:|:----------------------:|:-----------------------:|:---------------------------:|:-------------------------------------------------:|
-|    ![Iron Man][im]     |         ✖️          |        ✖️         |                       |              ✖️              |           ✖️            |                         |                             |                         ✖️                         |
-|      ![Thor][tr]       |                    |        ✖️         |                       |                             |           ✖️            |                         |              ✖️              |                                                   |
-|   ![Black Widow][bw]   |         ✖️          |                  |           ✖️           |                             |           ✖️            |                         |                             |                                                   |
-|      ![Hulk][hk]       |         ✖️          |        ✖️         |                       |              ✖️              |           ✖️            |                         |                             |                         ✖️                         |
-| ![Captain America][ca] |         ✖️          |        ✖️         |                       |                             |           ✖️            |                         |                             |                                                   |
-|     ![Thanos][ts]      |                    |        ✖️         |                       |                             |                        |            ✖️            |                             |                         ✖️                         |
-|      ![Hela][hl]       |                    |                  |           ✖️           |                             |                        |            ✖️            |              ✖️              |                         |                         |
+|                        | ![Human][hm] <br /> Human | ![Male][ml] <br /> Male | ![Female][fml] <br /> Female | ![Scientist][sci] <br /> Scientist | ![Avenger][ag] <br /> Avenger | ![Villain][vln] <br /> Villain | ![Asgardian][asg] <br /> Asgardian | ![Infinity Stones User][inf] <br /> Infinity Stones User |
+|:----------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|    ![Iron Man][im]     | ✖️ | ✖️ |   | ✖️ | ✖️ |   |   | ✖️ |
+|      ![Thor][tr]       |   | ✖️ |   |   | ✖️ |   | ✖️ |   |
+|   ![Black Widow][bw]   | ✖️ |   | ✖️ |   | ✖️ |   |   |   |
+|      ![Hulk][hk]       | ✖️ | ✖️ |   | ✖️ | ✖️ |   |   | ✖️ |
+| ![Captain America][ca] | ✖️ | ✖️ |   |   | ✖️ |   |   |   |
+|     ![Thanos][ts]      |   | ✖️ |   |   |   | ✖️ |   | ✖️ |
+|      ![Hela][hl]       |   |   | ✖️ |   |   | ✖️ | ✖️ |   |
 
 ### Concept Lattices (derived from the above context)
 
