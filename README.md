@@ -24,21 +24,21 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 
 ### Formal Context
 
-|                        | ![Human][hm] <br /> Human | ![Male][ml] <br /> Male | ![Female][fml] <br /> Female | ![Scientist][sci] <br /> Scientist | ![Avenger][ag] <br /> Avenger | ![Villain][vln] <br /> Villain | ![Asgardian][asg] <br /> Asgardian | ![Infinity Stones User][inf] <br /> Infinity Stones User |
+|                        | ![Asgardian][asg] <br /> Asgardian | ![Avenger][ag] <br /> Avenger | ![Female][fml] <br /> Female | ![Human][hm] <br /> Human | ![Infinity Stones User][inf] <br /> Infinity Stones User | ![Male][ml] <br /> Male | ![Scientist][sci] <br /> Scientist | ![Villain][vln] <br /> Villain |
 |:----------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|    ![Iron Man][im]     | ✖️ | ✖️ |   | ✖️ | ✖️ |   |   | ✖️ |
-|      ![Thor][tr]       |   | ✖️ |   |   | ✖️ |   | ✖️ |   |
-|   ![Black Widow][bw]   | ✖️ |   | ✖️ |   | ✖️ |   |   |   |
-|      ![Hulk][hk]       | ✖️ | ✖️ |   | ✖️ | ✖️ |   |   | ✖️ |
-| ![Captain America][ca] | ✖️ | ✖️ |   |   | ✖️ |   |   |   |
-|     ![Thanos][ts]      |   | ✖️ |   |   |   | ✖️ |   | ✖️ |
-|      ![Hela][hl]       |   |   | ✖️ |   |   | ✖️ | ✖️ |   |
+|   ![Black Widow][bw]   |   | ✖️ | ✖️ | ✖️ |   |   |   |   |
+| ![Captain America][ca] |   | ✖️ |   | ✖️ |   | ✖️ |   |   |
+|      ![Hela][hl]       | ✖️ |   | ✖️ |   |   |   |   | ✖️ |
+|      ![Hulk][hk]       |   | ✖️ |   | ✖️ | ✖️ | ✖️ | ✖️ |   |
+|    ![Iron Man][im]     |   | ✖️ |   | ✖️ | ✖️ | ✖️ | ✖️ |   |
+|     ![Thanos][ts]      |   |   |   |   | ✖️ | ✖️ |   | ✖️ |
+|      ![Thor][tr]       | ✖️ | ✖️ |   |   |   | ✖️ |   |   |
 
-### Concept Lattices
+### Concept Lattice
 
 This concept lattice is derived from the above context, only reserved simplified extent and intent as follows:
 
-![complete-lattice](./.assets/example-concept-lattice-marvel.svg)
+![complete-lattice](assets/example-concept-lattice-marvel.svg)
 
 ## Install
 
@@ -114,21 +114,21 @@ This work has been supported by the National Key Research and Development Progra
 
 [GPLv3](LICENSE) © Guowei Chen
 
-[im]: .assets/iron-man.png
-[tr]: .assets/thor.png
-[bw]: .assets/black-widow.png
-[hk]: .assets/hulk.png
-[ca]: .assets/captain-america.png
-[ts]: .assets/thanos.png
-[hl]: .assets/hela.png
-[hm]: .assets/human.png
-[ml]: .assets/male.png
-[fml]: .assets/female.png
-[sci]: .assets/scientist.png
-[ag]: .assets/avenger.png
-[vln]: .assets/villain.png
-[asg]: .assets/asgardian.png
-[inf]: .assets/infinity.png
+[im]: assets/iron-man.png
+[tr]: assets/thor.png
+[bw]: assets/black-widow.png
+[hk]: assets/hulk.png
+[ca]: assets/captain-america.png
+[ts]: assets/thanos.png
+[hl]: assets/hela.png
+[hm]: assets/human.png
+[ml]: assets/male.png
+[fml]: assets/female.png
+[sci]: assets/scientist.png
+[ag]: assets/avenger.png
+[vln]: assets/villain.png
+[asg]: assets/asgardian.png
+[inf]: assets/infinity.png
 [1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
 [2]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
 [3]: https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9
