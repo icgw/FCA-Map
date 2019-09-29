@@ -36,7 +36,7 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 
 ### Concept Lattices
 
-This concept lattice is derived from the above context, only reserved simplify extent and intent as follows:
+This concept lattice is derived from the above context, only reserved simplified extent and intent as follows:
 
 ![complete-lattice](./.assets/example-concept-lattice-marvel.svg)
 
