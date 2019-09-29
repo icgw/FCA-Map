@@ -34,7 +34,9 @@ Formal Concept Analysis is based on mathematical order theory, in particular on 
 |     ![Thanos][ts]      |   | ✖️ |   |   |   | ✖️ |   | ✖️ |
 |      ![Hela][hl]       |   |   | ✖️ |   |   | ✖️ | ✖️ |   |
 
-### Concept Lattices (derived from the above context)
+### Concept Lattices
+
+This concept lattice is derived from the above context, only reserved simplify extent and intent as follows:
 
 ![complete-lattice](./.assets/example-concept-lattice-marvel.svg)
 
