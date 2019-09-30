@@ -82,6 +82,8 @@ public class Demo {
     lm.mapObjectProperties(mappings);
 
     System.out.println(mappings);
+
+    lm.close();
   }
 }
 ```

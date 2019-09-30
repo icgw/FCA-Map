@@ -45,5 +45,7 @@ public class LexicalMatcherTest
     XMLAlignReader alignReader = new XMLAlignReader(inAlignment);
 
     assertEquals (alignReader.getMapping(), mappings);
+
+    lm.close();
   }
 }
