@@ -20,7 +20,7 @@ Formal Concept Analysis (FCA) is a well developed mathematical model for cluster
 
 ## Background
 
-FCA is based on mathematical order theory, in particular on the theory of complete lattices. For more details, see the [book](https://www.springer.com/gp/book/9783540627715).
+FCA is based on mathematical order theory. (See the [book](https://www.springer.com/gp/book/9783540627715) for more details)
 
 The following is an example of formal concept analysis. 
 
@@ -102,13 +102,13 @@ This work has been supported by the National Key Research and Development Progra
 
 ## References
 
-1. **Identifying Mappings among Knowledge Graphs by Formal Concept Analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . [[paper][1]]
+1. **Identifying mappings among knowledge graphs by formal concept analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . [[paper][1]]
 
 2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166. [[paper][2]]
 
 3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018). [[paper][3]]
 
-4. **Identifying and validating ontology mappings by formal concept analysis.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC2016: 61-72. [[paper][4]]
+4. **Identifying and validating ontology mappings by formal concept analysis.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 61-72. [[paper][4]]
 
 5. **FCA-Map results for OAEI 2016.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 172-177. [[paper][5]]
 
