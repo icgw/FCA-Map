@@ -7,7 +7,7 @@ FCA-Map: Identifying Mappings by Formal Concept Analysis
 
 > Ontology matching system based on formal concept analysis.
 
-Formal concept analysis (FCA) is a well developed mathematical model for analyzing data and structuring concepts.
+Formal Concept Analysis (FCA) is a well developed mathematical model for clustering individuals and structuring concepts.
 
 ## Table of Contents
 
@@ -20,19 +20,21 @@ Formal concept analysis (FCA) is a well developed mathematical model for analyzi
 
 ## Background
 
-Formal Concept Analysis is based on mathematical order theory, in particular on the theory of complete lattices (See the [book](https://www.springer.com/gp/book/9783540627715)). The following is an example of formal concept analysis. 
+FCA is based on mathematical order theory, in particular on the theory of complete lattices. For more details, see the [book](https://www.springer.com/gp/book/9783540627715).
+
+The following is an example of formal concept analysis. 
 
 ### Formal Context
 
 |                        | ![Asgardian][asg] <br /> Asgardian | ![Avenger][ag] <br /> Avenger | ![Female][fml] <br /> Female | ![Human][hm] <br /> Human | ![Infinity Stones User][inf] <br /> Infinity Stones User | ![Male][ml] <br /> Male | ![Scientist][sci] <br /> Scientist | ![Villain][vln] <br /> Villain |
 |:----------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|   ![Black Widow][bw]   |   | ✖️ | ✖️ | ✖️ |   |   |   |   |
-| ![Captain America][ca] |   | ✖️ |   | ✖️ |   | ✖️ |   |   |
-|      ![Hela][hl]       | ✖️ |   | ✖️ |   |   |   |   | ✖️ |
-|      ![Hulk][hk]       |   | ✖️ |   | ✖️ | ✖️ | ✖️ | ✖️ |   |
-|    ![Iron Man][im]     |   | ✖️ |   | ✖️ | ✖️ | ✖️ | ✖️ |   |
-|     ![Thanos][ts]      |   |   |   |   | ✖️ | ✖️ |   | ✖️ |
-|      ![Thor][tr]       | ✖️ | ✖️ |   |   |   | ✖️ |   |   |
+|   ![Black Widow][bw]   |   | ✖ | ✖ | ✖ |   |   |   |   |
+| ![Captain America][ca] |   | ✖ |   | ✖ |   | ✖ |   |   |
+|      ![Hela][hl]       | ✖ |   | ✖ |   |   |   |   | ✖ |
+|      ![Hulk][hk]       |   | ✖ |   | ✖ | ✖ | ✖ | ✖ |   |
+|    ![Iron Man][im]     |   | ✖ |   | ✖ | ✖ | ✖ | ✖ |   |
+|     ![Thanos][ts]      |   |   |   |   | ✖ | ✖ |   | ✖ |
+|      ![Thor][tr]       | ✖ | ✖ |   |   |   | ✖ |   |   |
 
 ### Concept Lattice
 
@@ -42,12 +44,12 @@ This concept lattice is derived from the above context, only reserved simplified
 
 ## Install
 
-This program depends upon:
+This project depends upon:
 - Maven 3.6.1
 - Jena 3.12.0
 - Java 1.8.0\_161
 
-It is developed using [IntelliJ IDEA](https://www.jetbrains.com/idea/). (Recommended)
+I strongly recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/) for developing this project.
 
 ## Usage
 
@@ -106,6 +108,10 @@ This work has been supported by the National Key Research and Development Progra
 
 3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018). [[paper][3]]
 
+4. **Identifying and validating ontology mappings by formal concept analysis.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC2016: 61-72. [[paper][4]]
+
+5. **FCA-Map results for OAEI 2016.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 172-177. [[paper][5]]
+
 ## Maintainer
 
 [@icgw](https://github.com/icgw)
@@ -132,3 +138,5 @@ This work has been supported by the National Key Research and Development Progra
 [1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
 [2]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
 [3]: https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9
+[4]: http://ceur-ws.org/Vol-1766/om2016\_Tpaper6.pdf
+[5]: http://ceur-ws.org/Vol-1766/oaei16\_paper7.pdf
