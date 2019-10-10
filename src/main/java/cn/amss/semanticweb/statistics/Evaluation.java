@@ -11,9 +11,6 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.alignment.MappingCell;
 import cn.amss.semanticweb.vocabulary.DBkWik;

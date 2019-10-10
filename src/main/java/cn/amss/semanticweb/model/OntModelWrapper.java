@@ -11,8 +11,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.InputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.SKOS;
 import org.apache.jena.rdf.model.Model;
@@ -36,7 +35,7 @@ import cn.amss.semanticweb.vocabulary.DBkWik;
  */
 public class OntModelWrapper
 {
-  final static Logger m_logger = LoggerFactory.getLogger(OntModelWrapper.class);
+  final static Logger m_logger = Logger.getLogger(OntModelWrapper.class);
 
   private Model m_raw_model   = null;
   private OntModel m_ontology = null;
@@ -111,8 +110,8 @@ public class OntModelWrapper
     acquireClasses();
 
     if (m_logger.isInfoEnabled()) {
-      m_logger.info("#Instances: {}, #Properties: {}, #DatatypeProperties: {}, #ObjectProperties: {}, #Classes: {}.",
-                    m_instances.size(), m_properties.size(), m_datatype_properties.size(), m_object_properties.size(), m_classes.size());
+      m_logger.info(String.format("#Instances: %8d, #Properties: %8d, #DatatypeProperties: %8d, #ObjectProperties: %8d, #Classes: %8d.",
+                    m_instances.size(), m_properties.size(), m_datatype_properties.size(), m_object_properties.size(), m_classes.size()));
     }
   }
 
