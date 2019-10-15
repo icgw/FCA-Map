@@ -6,7 +6,7 @@
 
   <groupId>cn.amss.semanticweb</groupId>
   <artifactId>FCA-Map</artifactId>
-  <version>1.0-ALPHA</version>
+  <version>0.0.1-SNAPSHOT</version>
 
   <name>FCA-Map</name>
   <url>https://github.com/icgw/FCA-Map</url>
