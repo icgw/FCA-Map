@@ -20,9 +20,9 @@ Formal Concept Analysis (FCA) is a well developed mathematical model for cluster
 
 ## Background
 
-FCA is based on mathematical order theory. (See the [book](https://www.springer.com/gp/book/9783540627715) for more details)
+Formal concept analysis is based on mathematical order theory. (See the [book](https://www.springer.com/gp/book/9783540627715) for more details)
 
-The following is an example of formal concept analysis. 
+The following is an example of a formal context and its derived concept lattice.
 
 ### Formal Context
 
@@ -38,7 +38,7 @@ The following is an example of formal concept analysis.
 
 ### Concept Lattice
 
-This concept lattice is derived from the above context, only reserved simplified extent and intent as follows:
+This concept lattice is derived from the above context, only reserved simplified extent and intent as follows.
 
 ![complete-lattice](assets/example-concept-lattice-marvel.svg)
 
@@ -49,7 +49,7 @@ This project depends upon:
 - Jena 3.12.0
 - Java 1.8.0\_161
 
-I strongly recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/) for developing this project.
+I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/)! :)
 
 ## Usage
 
@@ -70,13 +70,11 @@ public class Demo {
     OntModelWrapper target = new OntModelWrapper(tgtURL);
 
     LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
+
+    lm.setSourceTargetOntModelWrapper(source, target);
     lm.setExtractType(true, true);
 
     Mapping mappings = new Mapping();
-
-    lm.setSourceOntModelWrapper(source);
-    lm.setTargetOntModelWrapper(target);
-
     lm.mapOntClasses(mappings);
     lm.mapDatatypeProperties(mappings);
     lm.mapObjectProperties(mappings);
@@ -104,15 +102,17 @@ This work has been supported by the National Key Research and Development Progra
 
 ## References
 
-1. **Identifying mappings among knowledge graphs by formal concept analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . [[paper][1]]
+1. **Identifying mappings among knowledge graphs by formal concept analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[paper][1]\]
 
-2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166. [[paper][2]]
+2. **FCAMap-KG results for OAEI 2019.** _Fei Chang, Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[papper][2]\]
 
-3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics 9(1): 11:1-11:27 (2018). [[paper][3]]
+2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166. \[[paper][3]\]
 
-4. **Identifying and validating ontology mappings by formal concept analysis.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 61-72. [[paper][4]]
+3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics **9**(1): 11:1-11:27 (2018). \[[paper][4]\]
 
-5. **FCA-Map results for OAEI 2016.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 172-177. [[paper][5]]
+4. **Identifying and validating ontology mappings by formal concept analysis.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 61-72. \[[paper][5]\]
+
+5. **FCA-Map results for OAEI 2016.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 172-177. \[[paper][6]\]
 
 ## Maintainer
 
@@ -138,7 +138,8 @@ This work has been supported by the National Key Research and Development Progra
 [asg]: assets/asgardian.png
 [inf]: assets/infinity.png
 [1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
-[2]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
-[3]: https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9
-[4]: http://ceur-ws.org/Vol-1766/om2016\_Tpaper6.pdf
-[5]: http://ceur-ws.org/Vol-1766/oaei16\_paper7.pdf
+[2]: http://www.dit.unitn.it/~pavel/om2019/papers/oaei19\_paper7.pdf
+[3]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
+[4]: https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9
+[5]: http://ceur-ws.org/Vol-1766/om2016\_Tpaper6.pdf
+[6]: http://ceur-ws.org/Vol-1766/oaei16\_paper7.pdf
