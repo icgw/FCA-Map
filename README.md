@@ -104,7 +104,7 @@ This work has been supported by the National Key Research and Development Progra
 
 1. **Identifying mappings among knowledge graphs by formal concept analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[paper][1]\]
 
-2. **FCAMap-KG results for OAEI 2019.** _Fei Chang, Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[papper][2]\]
+2. **FCAMap-KG results for OAEI 2019.** _Fei Chang, Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[paper][2]\]
 
 2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166. \[[paper][3]\]
 
