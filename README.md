@@ -22,7 +22,7 @@ Formal Concept Analysis (FCA) is a well developed mathematical model for cluster
 
 Formal concept analysis is based on mathematical order theory. (See the [book](https://www.springer.com/gp/book/9783540627715) for more details)
 
-The following is an example of a formal context and its derived concept lattice.
+The following is an example of a formal context (about [Marvel Cinematic Universe](https://www.marvel.com/movies) films) and its derived concept lattice.
 
 ### Formal Context
 
