@@ -84,10 +84,10 @@ public class Evaluation
                                                           left_duplicate_free, right_duplicate_free);
 
     if (m_logger.isInfoEnabled()) {
-      String info = String.format("Instance - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n" +
-                                  "Property - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n" +
-                                  "Class    - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n" +
-                                  "Overall  - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n", 
+      String info = String.format("%nInstance - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %8d. (TP: %8d, FP: %8d, FN: %8d)" +
+                                  "%nProperty - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %8d. (TP: %8d, FP: %8d, FN: %8d)" +
+                                  "%nClass    - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %8d. (TP: %8d, FP: %8d, FN: %8d)" +
+                                  "%nOverall  - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %8d. (TP: %8d, FP: %8d, FN: %8d)", 
       instances_eval.getPrecision()     , instances_eval.getF1measure()      , instances_eval.getRecall()         , m_instance_system.size() ,
       instances_eval.getTruePositive()  , instances_eval.getFalsePositive()  , instances_eval.getFalseNegative()  ,
       properties_eval.getPrecision()    , properties_eval.getF1measure()     , properties_eval.getRecall()        , m_property_system.size() ,
@@ -96,6 +96,8 @@ public class Evaluation
       classes_eval.getTruePositive()    , classes_eval.getFalsePositive()    , classes_eval.getFalseNegative()    ,
       overall_eval.getPrecision()       , overall_eval.getF1measure()        , overall_eval.getRecall()           , m_system.size()          ,
       overall_eval.getTruePositive()    , overall_eval.getFalsePositive()    , overall_eval.getFalseNegative());
+
+      m_logger.info(info);
     }
   }
 }

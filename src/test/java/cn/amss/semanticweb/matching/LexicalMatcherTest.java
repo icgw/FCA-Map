@@ -10,8 +10,6 @@ package cn.amss.semanticweb.matching;
 import cn.amss.semanticweb.model.OntModelWrapper;
 import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.io.XMLAlignReader;
-import cn.amss.semanticweb.matching.MatcherFactory;
-import cn.amss.semanticweb.matching.LexicalMatcher;
 
 import java.io.InputStream;
 

@@ -7,10 +7,6 @@
 
 package cn.amss.semanticweb.matching;
 
-import org.apache.jena.rdf.model.Resource;
-import java.util.Set;
-
-import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.model.OntModelWrapper;
 
 public interface Matcher extends InstanceMatcher, PropertyMatcher, ClassMatcher

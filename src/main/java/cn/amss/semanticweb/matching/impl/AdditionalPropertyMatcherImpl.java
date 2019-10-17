@@ -315,12 +315,12 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
 
   @Override
   public void mapDatatypeProperties(Mapping mappings) {
-    // TODO:
+    mapAdditionalProperties(m_source.getDatatypeProperties(), m_target.getDatatypeProperties(), mappings);
   }
 
   @Override
   public void mapObjectProperties(Mapping mappings) {
-    // TODO:
+    mapAdditionalProperties(m_source.getObjectProperties(), m_target.getObjectProperties(), mappings);
   }
 
   @Override

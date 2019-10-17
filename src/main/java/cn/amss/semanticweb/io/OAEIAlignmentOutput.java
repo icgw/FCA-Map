@@ -12,7 +12,6 @@ import cn.amss.semanticweb.alignment.Mapping;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.charset.StandardCharsets;
 
 public class OAEIAlignmentOutput extends Element
 {
