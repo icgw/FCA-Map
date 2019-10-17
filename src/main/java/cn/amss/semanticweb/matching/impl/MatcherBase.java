@@ -95,7 +95,6 @@ public abstract class MatcherBase
     initId2Resources(id, mw);
   }
 
-  @Override
   public void setSourceTargetOntModelWrapper(OntModelWrapper source, OntModelWrapper target) {
     setOntModelWrapper(source, m_source_id);
     setOntModelWrapper(target, m_target_id);

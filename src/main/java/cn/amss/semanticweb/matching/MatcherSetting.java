@@ -7,6 +7,8 @@
 
 package cn.amss.semanticweb.matching;
 
+import cn.amss.semanticweb.model.OntModelWrapper;
+
 /**
  * The common setting for matcher based on FCA
  *

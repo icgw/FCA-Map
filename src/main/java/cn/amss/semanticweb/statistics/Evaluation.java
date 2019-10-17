@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
+
 import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.alignment.MappingCell;
 import cn.amss.semanticweb.vocabulary.DBkWik;
@@ -18,6 +20,8 @@ import cn.amss.semanticweb.util.ConfusionMatrix;
 
 public class Evaluation
 {
+  final static Logger m_logger = Logger.getLogger(Evaluation.class);
+
   private static final Set<String> CLASS_TYPES    = new HashSet<>(Arrays.asList("class", "null"));
   private static final Set<String> PROPERTY_TYPES = new HashSet<>(Arrays.asList("property", "null"));
   private static final Set<String> INSTANCE_TYPES = new HashSet<>(Arrays.asList("resource", "null"));
@@ -79,14 +83,19 @@ public class Evaluation
     ConfusionMatrix overall_eval    = new ConfusionMatrix(m_system, m_reference,
                                                           left_duplicate_free, right_duplicate_free);
 
-    System.out.printf("Instance. pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n" +
-                      "Property. pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n" +
-                      "Class.    pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n" +
-                      "Overall.  pre: %.2f, f1m: %.2f, rec: %.2f. #: %d. %n",
-
-    instances_eval.getPrecision(),  instances_eval.getF1measure(),  instances_eval.getRecall(),  m_instance_system.size(),
-    properties_eval.getPrecision(), properties_eval.getF1measure(), properties_eval.getRecall(), m_property_system.size(),
-    classes_eval.getPrecision(),    classes_eval.getF1measure(),    classes_eval.getRecall(),    m_class_system.size(),
-    overall_eval.getPrecision(),    overall_eval.getF1measure(),    overall_eval.getRecall(),    m_system.size());
+    if (m_logger.isInfoEnabled()) {
+      String info = String.format("Instance - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n" +
+                                  "Property - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n" +
+                                  "Class    - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n" +
+                                  "Overall  - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %d. (TP: %d, FP: %d, FN: %d)%n", 
+      instances_eval.getPrecision()     , instances_eval.getF1measure()      , instances_eval.getRecall()         , m_instance_system.size() ,
+      instances_eval.getTruePositive()  , instances_eval.getFalsePositive()  , instances_eval.getFalseNegative()  ,
+      properties_eval.getPrecision()    , properties_eval.getF1measure()     , properties_eval.getRecall()        , m_property_system.size() ,
+      properties_eval.getTruePositive() , properties_eval.getFalsePositive() , properties_eval.getFalseNegative() ,
+      classes_eval.getPrecision()       , classes_eval.getF1measure()        , classes_eval.getRecall()           , m_class_system.size()    ,
+      classes_eval.getTruePositive()    , classes_eval.getFalsePositive()    , classes_eval.getFalseNegative()    ,
+      overall_eval.getPrecision()       , overall_eval.getF1measure()        , overall_eval.getRecall()           , m_system.size()          ,
+      overall_eval.getTruePositive()    , overall_eval.getFalsePositive()    , overall_eval.getFalseNegative());
+    }
   }
 }
