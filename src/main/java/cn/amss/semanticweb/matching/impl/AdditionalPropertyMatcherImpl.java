@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Arrays;
 
 import cn.amss.semanticweb.fca.Hermes;
+import cn.amss.semanticweb.model.OntModelWrapper;
 import cn.amss.semanticweb.model.ResourceWrapper;
 import cn.amss.semanticweb.util.Pair;
 import cn.amss.semanticweb.alignment.Mapping;
@@ -35,6 +36,12 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   private Mapping m_class_anchors    = null;
 
   private Map<Resource, Set<MappingCell>> m_resource_to_map_cell = null;
+
+  private static boolean b_source_duplicate_free = true;
+  private static boolean b_target_duplicate_free = true;
+
+  private OntModelWrapper m_source = null;
+  private OntModelWrapper m_target = null;
 
   private static class SubjectObject extends Pair<MappingCell, MappingCell> {
     public SubjectObject(MappingCell subject_align, MappingCell object_align) {
@@ -192,13 +199,37 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
   }
 
   private void clear() {
-    m_instance_anchors.clear();
-    m_resource_to_map_cell.clear();
+    if(null != m_instance_anchors) {
+      m_instance_anchors.clear();
+    }
+
+    if (null != m_property_anchors) {
+      m_property_anchors.clear();
+    }
+
+    if (null != m_class_anchors) {
+      m_class_anchors.clear();
+    }
+
+    if (null != m_resource_to_map_cell) {
+      m_resource_to_map_cell.clear();
+    }
+  }
+
+  @Override
+  public void setSourceTargetOntModelWrapper(OntModelWrapper source, OntModelWrapper target) {
+    m_source = source;
+    m_target = target;
+  }
+
+  @Override
+  public void setDuplicateFree(boolean b_duplicate_free1, boolean b_duplicate_free2) {
+    b_source_duplicate_free = b_duplicate_free1;
+    b_target_duplicate_free = b_duplicate_free2;
   }
 
   @Override
   public <T extends Resource> void matchProperties(Set<T> sources, Set<T> targets, Mapping mappings) {
-    addHashAnchors(m_instance_anchors);
     Map<ResourceWrapper<T>, Set<SubjectObject>> context = constructContext(sources, targets, m_property_anchors);
 
     Hermes<ResourceWrapper<T>, SubjectObject> hermes = new Hermes<>();
@@ -225,9 +256,61 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     hermes.close();
   }
 
+  private <T extends Resource> void mapAdditionalProperties(Set<T> sources, Set<T> targets, Mapping mappings) {
+    Map<ResourceWrapper<T>, Set<SubjectObject>> context = constructContext(sources, targets, m_property_anchors);
+
+    Hermes<ResourceWrapper<T>, SubjectObject> hermes = new Hermes<>();
+    hermes.init(context);
+    hermes.compute();
+
+    Set<Set<ResourceWrapper<T>>> simplified_extents = null, extents = null;
+    if (extract_from_GSH) {
+      simplified_extents = extractExtentsFromGSH(hermes);
+    }
+
+    if (extract_from_Lattice) {
+      extents = extractExtentsFromLattice(hermes);
+    }
+
+    Mapping candidates = new Mapping();
+    if (simplified_extents != null) {
+      extractMapping(simplified_extents, candidates);
+    }
+
+    if (extents != null) {
+      extractMapping(extents, candidates);
+    }
+
+    if (m_property_anchors != null && !m_property_anchors.isEmpty() &&
+        (b_source_duplicate_free || b_target_duplicate_free)) {
+      Set<String> source_uris = new HashSet<>();
+      Set<String> target_uris = new HashSet<>();
+
+      for (MappingCell mc : m_property_anchors) {
+        if (b_source_duplicate_free) {
+          source_uris.add(mc.getEntity1());
+        }
+
+        if (b_target_duplicate_free) {
+          target_uris.add(mc.getEntity2());
+        }
+      }
+
+      for (MappingCell mc : candidates) {
+        String entity1 = mc.getEntity1();
+        String entity2 = mc.getEntity2();
+        if ((b_source_duplicate_free && source_uris.contains(entity1)) ||
+            (b_target_duplicate_free && target_uris.contains(entity2))) continue;
+        mappings.add(mc);
+      }
+    }
+
+    hermes.close();
+  }
+
   @Override
   public void mapOntProperties(Mapping mappings) {
-    // TODO:
+    mapAdditionalProperties(m_source.getOntProperties(), m_target.getOntProperties(), mappings);
   }
 
   @Override

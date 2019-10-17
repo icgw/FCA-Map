@@ -18,7 +18,7 @@ public abstract class MatcherByFCA extends MatcherBase
   protected int m_GSH_attributes_limit = 0;
 
   protected int m_lattice_objects_limit    = 2;
-  protected int m_lattice_attributes_limit = 6;
+  protected int m_lattice_attributes_limit = 0;
 
   protected boolean extract_from_GSH     = true;
   protected boolean extract_from_Lattice = true;

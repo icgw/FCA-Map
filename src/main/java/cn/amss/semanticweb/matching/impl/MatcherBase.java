@@ -66,6 +66,7 @@ public abstract class MatcherBase
     id2ObjectProperties.put(id, omw.getObjectProperties());
   }
 
+  @Deprecated
   public void setSourceOntModelWrapper(OntModelWrapper source) {
     if (source == null) return;
 
@@ -75,6 +76,7 @@ public abstract class MatcherBase
     initId2Resources(m_source_id, source);
   }
 
+  @Deprecated
   public void setTargetOntModelWrapper(OntModelWrapper target) {
     if (target == null) return;
 
@@ -82,6 +84,21 @@ public abstract class MatcherBase
     id2Ontology.put(m_target_id, target);
 
     initId2Resources(m_target_id, target);
+  }
+
+  private void setOntModelWrapper(OntModelWrapper mw, int id) {
+    if (mw == null) return;
+
+    ontology2Id.put(mw, id);
+    id2Ontology.put(id, mw);
+
+    initId2Resources(id, mw);
+  }
+
+  @Override
+  public void setSourceTargetOntModelWrapper(OntModelWrapper source, OntModelWrapper target) {
+    setOntModelWrapper(source, m_source_id);
+    setOntModelWrapper(target, m_target_id);
   }
 
   public void addIntermediateOntModelWrapper(OntModelWrapper intermediate) {

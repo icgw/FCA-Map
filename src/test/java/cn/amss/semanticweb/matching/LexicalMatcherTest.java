@@ -30,10 +30,8 @@ public class LexicalMatcherTest
 
     LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
 
+    lm.setSourceTargetOntModelWrapper(source, target);
     lm.setExtractType(true, true);
-
-    lm.setSourceOntModelWrapper(source);
-    lm.setTargetOntModelWrapper(target);
 
     Mapping mappings = new Mapping();
     lm.mapOntClasses(mappings);

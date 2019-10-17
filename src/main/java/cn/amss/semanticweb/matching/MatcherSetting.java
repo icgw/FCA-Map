@@ -37,4 +37,12 @@ public interface MatcherSetting
    * @param attributes_limit the limit of attributes' size
    */
   public void setLatticeLimit(int objects_limit, int attributes_limit);
+
+  /**
+   * Set the source and the target
+   *
+   * @param source the ontology model wrapper of source
+   * @param target the ontology model wrapper of target
+   */
+  public void setSourceTargetOntModelWrapper(OntModelWrapper source, OntModelWrapper target);
 }

@@ -19,6 +19,8 @@ public interface Matcher extends InstanceMatcher, PropertyMatcher, ClassMatcher
 
   public void setTargetOntModelWrapper(OntModelWrapper target);
 
+  public void setSourceTargetOntModelWrapper(OntModelWrapper source, OntModelWrapper target);
+
   public void addIntermediateOntModelWrapper(OntModelWrapper intermediate);
 
   public void close();
