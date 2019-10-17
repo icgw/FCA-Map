@@ -7,12 +7,6 @@
 
 package cn.amss.semanticweb.matching;
 
-import java.util.Set;
-import java.util.Map;
-
-import cn.amss.semanticweb.alignment.Mapping;
-import cn.amss.semanticweb.model.ResourceWrapper;
-
 public interface LexicalMatcher extends Matcher, MatcherSetting
 {
   public void setUseStripDiacritics(boolean b);

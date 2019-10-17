@@ -7,13 +7,11 @@
 
 package cn.amss.semanticweb.matching.impl;
 
-import java.io.InputStream;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 
 import cn.amss.semanticweb.alignment.Mapping;
-import cn.amss.semanticweb.model.ModelWrapper;
 import cn.amss.semanticweb.model.OntModelWrapper;
 import cn.amss.semanticweb.model.ResourceWrapper;
 
