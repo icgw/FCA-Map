@@ -22,6 +22,10 @@
   </Appenders>
 
   <Loggers>
+    <Logger name="cn.amss.semanticweb" level="info" additivity="true">
+      <appender-ref ref="fileLogger" level="info" />
+    </Logger>
+
     <Root level="info" additivity="false">
       <appender-ref ref="console" />
     </Root>
