@@ -16,7 +16,9 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.SKOS;
 import org.apache.jena.util.FileManager;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -27,7 +29,7 @@ import cn.amss.semanticweb.vocabulary.DBkWik;
 @Deprecated
 public class ModelWrapper
 {
-  final Logger m_logger = Logger.getLogger(ModelWrapper.class);
+  private final static Logger m_logger = LogManager.getLogger(ModelWrapper.class.getName());
 
   private Model    m_raw_model      = null;
 

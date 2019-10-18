@@ -11,7 +11,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.alignment.MappingCell;
@@ -20,7 +21,7 @@ import cn.amss.semanticweb.util.ConfusionMatrix;
 
 public class Evaluation
 {
-  final static Logger m_logger = Logger.getLogger(Evaluation.class);
+  private final static Logger m_logger = LogManager.getLogger(Evaluation.class.getName());
 
   private static final Set<String> CLASS_TYPES    = new HashSet<>(Arrays.asList("class", "null"));
   private static final Set<String> PROPERTY_TYPES = new HashSet<>(Arrays.asList("property", "null"));

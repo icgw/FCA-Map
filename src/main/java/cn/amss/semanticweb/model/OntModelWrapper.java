@@ -11,7 +11,8 @@ import java.util.Set;
 import java.util.HashSet;
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.SKOS;
 import org.apache.jena.rdf.model.Model;
@@ -35,7 +36,7 @@ import cn.amss.semanticweb.vocabulary.DBkWik;
  */
 public class OntModelWrapper
 {
-  final static Logger m_logger = Logger.getLogger(OntModelWrapper.class);
+  private final static Logger m_logger = LogManager.getLogger(OntModelWrapper.class.getName());
 
   private Model m_raw_model   = null;
   private OntModel m_ontology = null;

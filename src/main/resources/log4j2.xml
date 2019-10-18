@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <Properties>
+    <Property name="basePath">../logs</Property>
+  </Properties>
+
+  <Appenders>
+    <RollingFile name="fileLogger" fileName="${basePath}/FCAMap-info.log" filePattern="${basePath}/FCAMap-info-%d{yyyy-MM-dd}.log">
+      <PatternLayout>
+        <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n</pattern>
+      </PatternLayout>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+      </Policies>
+    </RollingFile>
+
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout>
+        <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n</pattern>
+      </PatternLayout>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <Root level="info" additivity="false">
+      <appender-ref ref="console" />
+    </Root>
+  </Loggers>
+</Configuration>
