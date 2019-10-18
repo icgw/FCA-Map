@@ -303,6 +303,8 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
             (b_target_duplicate_free && target_uris.contains(entity2))) continue;
         mappings.add(mc);
       }
+    } else {
+      mappings.addAll(candidates);
     }
 
     hermes.close();
