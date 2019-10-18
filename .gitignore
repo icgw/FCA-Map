@@ -15,4 +15,5 @@ buildNumber.properties
 .DS_Store
 */.DS_Store
 .idea
-FCA-Map.iml
+*.iml
+logs/
