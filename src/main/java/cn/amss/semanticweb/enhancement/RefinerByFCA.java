@@ -15,10 +15,10 @@ import cn.amss.semanticweb.enhancement.impl.RefinerBase;
 
 public abstract class RefinerByFCA extends RefinerBase
 {
-  protected int m_GSH_limit_object_size    = 2;
+  protected int m_GSH_limit_object_size    = 1;
   protected int m_GSH_limit_attribute_size = 0;
 
-  protected int m_Lattice_limit_object_size    = 2;
+  protected int m_Lattice_limit_object_size    = 1;
   protected int m_Lattice_limit_attribute_size = 0;
 
   protected boolean m_refine_from_GSH     = true;

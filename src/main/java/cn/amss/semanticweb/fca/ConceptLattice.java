@@ -41,10 +41,10 @@ public class ConceptLattice <O, A>
    * Initial concept lattice.
    */
   private ConceptLattice() {
-    id2Concept       = new HashMap<>();
-    concept2Id       = new HashMap<>();
-    topDown          = new HashMap<>();
-    bottomUp         = new HashMap<>();
+    id2Concept = new HashMap<>();
+    concept2Id = new HashMap<>();
+    topDown    = new HashMap<>();
+    bottomUp   = new HashMap<>();
   }
 
   /**
