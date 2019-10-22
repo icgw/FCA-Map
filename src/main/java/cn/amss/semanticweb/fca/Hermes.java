@@ -361,13 +361,13 @@ public class Hermes <O, A>
       return new Concept<Integer, Integer>(all_objects, intent_id);
     }
 
-    if (most_attributes_size >= 0 && attributes.size() > most_attributes_size && attributes.size() < least_attributes_size) {
+    if (most_attributes_size >= 0 && attributes.size() > most_attributes_size || attributes.size() < least_attributes_size) {
       return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
     }
 
     extent_id = relativeObjects(attributes);
 
-    if (most_objects_size >= 0 && extent_id.size() > most_objects_size && extent_id.size() < least_attributes_size) {
+    if (most_objects_size >= 0 && extent_id.size() > most_objects_size || extent_id.size() < least_objects_size) {
       return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
     }
 
