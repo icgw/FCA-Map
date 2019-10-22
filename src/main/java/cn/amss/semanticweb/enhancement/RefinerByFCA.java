@@ -15,11 +15,22 @@ import cn.amss.semanticweb.enhancement.impl.RefinerBase;
 
 public abstract class RefinerByFCA extends RefinerBase
 {
+  // XXX: wait to improve.
   protected int m_GSH_limit_object_size    = 1;
   protected int m_GSH_limit_attribute_size = 0;
 
+  protected int m_GSH_least_size_of_objects    = 1;
+  protected int m_GSH_most_size_of_objects     = 1;
+  protected int m_GSH_least_size_of_attributes = 1;
+  protected int m_GSH_most_size_of_attributes  = -1;
+
   protected int m_Lattice_limit_object_size    = 1;
   protected int m_Lattice_limit_attribute_size = 0;
+
+  protected int m_Lattice_least_size_of_objects    = 1;
+  protected int m_Lattice_most_size_of_objects     = 1;
+  protected int m_Lattice_least_size_of_attributes = 1;
+  protected int m_Lattice_most_size_of_attributes  = -1;
 
   protected boolean m_refine_from_GSH     = true;
   protected boolean m_refine_from_Lattice = false;

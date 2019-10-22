@@ -343,6 +343,43 @@ public class Hermes <O, A>
     return new Concept<Integer, Integer>(extent_id, intent_id);
   }
 
+  private Concept<Integer, Integer> computeConceptId(Set<Integer> attributes,
+                                                     int least_objects_size,    int most_objects_size,
+                                                     int least_attributes_size, int most_attributes_size) {
+    Set<Integer> extent_id = new HashSet<>();
+    Set<Integer> intent_id = new HashSet<>();
+
+    if (attributes == null) return new Concept<Integer, Integer>(extent_id, intent_id);
+
+    intent_id.addAll(attributes);
+
+    if (attributes.isEmpty() && object2Attributes != null) {
+      Set<Integer> all_objects = object2Attributes.keySet();
+      if (most_objects_size >= 0 && all_objects.size() > most_objects_size && all_objects.size() < least_objects_size) {
+        return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
+      }
+      return new Concept<Integer, Integer>(all_objects, intent_id);
+    }
+
+    if (most_attributes_size >= 0 && attributes.size() > most_attributes_size && attributes.size() < least_attributes_size) {
+      return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
+    }
+
+    extent_id = relativeObjects(attributes);
+
+    if (most_objects_size >= 0 && extent_id.size() > most_objects_size && extent_id.size() < least_attributes_size) {
+      return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
+    }
+
+    Set<Integer> relative_intent = relativeAttributes(extent_id);
+
+    if (!intent_id.equals(relative_intent)) {
+      return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
+    }
+
+    return new Concept<Integer, Integer>(extent_id, intent_id);
+  }
+
   private static void attributeIdClosure(Set<Set<Integer>> set_of_attributes) {
     // XXX: wait to improve
     Map<Integer, Set<Set<Integer>>> m = new HashMap<>();
@@ -400,6 +437,32 @@ public class Hermes <O, A>
     return simplified_concepts_limit;
   }
 
+  /**
+   * Extract the simplified concept within a interval limitation.
+   *
+   * @param least_objects_size the least size of objects
+   * @param most_objects_size the most size of objects, when the most size less than 0 indicates no most limit
+   * @param least_attributes_size the least size of attributes
+   * @param most_attributes_size the most size of attributes, when the most size less than 0 indicates no most limit
+   * @return the simplified concept which satisfied above condition
+   */
+  public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLeastMost(int least_objects_size,    int most_objects_size,
+                                                                   int least_attributes_size, int most_attributes_size) {
+    Set<Pair<Set<O>, Set<A>>> simplified_concepts_least_most = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
+        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+        if (simplified_concept == null) continue;
+        int k_sz = simplified_concept.getKey().size(), v_sz = simplified_concept.getValue().size();
+        if ( k_sz >= least_objects_size    && (k_sz <= most_objects_size    || most_objects_size < 0) &&
+             v_sz >= least_attributes_size && (v_sz <= most_attributes_size || most_attributes_size < 0)) {
+          simplified_concepts_least_most.add(simplified_concept);
+        }
+      }
+    }
+    return simplified_concepts_least_most;
+  }
+
   public Set<Pair<Set<O>, Set<A>>> listAllSimplifiedConcepts() {
     return listSimplifiedConceptsLimit(0, 0);
   }
@@ -419,6 +482,32 @@ public class Hermes <O, A>
     return simplified_extents_limit;
   }
 
+  /**
+   * Extract the simplified extents within [least, most]
+   *
+   * @param least_objects_size the least size of objects
+   * @param most_objects_size the most size of objects, when the most size less than 0 indicates no most limit
+   * @param least_attributes_size the least size of attributes
+   * @param most_attributes_size the most size of attributes, when the most size less than 0 indicates no most limit
+   * @return the simplified extents satisfied above conditions
+   */
+  public Set<Set<O>> listSimplifiedExtentsLeastMost(int least_objects_size,    int most_objects_size,
+                                                    int least_attributes_size, int most_attributes_size) {
+    Set<Set<O>> simplified_extents_least_most = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
+        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+        if (simplified_concept == null) continue;
+        int k_sz = simplified_concept.getKey().size(), v_sz = simplified_concept.getValue().size();
+        if ( k_sz >= least_objects_size    && (k_sz <= most_objects_size    || most_objects_size < 0) &&
+             v_sz >= least_attributes_size && (v_sz <= most_attributes_size || most_attributes_size < 0)) {
+          simplified_extents_least_most.add(simplified_concept.getKey());
+        }
+      }
+    }
+    return simplified_extents_least_most;
+  }
+
   private void addTopBottomAttributes(Set<Set<Integer>> set_of_attributes, int limit_attributes_size) {
     if (attribute2Objects != null) {
       Set<Integer> total_attributes = attribute2Objects.keySet();
@@ -433,6 +522,27 @@ public class Hermes <O, A>
       }
 
       if (limit_attributes_size <= 0 || total_attributes.size() <= limit_attributes_size) {
+        set_of_attributes.add(top_attributes);
+      }
+    }
+  }
+
+  private void addTopBottomAttributes(Set<Set<Integer>> set_of_attributes, int least_attributes_size, int most_attributes_size) {
+    if (attribute2Objects != null) {
+      Set<Integer> total_attributes = attribute2Objects.keySet();
+
+      Set<Integer> top_attributes =  new HashSet<>(total_attributes);
+      for (Set<Integer> attributes : set_of_attributes) {
+        top_attributes.retainAll(attributes);
+      }
+
+      int sz = total_attributes.size();
+
+      if (sz >= least_attributes_size && (sz <= most_attributes_size || most_attributes_size < 0)) {
+        set_of_attributes.add(total_attributes);
+      }
+
+      if (sz >= least_attributes_size && (sz <= most_attributes_size || most_attributes_size < 0)) {
         set_of_attributes.add(top_attributes);
       }
     }
@@ -474,6 +584,37 @@ public class Hermes <O, A>
     return concepts_limit;
   }
 
+  public Set<Concept<O, A>> listConceptsLeastMost(int least_objects_size,    int most_objects_size,
+                                                  int least_attributes_size, int most_attributes_size) {
+    Set<Concept<O, A>> concepts_least_most = new HashSet<>();
+
+    Set<Set<Integer>> set_of_attributes = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
+        Set<Integer> attributes = r.getKey();
+
+        if (attributes.size() >= least_objects_size && attributes.size() <= most_attributes_size) {
+          set_of_attributes.add(attributes);
+        }
+      }
+    }
+
+    attributeIdClosure(set_of_attributes);
+
+    addTopBottomAttributes(set_of_attributes, least_attributes_size, most_attributes_size);
+
+    for (Set<Integer> attributes : set_of_attributes) {
+      Concept<Integer, Integer> concept_id = computeConceptId(attributes, least_objects_size, most_objects_size,
+                                                                          least_attributes_size, most_attributes_size);
+      Concept<O, A> concept = retransform(concept_id);
+      if (concept != null && (!concept_id.getExtent().isEmpty() || !concept_id.getIntent().isEmpty())) {
+        concepts_least_most.add(concept);
+      }
+    }
+
+    return concepts_least_most;
+  }
+
   public Set<Set<O>> listExtentsLimit(int limit_objects_size, int limit_attributes_size) {
     Set<Set<O>> extents_limit = new HashSet<>();
 
@@ -503,6 +644,38 @@ public class Hermes <O, A>
     }
 
     return extents_limit;
+  }
+
+  public Set<Set<O>> listExtentsLeastMost(int least_objects_size,    int most_objects_size,
+                                          int least_attributes_size, int most_attributes_size) {
+    Set<Set<O>> extents_least_most = new HashSet<>();
+
+    Set<Set<Integer>> set_of_attributes = new HashSet<>();
+    if (simplification != null) {
+      for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
+        Set<Integer> attributes = r.getKey();
+
+        if ( attributes.size() >= least_attributes_size &&
+            (attributes.size() <= most_attributes_size  || most_attributes_size < 0) ) {
+          set_of_attributes.add(attributes);
+        }
+      }
+    }
+
+    attributeIdClosure(set_of_attributes);
+
+    addTopBottomAttributes(set_of_attributes, least_attributes_size, most_attributes_size);
+
+    for (Set<Integer> attributes : set_of_attributes) {
+      Concept<Integer, Integer> concept_id = computeConceptId(attributes, least_objects_size, most_objects_size,
+                                                                          least_attributes_size, most_attributes_size);
+      Set<O> extent = retransform(concept_id.getExtent(), object2O);
+      if (extent != null && (!concept_id.getExtent().isEmpty() || !concept_id.getIntent().isEmpty())) {
+        extents_least_most.add(extent);
+      }
+    }
+
+    return extents_least_most;
   }
 
   public Set<Concept<O, A>> listAllConcepts() {
