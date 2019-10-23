@@ -63,8 +63,8 @@ import cn.amss.semanticweb.matching.MatcherFactory;
 
 public class Demo {
   public static void main(String[] args) {
-    String srcURL = "http://oaei.ontologymatching.org/2019/conference/data/Conference.owl";
-    String tgtURL = "http://oaei.ontologymatching.org/2019/conference/data/ekaw.owl";
+    String srcURL = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/Conference.owl";
+    String tgtURL = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/ekaw.owl";
 
     OntModelWrapper source = new OntModelWrapper(srcURL);
     OntModelWrapper target = new OntModelWrapper(tgtURL);

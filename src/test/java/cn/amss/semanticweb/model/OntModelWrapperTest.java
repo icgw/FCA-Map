@@ -13,10 +13,10 @@ public class OntModelWrapperTest
 {
   @Test
   public void testOntModelWrapper() {
-    String conference_url = "http://oaei.ontologymatching.org/2019/conference/data/Conference.owl";
+    String conference_url = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/Conference.owl";
     OntModelWrapper conf = new OntModelWrapper(conference_url);
 
-    String ekaw_url = "http://oaei.ontologymatching.org/2019/conference/data/ekaw.owl";
+    String ekaw_url = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/ekaw.owl";
     OntModelWrapper ekaw = new OntModelWrapper(ekaw_url);
   }
 }
