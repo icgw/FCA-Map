@@ -77,7 +77,6 @@ public class AdditionalPropertyMatcherImpl extends MatcherByFCA implements Addit
     }
   }
 
-
   private static final void deriveClassMappingsFromResource(Resource r, Map<Resource, Set<MappingCell>> m, Set<MappingCell> s) {
     for (StmtIterator it = r.listProperties(RDF.type); it.hasNext(); ) {
       Statement stmt = it.nextStatement();

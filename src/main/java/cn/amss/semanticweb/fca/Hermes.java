@@ -355,7 +355,7 @@ public class Hermes <O, A>
 
     if (attributes.isEmpty() && object2Attributes != null) {
       Set<Integer> all_objects = object2Attributes.keySet();
-      if (most_objects_size >= 0 && all_objects.size() > most_objects_size && all_objects.size() < least_objects_size) {
+      if (most_objects_size >= 0 && all_objects.size() > most_objects_size || all_objects.size() < least_objects_size) {
         return new Concept<Integer, Integer>(new HashSet<Integer>(), new HashSet<Integer>());
       }
       return new Concept<Integer, Integer>(all_objects, intent_id);

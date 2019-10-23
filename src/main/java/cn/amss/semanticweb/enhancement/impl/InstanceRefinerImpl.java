@@ -72,7 +72,6 @@ public class InstanceRefinerImpl extends RefinerByFCA implements InstanceRefiner
     return mappings;
   }
 
-
   @Override
   public void addPropertyAnchors(Mapping property_anchors) {
     for (MappingCell mc : property_anchors) {
