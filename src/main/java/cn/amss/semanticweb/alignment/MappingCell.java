@@ -22,19 +22,19 @@ public class MappingCell extends Relation
   private Resource m_resource2 = null;
 
   public MappingCell(String entity1, String entity2, int relation, double confidence) {
-    m_entity1    = entity1;
-    m_entity2    = entity2;
+    m_entity1  = entity1;
+    m_entity2  = entity2;
 
-    m_relation   = relation;
+    m_relation = relation;
 
     setMeasure(confidence);
   }
 
   public MappingCell(String entity1, String entity2, String relation_text, String confidence_text) {
-    m_entity1    = entity1;
-    m_entity2    = entity2;
+    m_entity1  = entity1;
+    m_entity2  = entity2;
 
-    m_relation   = getRelationFromText(relation_text);
+    m_relation = getRelationFromText(relation_text);
 
     try {
       double d = Double.parseDouble(confidence_text);
