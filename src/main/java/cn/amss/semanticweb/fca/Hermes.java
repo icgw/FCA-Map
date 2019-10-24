@@ -521,7 +521,7 @@ public class Hermes <O, A>
         set_of_attributes.add(total_attributes);
       }
 
-      if (limit_attributes_size <= 0 || total_attributes.size() <= limit_attributes_size) {
+      if (limit_attributes_size <= 0 || top_attributes.size() <= limit_attributes_size) {
         set_of_attributes.add(top_attributes);
       }
     }
@@ -536,13 +536,13 @@ public class Hermes <O, A>
         top_attributes.retainAll(attributes);
       }
 
-      int sz = total_attributes.size();
+      int sz1 = total_attributes.size(), sz2 = top_attributes.size();
 
-      if (sz >= least_attributes_size && (sz <= most_attributes_size || most_attributes_size < 0)) {
+      if (sz1 >= least_attributes_size && (sz1 <= most_attributes_size || most_attributes_size < 0)) {
         set_of_attributes.add(total_attributes);
       }
 
-      if (sz >= least_attributes_size && (sz <= most_attributes_size || most_attributes_size < 0)) {
+      if (sz2 >= least_attributes_size && (sz2 <= most_attributes_size || most_attributes_size < 0)) {
         set_of_attributes.add(top_attributes);
       }
     }
@@ -593,7 +593,8 @@ public class Hermes <O, A>
       for (Map.Entry<Set<Integer>, Set<Integer>> r : simplification.entrySet()) {
         Set<Integer> attributes = r.getKey();
 
-        if (attributes.size() >= least_objects_size && attributes.size() <= most_attributes_size) {
+        if ( attributes.size() >= least_objects_size &&
+            (attributes.size() <= most_attributes_size || most_attributes_size < 0) ) {
           set_of_attributes.add(attributes);
         }
       }
