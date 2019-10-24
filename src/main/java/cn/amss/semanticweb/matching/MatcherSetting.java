@@ -24,6 +24,7 @@ public interface MatcherSetting
    */
   public void setExtractType(boolean b_GSH, boolean b_Lattice);
 
+  @Deprecated
   /**
    * Set the limit of GSH extracting method
    *
@@ -32,6 +33,7 @@ public interface MatcherSetting
    */
   public void setGSHLimit(int objects_limit, int attributes_limit);
 
+  @Deprecated
   /**
    * Set the limit of complete lattice extracting method
    *
@@ -39,6 +41,26 @@ public interface MatcherSetting
    * @param attributes_limit the limit of attributes' size
    */
   public void setLatticeLimit(int objects_limit, int attributes_limit);
+
+  /**
+   * Set the least and most size of GSH extracting method
+   *
+   * @param objects_least the least size of objects
+   * @param objects_most the most size of objects
+   * @param attributes_least the least size of attributes
+   * @param attributes_most the most size of attributes
+   */
+  public void setGSHLeastMost(int objects_least, int objects_most, int attributes_least, int attributes_most);
+
+  /**
+   * Set the least and most size of lattice extracting method
+   *
+   * @param objects_least the least size of objects
+   * @param objects_most the most size of objects
+   * @param attributes_least the least size of attributes
+   * @param attributes_most the most size of attributes
+   */
+  public void setLatticeLeastMost(int objects_least, int objects_most, int attributes_least, int attributes_most);
 
   /**
    * Set the source and the target

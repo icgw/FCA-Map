@@ -2,9 +2,9 @@ FCA-Map: Identifying Mappings by Formal Concept Analysis
 ========================================================
 
 [![Build Status](https://travis-ci.org/icgw/FCA-Map.svg?branch=master)](https://travis-ci.org/icgw/FCA-Map)
-[![license](https://img.shields.io/github/license/icgw/FCA-Map)](LICENSE)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/icgw/FCA-Map/master)
 ![Maven Central with version prefix filter](https://img.shields.io/maven-central/v/org.apache.maven/maven-repository-metadata/3.6.1)
+[![license](https://img.shields.io/github/license/icgw/FCA-Map)](LICENSE)
 
 > Ontology matching system based on formal concept analysis.
 

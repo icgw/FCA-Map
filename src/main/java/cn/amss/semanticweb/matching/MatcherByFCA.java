@@ -31,7 +31,7 @@ public abstract class MatcherByFCA extends MatcherBase
 
   protected int m_Lattice_least_size_of_objects    = 2;
   protected int m_Lattice_most_size_of_objects     = 2;
-  protected int m_Lattice_least_size_of_attributes = 0;
+  protected int m_Lattice_least_size_of_attributes = 1;
   protected int m_Lattice_most_size_of_attributes  = -1;
 
   protected boolean extract_from_GSH     = true;
