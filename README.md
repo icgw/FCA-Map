@@ -103,7 +103,7 @@ This work has been supported by the National Key Research and Development Progra
 
 ## References
 
-1. **Identifying mappings among knowledge graphs by formal concept analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[paper][1]\]
+1. **Identifying mappings among knowledge graphs by formal concept analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[paper][1]\] \[[slide][0]\]
 
 2. **FCAMap-KG results for OAEI 2019.** _Fei Chang, Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[paper][2]\]
 
@@ -138,6 +138,7 @@ This work has been supported by the National Key Research and Development Progra
 [vln]: assets/villain.png
 [asg]: assets/asgardian.png
 [inf]: assets/infinity.png
+[0]: https://github.com/icgw/FCA-Map/releases/download/v1.0.0/om2019-slide-gc.pdf
 [1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
 [2]: http://www.dit.unitn.it/~pavel/om2019/papers/oaei19\_paper7.pdf
 [3]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
