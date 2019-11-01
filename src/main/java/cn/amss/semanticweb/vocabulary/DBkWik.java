@@ -47,6 +47,8 @@ public class DBkWik
    * @return the wiki of the uri
    */
   public static final String getWiki(String uri) {
+    if (uri == null) return "";
+
     Matcher m = p.matcher(uri);
     if (m.find()) {
       return m.group(1);
@@ -61,6 +63,8 @@ public class DBkWik
    * @return the type of the uri or empty string if not DBkWik type
    */
   public static final String getType(String uri) {
+    if (uri == null) return "";
+
     if (uri.equals("null")) return "null";
 
     Matcher m = p.matcher(uri);
@@ -77,6 +81,8 @@ public class DBkWik
    * @return the name of the uri
    */
   public static final String getName(String uri) {
+    if (uri == null) return "";
+
     Matcher m = p.matcher(uri);
     if (m.find()) {
       return m.group(3);
