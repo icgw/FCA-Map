@@ -41,7 +41,7 @@ The following is an example of a formal context (about the characters of [Marvel
 
 This concept lattice is derived from the above context, only reserved simplified extent and intent as follows.
 
-![complete-lattice](https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/example-concept-lattice-marvel.svg?sanitize=true)
+![complete-lattice](https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/example-concept-lattice-marvel.svg?sanitize=true)
 
 ## Install
 
@@ -89,7 +89,7 @@ public class Demo {
 
 ## Contributing
 
-See [the contributing file](CONTRIBUTING.md).
+See [the contributing file](.github/CONTRIBUTING.md).
 
 PRs accepted.
 
@@ -123,21 +123,21 @@ This work has been supported by the National Key Research and Development Progra
 
 [GPLv3](LICENSE) © Guowei Chen
 
-[im]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/iron-man.png
-[tr]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/thor.png
-[bw]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/black-widow.png
-[hk]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/hulk.png
-[ca]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/captain-america.png
-[ts]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/thanos.png
-[hl]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/hela.png
-[hm]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/human.png
-[ml]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/male.png
-[fml]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/female.png
-[sci]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/scientist.png
-[ag]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/avenger.png
-[vln]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/villain.png
-[asg]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/asgardian.png
-[inf]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/infinity.png
+[im]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/iron-man.png
+[tr]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/thor.png
+[bw]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/black-widow.png
+[hk]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/hulk.png
+[ca]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/captain-america.png
+[ts]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/thanos.png
+[hl]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/hela.png
+[hm]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/human.png
+[ml]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/male.png
+[fml]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/female.png
+[sci]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/scientist.png
+[ag]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/avenger.png
+[vln]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/villain.png
+[asg]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/asgardian.png
+[inf]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/infinity.png
 [1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
 [2]: http://www.dit.unitn.it/~pavel/om2019/papers/oaei19\_paper8.pdf
 [3]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
