@@ -41,7 +41,7 @@ The following is an example of a formal context (about the characters of [Marvel
 
 This concept lattice is derived from the above context, only reserved simplified extent and intent as follows.
 
-![complete-lattice](https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/example-concept-lattice-marvel.svg)
+![complete-lattice](https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/example-concept-lattice-marvel.svg?sanitize=true)
 
 ## Install
 
