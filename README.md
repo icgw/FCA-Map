@@ -41,7 +41,7 @@ The following is an example of a formal context (about the characters of [Marvel
 
 This concept lattice is derived from the above context, only reserved simplified extent and intent as follows.
 
-![complete-lattice](assets/example-concept-lattice-marvel.svg)
+![complete-lattice](https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/example-concept-lattice-marvel.svg)
 
 ## Install
 
@@ -123,21 +123,21 @@ This work has been supported by the National Key Research and Development Progra
 
 [GPLv3](LICENSE) © Guowei Chen
 
-[im]: assets/iron-man.png
-[tr]: assets/thor.png
-[bw]: assets/black-widow.png
-[hk]: assets/hulk.png
-[ca]: assets/captain-america.png
-[ts]: assets/thanos.png
-[hl]: assets/hela.png
-[hm]: assets/human.png
-[ml]: assets/male.png
-[fml]: assets/female.png
-[sci]: assets/scientist.png
-[ag]: assets/avenger.png
-[vln]: assets/villain.png
-[asg]: assets/asgardian.png
-[inf]: assets/infinity.png
+[im]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/iron-man.png
+[tr]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/thor.png
+[bw]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/black-widow.png
+[hk]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/hulk.png
+[ca]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/captain-america.png
+[ts]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/thanos.png
+[hl]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/hela.png
+[hm]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/human.png
+[ml]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/male.png
+[fml]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/female.png
+[sci]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/scientist.png
+[ag]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/avenger.png
+[vln]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/villain.png
+[asg]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/asgardian.png
+[inf]: https://raw.githubusercontent.com/icgw/FCA-Map/master/assets/infinity.png
 [1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
 [2]: http://www.dit.unitn.it/~pavel/om2019/papers/oaei19\_paper8.pdf
 [3]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
