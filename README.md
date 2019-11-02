@@ -95,7 +95,7 @@ PRs accepted.
 
 ### FCA-Map for matching biomedical ontologies
 
-See [FCA-Map@liweizhuo001](https://github.com/liweizhuo001/FCA-Map) (**no longer maintaining**), which system is primarily developed by _Mengyi Zhao_.
+See [FCA-Map@liweizhuo001](https://github.com/liweizhuo001/FCA-Map) (**no longer maintained**), which system is primarily developed by _Mengyi Zhao_.
 
 ## Acknowledgements
 
