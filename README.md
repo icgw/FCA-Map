@@ -29,13 +29,13 @@ The following is an example of a formal context (about the characters of [Marvel
 
 |                        | ![Asgardian][asg] <br /> Asgardian | ![Avenger][ag] <br /> Avenger | ![Female][fml] <br /> Female | ![Human][hm] <br /> Human | ![Infinity Stones User][inf] <br /> Infinity Stones User | ![Male][ml] <br /> Male | ![Scientist][sci] <br /> Scientist | ![Villain][vln] <br /> Villain |
 |:----------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|   ![Black Widow][bw]   |   | ✖ | ✖ | ✖ |   |   |   |   |
-| ![Captain America][ca] |   | ✖ |   | ✖ |   | ✖ |   |   |
-|      ![Hela][hl]       | ✖ |   | ✖ |   |   |   |   | ✖ |
-|      ![Hulk][hk]       |   | ✖ |   | ✖ | ✖ | ✖ | ✖ |   |
-|    ![Iron Man][im]     |   | ✖ |   | ✖ | ✖ | ✖ | ✖ |   |
-|     ![Thanos][ts]      |   |   |   |   | ✖ | ✖ |   | ✖ |
-|      ![Thor][tr]       | ✖ | ✖ |   |   |   | ✖ |   |   |
+| ![Black Widow][bw] <br /> Black Widow         |   | ✖ | ✖ | ✖ |   |   |   |   |
+| ![Captain America][ca] <br /> Captain America |   | ✖ |   | ✖ |   | ✖ |   |   |
+| ![Hela][hl] <br /> Hela                       | ✖ |   | ✖ |   |   |   |   | ✖ |
+| ![Hulk][hk] <br /> Hulk                       |   | ✖ |   | ✖ | ✖ | ✖ | ✖ |   |
+| ![Iron Man][im] <br /> Iron Man               |   | ✖ |   | ✖ | ✖ | ✖ | ✖ |   |
+| ![Thanos][ts] <br /> Thanos                   |   |   |   |   | ✖ | ✖ |   | ✖ |
+| ![Thor][tr] <br /> Thor                       | ✖ | ✖ |   |   |   | ✖ |   |   |
 
 ### Concept Lattice
 
