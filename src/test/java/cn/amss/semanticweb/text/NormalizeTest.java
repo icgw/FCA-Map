@@ -38,4 +38,10 @@ public class NormalizeTest
     String s1 = "Person's";
     assertEquals( "Person", Normalize.removeS(s1) );
   }
+
+  @Test
+  public void testRemoveDisambiguation() {
+    String s1 = "Mercury (element)";
+    assertEquals( "Mercury", Normalize.removeDisambiguation(s1) );
+  }
 }
