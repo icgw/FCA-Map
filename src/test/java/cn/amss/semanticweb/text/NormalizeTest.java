@@ -44,4 +44,13 @@ public class NormalizeTest
     String s1 = "Mercury (element)";
     assertEquals( "Mercury", Normalize.removeDisambiguation(s1) );
   }
+
+  @Test
+  public void testRemoveSubPages() {
+    String s1 = "Kashyyyk/Legends";
+    assertEquals( "Kashyyyk", Normalize.removeSubPages(s1) );
+
+    String s2 = "/";
+    assertEquals( "/", Normalize.removeSubPages(s2) );
+  }
 }
