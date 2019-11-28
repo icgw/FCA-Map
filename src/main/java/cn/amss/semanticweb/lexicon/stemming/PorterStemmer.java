@@ -14,6 +14,10 @@ package cn.amss.semanticweb.lexicon.stemming;
  *      no. 3, pp 130-137,
  *
  *  See also http://www.tartarus.org/~martin/PorterStemmer
+ *
+ * Some changes as follows:
+ *   + 'ization' == 'isation'
+ * @author Guowei Chen (icgw@outlook.com)
  */
 public class PorterStemmer
 {
@@ -177,7 +181,7 @@ public class PorterStemmer
                 if (endsWith("eli")) { down("e"); break; }
                 if (endsWith("ousli")) { down("ous"); break; }
                 break;
-      case 'o': if (endsWith("ization")) { down("ize"); break; }
+      case 'o': if (endsWith("ization") || endsWith("isation")) { down("ize"); break; }
                 if (endsWith("ation")) { down("ate"); break; }
                 if (endsWith("ator")) { down("ate"); break; }
                 break;

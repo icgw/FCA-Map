@@ -23,12 +23,14 @@ public class Normalize
   private static final String RE_DIACRITICS_AND_FRIENDS       = "[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+";
   private static final String RE_PARENTHETICAL_DISAMBIGUATION = " \\(.+?\\)$";
   private static final String RE_SUBPAGES                     = "\\/.+?$";
+  private static final String RE_APPOSITIVE                   = "^.+?: ";
 
   private static final Pattern CAMELCASE_OR_UNDERSCORE      = Pattern.compile(RE_CAMELCASE_OR_UNDERSCORE);
   private static final Pattern TAIL_WITH_S                  = Pattern.compile(RE_TAIL_WITH_S);
   private static final Pattern DIACRITICS_AND_FRIENDS       = Pattern.compile(RE_DIACRITICS_AND_FRIENDS);
   private static final Pattern PARENTHETICAL_DISAMBIGUATION = Pattern.compile(RE_PARENTHETICAL_DISAMBIGUATION);
   private static final Pattern SUBPAGES                     = Pattern.compile(RE_SUBPAGES);
+  private static final Pattern APPOSITIVE                   = Pattern.compile(RE_APPOSITIVE);
 
   /**
    * Transform camel case or underscore case style into a normal case style
@@ -91,4 +93,14 @@ public class Normalize
   public static final String removeSubPages(String s) {
     return SUBPAGES.matcher(s).replaceFirst("");
   }
-}
+
+  /**
+   * Remove the appositive in the wikipedia:article title
+   *
+   * @param s wikipedia:article title with appositive
+   * @return wikipedia:article title without appositive
+   */
+  public static final String removeAppositive(String s) {
+    return APPOSITIVE.matcher(s).replaceFirst("");
+  }
+} // END: Normalize

@@ -53,4 +53,10 @@ public class NormalizeTest
     String s2 = "/";
     assertEquals( "/", Normalize.removeSubPages(s2) );
   }
+
+  @Test
+  public void testRemoveAppositive() {
+    String s1 = "Clone Wars Painting: General Grievous";
+    assertEquals( "General Grievous", Normalize.removeAppositive(s1) );
+  }
 }

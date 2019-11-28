@@ -77,6 +77,29 @@ public class Mapping implements Iterable<MappingCell>
     return m_mapping == null || m_mapping.isEmpty();
   }
 
+  // public String listMappingCellSPO(MappingCell mc) {
+  //   if (mc == null || m_source == null || m_target == null) return "null";
+
+  //   StringBuilder sb = new StringBuilder();
+  //   Resource r1 = m_source.getResource(mc.getEntity1());
+  //   sb.append(String.format("%n<<<<<<<"));
+  //   sb.append(String.format("%n* %s%n", r1.getURI()));
+  //   for (StmtIterator stmt = r1.listProperties(); stmt.hasNext(); ) {
+  //     sb.append(String.format("** %s%n", stmt.nextStatement()));
+  //   }
+
+  //   sb.append(String.format("======="));
+
+  //   Resource r2 = m_target.getResource(mc.getEntity2());
+  //   sb.append(String.format("%n* %s%n", r2.getURI()));
+  //   for (StmtIterator stmt = res2.listProperties(); stmt.hasNext(); ) {
+  //     sb.append(String.format("** %s%n", stmt.nextStatement()));
+  //   }
+  //   sb.append(String.format(">>>>>>>%n"));
+
+  //   return sb.toString();
+  // }
+
   @Override
   public Iterator<MappingCell> iterator() {
     return m_mapping.iterator();
