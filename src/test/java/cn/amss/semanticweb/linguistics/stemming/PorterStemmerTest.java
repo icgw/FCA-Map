@@ -5,7 +5,7 @@
  * Distributed under terms of the GPL license.
  */
 
-package cn.amss.semanticweb.lexicon.stemming;
+package cn.amss.semanticweb.linguistics.stemming;
 
 import static org.junit.Assert.assertEquals;
 

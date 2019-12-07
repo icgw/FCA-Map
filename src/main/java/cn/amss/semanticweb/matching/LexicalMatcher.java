@@ -9,5 +9,5 @@ package cn.amss.semanticweb.matching;
 
 public interface LexicalMatcher extends Matcher, MatcherSetting
 {
-  public void setUseStripDiacritics(boolean b);
+  public void defaultConfig();
 }

@@ -6,7 +6,7 @@
 
   <groupId>cn.amss.semanticweb</groupId>
   <artifactId>FCA-Map</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>FCA-Map</name>
   <url>https://github.com/icgw/FCA-Map</url>
@@ -75,7 +75,7 @@
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
+          <version>3.1.0</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>

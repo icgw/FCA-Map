@@ -53,6 +53,10 @@ public class Evaluation
         inst.add(mc);
       }
     }
+
+    clzz.setOntSourceTarget(m.getSource(), m.getTarget());
+    prop.setOntSourceTarget(m.getSource(), m.getTarget());
+    inst.setOntSourceTarget(m.getSource(), m.getTarget());
   }
 
   public Evaluation(Mapping reference, Mapping system) {

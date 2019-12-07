@@ -15,18 +15,19 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.SKOS;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
 import cn.amss.semanticweb.matching.LexicalMatcher;
 import cn.amss.semanticweb.matching.MatcherByFCA;
 import cn.amss.semanticweb.alignment.Mapping;
 import cn.amss.semanticweb.model.ResourceWrapper;
-import cn.amss.semanticweb.lexicon.stemming.PorterStemmer;
+import cn.amss.semanticweb.linguistics.stemming.PorterStemmer;
+import cn.amss.semanticweb.text.Preprocessing;
 import cn.amss.semanticweb.text.Normalize;
 import cn.amss.semanticweb.fca.Hermes;
 import cn.amss.semanticweb.vocabulary.DBkWik;
@@ -38,62 +39,66 @@ import cn.amss.semanticweb.vocabulary.DBkWik;
  */
 public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 {
-  private static final String delimiter_characters = " \t-({[)}]_!@#%&*\\:;\"',.?/~+=|<>$`^";
-  private static final boolean return_delimiter    = false;
-  private static final boolean use_porter_stemmer  = true;
-  private static final boolean to_lower_case       = true;
-
-  private static final boolean use_normalize_case_style = true;
-  private static final boolean use_remove_S             = true;
-
-  private static boolean use_strip_diacritics = true;
-
   public LexicalMatcherImpl() {
+    defaultConfig();
   }
 
-  private static Set<String> acquireAllTokens(String norm_str, boolean use_stemmer) {
-    StringTokenizer tokenizer = new StringTokenizer(norm_str, delimiter_characters, return_delimiter);
-    Set<String> tokens  = new HashSet<>();
-    while (tokenizer.hasMoreTokens()) {
-      String token = tokenizer.nextToken();
-      if (use_stemmer) {
-        PorterStemmer stm = new PorterStemmer();
-        token = stm.mutate(token);
-      }
-      tokens.add(token);
+  private static Set<String> acquireAllTokens(String s) {
+    Set<String> tokens   = new HashSet<>();
+    Set<String> tokensCP = new HashSet<>(Arrays.asList(Preprocessing.stringTokenize(s)));
+
+    if (Preprocessing.isStopWordsEnabled()) {
+      Preprocessing.removeStopWords(tokensCP);
+      tokens.clear();
+      tokens.addAll(tokensCP);
+
+      tokensCP.clear();
+      tokensCP.addAll(tokens);
     }
+
+    if (Preprocessing.isStemmerEnabled()) {
+      tokens.clear();
+      for (String t : tokensCP) {
+        String st = Preprocessing.stem(t);
+        if (st == null || st.isEmpty()) continue;
+        tokens.add(st);
+      }
+
+      tokensCP.clear();
+      tokensCP.addAll(tokens);
+    }
+
+    // XXX:
+
     return tokens;
   }
 
-  private static Set<String> acquireAllLiteralsLexicalFormsWith(Resource resource, Property property, boolean b_lowercase) {
+  private static Set<String> acquireAllLiteralsLexicalFormsWith(Resource resource, Property property) {
     Set<String> s = new HashSet<>();
     for (StmtIterator it = resource.listProperties(property); it.hasNext(); ) {
       Statement stmt = it.nextStatement();
       RDFNode object = stmt.getObject();
-      if (object.isLiteral()) {
-        String lb = object.asLiteral().getString();
-        if (lb != null && !lb.equals("")) {
-          if (b_lowercase) {
-            s.add(lb.toLowerCase());
-          } else {
-            s.add(lb);
-          }
-        }
+
+      if (!object.isLiteral()) continue;
+
+      String lb = object.asLiteral().getString();
+      if (lb != null && !lb.isEmpty() && !lb.trim().equals("")) {
+        s.add(lb);
       }
     }
     return s;
   }
 
-  private static Set<String> acquireLabelOrName(Resource resource, boolean b_lowercase) {
+  private static Set<String> acquireLabelOrName(Resource resource) {
     Set<String> labelOrName = new HashSet<>();
 
-    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, RDFS.label, b_lowercase));
+    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, RDFS.label));
 
-    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, SKOS.prefLabel, b_lowercase));
+    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, SKOS.prefLabel));
 
-    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, SKOS.altLabel, b_lowercase));
+    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, SKOS.altLabel));
 
-    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, SKOS.hiddenLabel, b_lowercase));
+    labelOrName.addAll(acquireAllLiteralsLexicalFormsWith(resource, SKOS.hiddenLabel));
 
     if (labelOrName.isEmpty()) {
       String name = resource.getLocalName();
@@ -113,17 +118,33 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
       // TODO: case that still empty.
     }
 
+    if (Preprocessing.isNormlizationEnabled()) {
+      Set<String> normaliedLabelOrName = acquireNormalizedLabelOrName(labelOrName);
+      labelOrName.clear();
+      labelOrName.addAll(normaliedLabelOrName);
+    }
+
     return labelOrName;
+  }
+
+  private static Set<String> acquireNormalizedLabelOrName(Set<String> labelOrName) {
+    Set<String> normalizedLabelOrName = new HashSet<>();
+
+    for (String lb : labelOrName) {
+      String nlb = Preprocessing.normalize(lb);
+      normalizedLabelOrName.add(nlb);
+    }
+
+    return normalizedLabelOrName;
   }
 
   private <T extends Resource> void constructLabelOrName2ResourcesTable(Set<T> resources,
                                                                         Map<String, Set<ResourceWrapper<T>>> m,
-                                                                        int from_id,
-                                                                        boolean b_lowercase) {
+                                                                        int from_id) {
     if (resources == null || m == null) return;
 
     for (T r : resources) {
-      Set<String> labelOrNames = acquireLabelOrName(r, b_lowercase);
+      Set<String> labelOrNames = acquireLabelOrName(r);
       for (String ln : labelOrNames) {
         m.putIfAbsent(ln, new HashSet<ResourceWrapper<T>>());
         m.get(ln).add(new ResourceWrapper<T>(r, from_id));
@@ -133,10 +154,9 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
   private <T extends Resource> void constructLabelOrName2ResourcesTable(Set<T> sources,
                                                                         Set<T> targets,
-                                                                        Map<String, Set<ResourceWrapper<T>>> m,
-                                                                        boolean b_lowercase) {
-    constructLabelOrName2ResourcesTable(sources, m, m_source_id, b_lowercase);
-    constructLabelOrName2ResourcesTable(targets, m, m_target_id, b_lowercase);
+                                                                        Map<String, Set<ResourceWrapper<T>>> m) {
+    constructLabelOrName2ResourcesTable(sources, m, m_source_id);
+    constructLabelOrName2ResourcesTable(targets, m, m_target_id);
   }
 
   private Map<String, Set<String>> constructContextLexicalForm(Set<String> labelOrNames) {
@@ -144,21 +164,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     if (labelOrNames == null) return context;
 
     for (String ln : labelOrNames) {
-      String norm_ln = ln;
-
-      if (use_normalize_case_style) {
-        norm_ln = Normalize.normalizeCaseStyle(norm_ln);
-      }
-
-      if (use_strip_diacritics) {
-        norm_ln = Normalize.stripDiacritics(norm_ln);
-      }
-
-      if (use_remove_S) {
-        norm_ln = Normalize.removeS(norm_ln);
-      }
-
-      context.put(ln, acquireAllTokens(norm_ln, use_porter_stemmer));
+      context.put(ln, acquireAllTokens(ln));
     }
 
     return context;
@@ -292,7 +298,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     if (sources == null || targets == null || mappings == null) return;
 
     Map<String, Set<ResourceWrapper<T>>> labelOrName2Resources = new HashMap<>();
-    constructLabelOrName2ResourcesTable(sources, targets, labelOrName2Resources, to_lower_case);
+    constructLabelOrName2ResourcesTable(sources, targets, labelOrName2Resources);
 
     Set<String> labelOrNames         = labelOrName2Resources.keySet();
     Map<String, Set<String>> context = constructContextLexicalForm(labelOrNames);
@@ -326,7 +332,7 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
 
     Map<String, Set<ResourceWrapper<T>>> labelOrName2Resources = new HashMap<>();
     for (Map.Entry<Integer, Set<T>> e : id2Resources.entrySet()) {
-      constructLabelOrName2ResourcesTable(e.getValue(), labelOrName2Resources, e.getKey(), to_lower_case);
+      constructLabelOrName2ResourcesTable(e.getValue(), labelOrName2Resources, e.getKey());
     }
 
     Set<String> labelOrNames         = labelOrName2Resources.keySet();
@@ -384,22 +390,16 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
   }
 
   @Override
-  public <T extends Resource> void matchInstances(Set<T> sources, Set<T> targets, Mapping mappings) {
-    matchResources(sources, targets, mappings);
-  }
-
-  @Override
   public <T extends Resource> void matchProperties(Set<T> sources, Set<T> targets, Mapping mappings) {
-    matchResources(sources, targets, mappings);
+    // XXX:
   }
 
   @Override
-  public <T extends Resource> void matchClasses(Set<T> sources, Set<T> targets, Mapping mappings) {
-    matchResources(sources, targets, mappings);
-  }
-
-  @Override
-  public void setUseStripDiacritics(boolean b) {
-    use_strip_diacritics = b;
+  public void defaultConfig() {
+    try {
+      Preprocessing.setDefault();
+    } catch (IOException e) {
+      System.err.println("Caught IOException: " + e.getMessage());
+    }
   }
 }

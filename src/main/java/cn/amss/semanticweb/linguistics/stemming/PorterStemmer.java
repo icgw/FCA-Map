@@ -5,7 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 
-package cn.amss.semanticweb.lexicon.stemming;
+package cn.amss.semanticweb.linguistics.stemming;
 
 /**
  *  Porter stemmer in Java. The original paper is in
@@ -19,7 +19,7 @@ package cn.amss.semanticweb.lexicon.stemming;
  *   + 'ization' == 'isation'
  * @author Guowei Chen (icgw@outlook.com)
  */
-public class PorterStemmer
+public class PorterStemmer implements Stemmer
 {
   private static final int INC = 50;
 
@@ -263,14 +263,7 @@ public class PorterStemmer
     if (b[k] == 'l' && doubleConsonant(k) && numOfConsonantSeq() > 1) --k;
   }
 
-  public void setCurrent(String value) {
-    for (char ch : value.toCharArray()) {
-      ch = Character.toLowerCase(ch);
-      add(ch);
-    }
-  }
-
-  public void stem() {
+  private void stem() {
     k = offset - 1;
     if (k > 1) {
       step1(); step2(); step3(); step4(); step5(); step6();
@@ -278,10 +271,19 @@ public class PorterStemmer
     end = k + 1; offset = 0;
   }
 
-  public String getCurrent() {
+  private void setCurrent(String value) {
+    offset = end = 0;
+    for (char ch : value.toCharArray()) {
+      ch = Character.toLowerCase(ch);
+      add(ch);
+    }
+  }
+
+  private String getCurrent() {
     return new String(b, 0, end);
   }
 
+  @Override
   public String mutate(String value) {
     setCurrent(value);
     stem();

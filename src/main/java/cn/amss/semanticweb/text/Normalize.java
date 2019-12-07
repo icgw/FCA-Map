@@ -18,33 +18,33 @@ import java.text.Normalizer;
  */
 public class Normalize
 {
-  private static final String RE_CAMELCASE_OR_UNDERSCORE      = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|_";
-  private static final String RE_TAIL_WITH_S                  = "['’]s\\b|[a-zA-Z0-9][ \t]@_]";
-  private static final String RE_DIACRITICS_AND_FRIENDS       = "[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+";
-  private static final String RE_PARENTHETICAL_DISAMBIGUATION = " \\(.+?\\)$";
-  private static final String RE_SUBPAGES                     = "\\/.+?$";
-  private static final String RE_APPOSITIVE                   = "^.+?: ";
+  private static final String RE_CAMEL_OR_SNAKE_DELIMITER = "(?<!^|[A-Z])(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|_";
+  private static final String RE_CONTRACTION              = "'s\\b|'m\\b|'re\\b|'ve|'d\\b|'ll\\b|(?<= )o'\\b";
+  private static final String RE_DIACRITICS_AND_FRIENDS   = "[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+";
+  private static final String RE_ACRONYM_WITH_STOP        = "([A-Z])\\.";
+  private static final String RE_NORM_DIGIT               = "(?<=\\d)\\W+(?=\\d)";
+  private static final String RE_SUBPAGES                 = "\\/.+?$";
 
-  private static final Pattern CAMELCASE_OR_UNDERSCORE      = Pattern.compile(RE_CAMELCASE_OR_UNDERSCORE);
-  private static final Pattern TAIL_WITH_S                  = Pattern.compile(RE_TAIL_WITH_S);
-  private static final Pattern DIACRITICS_AND_FRIENDS       = Pattern.compile(RE_DIACRITICS_AND_FRIENDS);
-  private static final Pattern PARENTHETICAL_DISAMBIGUATION = Pattern.compile(RE_PARENTHETICAL_DISAMBIGUATION);
-  private static final Pattern SUBPAGES                     = Pattern.compile(RE_SUBPAGES);
-  private static final Pattern APPOSITIVE                   = Pattern.compile(RE_APPOSITIVE);
+  private static final Pattern CAMEL_OR_SNAKE_DELIMITER = Pattern.compile(RE_CAMEL_OR_SNAKE_DELIMITER);
+  private static final Pattern CONTRACTION              = Pattern.compile(RE_CONTRACTION);
+  private static final Pattern DIACRITICS_AND_FRIENDS   = Pattern.compile(RE_DIACRITICS_AND_FRIENDS);
+  private static final Pattern ACRONYM_WITH_STOP        = Pattern.compile(RE_ACRONYM_WITH_STOP);
+  private static final Pattern NORM_DIGIT               = Pattern.compile(RE_NORM_DIGIT);
+  private static final Pattern SUBPAGES                 = Pattern.compile(RE_SUBPAGES);
 
   /**
-   * Transform camel case or underscore case style into a normal case style
+   * Replace the delimiter of camel or snake into one space
    *
-   * @param s a text string
-   * @return a normal string
+   * @param s the string may be camel case style or snake case style
+   * @return the string which delimiter is one space
    */
-  public static final String normalizeCaseStyle(String s) {
+  public static final String normCamelSnakeDelimiter(String s) {
     if (s == null || s.isEmpty()) {
       return s;
     }
 
     StringJoiner sj = new StringJoiner(" ");
-    for (String word : CAMELCASE_OR_UNDERSCORE.split(s)) {
+    for (String word : CAMEL_OR_SNAKE_DELIMITER.split(s)) {
       if (!word.isEmpty()) {
         sj.add(word.trim());
       }
@@ -65,23 +65,13 @@ public class Normalize
   }
 
   /**
-   * Remove 's in a string
+   * Remove contraction 's, 'm, 're, 've, 'd, 'll and 'o
    *
-   * @param s the string contains 's
-   * @return a string without 's
+   * @param s the string contains contraction
+   * @return the string without the designated contraction
    */
-  public static final String removeS(String s) {
-    return TAIL_WITH_S.matcher(s).replaceAll("");
-  }
-
-  /**
-   * Remove the parenthetical disambiguation in the wikipedia:article title
-   *
-   * @param s wikipedia:article title
-   * @return wikipedia article title without parenthetical disambiguation
-   */
-  public static final String removeDisambiguation(String s) {
-    return PARENTHETICAL_DISAMBIGUATION.matcher(s).replaceFirst("");
+  public static final String removeContraction(String s) {
+    return CONTRACTION.matcher(s).replaceAll("");
   }
 
   /**
@@ -95,12 +85,22 @@ public class Normalize
   }
 
   /**
-   * Remove the appositive in the wikipedia:article title
+   * Change the acronym with stop into the one without stop
    *
-   * @param s wikipedia:article title with appositive
-   * @return wikipedia:article title without appositive
+   * @param s the string (acronym) with stop
+   * @return the one without stop
    */
-  public static final String removeAppositive(String s) {
-    return APPOSITIVE.matcher(s).replaceFirst("");
+  public static final String normAcronym(String s) {
+    return ACRONYM_WITH_STOP.matcher(s).replaceAll("$1");
   }
-} // END: Normalize
+
+  /**
+   * Add hyphen (-) between two numbers
+   *
+   * @param s the string contain digit
+   * @return the string cotain digit connected with hyphen
+   */
+  public static final String normDigit(String s) {
+    return NORM_DIGIT.matcher(s).replaceAll("-");
+  }
+}

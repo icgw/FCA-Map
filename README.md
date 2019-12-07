@@ -97,6 +97,10 @@ PRs accepted.
 
 See [FCA-Map@liweizhuo001](https://github.com/liweizhuo001/FCA-Map) (**no longer maintained**), which system is primarily developed by _Mengyi Zhao_.
 
+## Related Systems
+- LogMap: An Ontology Alignment and Alignment Repair System \[[ernestojimenezruiz/logmap-matcher](https://github.com/ernestojimenezruiz/logmap-matcher)\]
+- AML: AgreementMaker Ontology Matching System \[[agreementmaker/agreementmaker](https://github.com/agreementmaker/agreementmaker)\]
+
 ## Acknowledgements
 
 This work has been supported by the National Key Research and Development Program of China under grant 2016YFB1000902, and the Natural Science Foundation of China grant 61621003.
