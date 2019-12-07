@@ -32,7 +32,7 @@ public class Preprocessing
   private static boolean lowerCase = true;
   private static boolean stemmerEnabled = true;
   private static boolean stopWordsEnabled = true;
-  private static boolean normlizationEnabled = true;
+  private static boolean normalizationEnabled = true;
 
   public static boolean isLowerCaseEnabled() {
     return lowerCase;
@@ -46,8 +46,8 @@ public class Preprocessing
     return stopWordsEnabled;
   }
 
-  public static boolean isNormlizationEnabled() {
-    return normlizationEnabled;
+  public static boolean isNormalizationEnabled() {
+    return normalizationEnabled;
   }
 
   private static class StopWords {

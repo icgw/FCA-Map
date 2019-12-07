@@ -272,4 +272,13 @@ public class OntModelWrapper
   public Set<OntClass> getOntClasses() {
     return m_classes;
   }
+
+  /**
+   * Get the ontology model
+   *
+   * @return m_ontology
+   */
+  public OntModel getOntModel() {
+    return m_ontology;
+  }
 }

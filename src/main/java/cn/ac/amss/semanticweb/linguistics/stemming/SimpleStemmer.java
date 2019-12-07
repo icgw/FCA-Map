@@ -20,8 +20,7 @@ public class SimpleStemmer implements Stemmer
   public SimpleStemmer() {}
 
   private static String stem(String word, boolean toLemma) {
-    String stemmed, result;
-    stemmed = result = "";
+    String stemmed = "";
 
     ENDING ending;
 
