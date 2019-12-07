@@ -57,10 +57,10 @@ I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/)! :)
 ```java
 // Demo.java
 
-import cn.amss.semanticweb.alignment.Mapping;
-import cn.amss.semanticweb.model.OntModelWrapper;
-import cn.amss.semanticweb.matching.LexicalMatcher;
-import cn.amss.semanticweb.matching.MatcherFactory;
+import cn.ac.amss.semanticweb.alignment.Mapping;
+import cn.ac.amss.semanticweb.model.OntModelWrapper;
+import cn.ac.amss.semanticweb.matching.LexicalMatcher;
+import cn.ac.amss.semanticweb.matching.MatcherFactory;
 
 public class Demo {
   public static void main(String[] args) {

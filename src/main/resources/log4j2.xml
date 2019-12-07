@@ -22,7 +22,7 @@
   </Appenders>
 
   <Loggers>
-    <Logger name="cn.amss.semanticweb" level="info" additivity="true">
+    <Logger name="cn.ac.amss.semanticweb" level="info" additivity="true">
       <appender-ref ref="fileLogger" level="info" />
     </Logger>
 
