@@ -22,7 +22,7 @@ public class SimpleStemmer implements Stemmer
   private static String stem(String word, boolean toLemma) {
     String stemmed = "";
 
-    ENDING ending;
+    ENDING ending = ENDING._NONE_;
 
     if (word == null || word.isEmpty()) return "";
 

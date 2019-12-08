@@ -29,9 +29,9 @@ public class Preprocessing
   private static Set<String> stopWords = new HashSet<>();
   private static Stemmer stemmer       = Init.porterStemmer();
 
-  private static boolean lowerCase = true;
-  private static boolean stemmerEnabled = true;
-  private static boolean stopWordsEnabled = true;
+  private static boolean lowerCase            = true;
+  private static boolean stemmerEnabled       = true;
+  private static boolean stopWordsEnabled     = true;
   private static boolean normalizationEnabled = true;
 
   public static boolean isLowerCaseEnabled() {
@@ -64,6 +64,8 @@ public class Preprocessing
   }
 
   private static class Init {
+    private static final String RE_TOKEN_DELIMITER_EN = "[^a-zA-Z\\d\\-']+[^a-zA-Z\\d]*[^a-zA-Z\\d\\-']*";
+
     private static void en() throws IOException {
       try ( InputStream in = Preprocessing.class.getResourceAsStream(StopWords.EN);
             BufferedReader br = new BufferedReader(new InputStreamReader(in))
@@ -84,7 +86,7 @@ public class Preprocessing
     }
 
     private static Pattern patternTokenDelimiterEN() {
-      return Pattern.compile("[^a-zA-Z0-9\\-']+");
+      return Pattern.compile(RE_TOKEN_DELIMITER_EN);
     }
 
     private static Stemmer porterStemmer() {

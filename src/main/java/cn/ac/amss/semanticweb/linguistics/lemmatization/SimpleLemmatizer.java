@@ -15,13 +15,15 @@ package cn.ac.amss.semanticweb.linguistics.lemmatization;
 public class SimpleLemmatizer
 {
   public static enum ENDING {
-    ING, EST, ES, S, ED, ER, LY, IES, IED, IER, VED, US, OES, VES, IEST
+    ING, EST, ES, S, ED, ER, LY, IES, IED, IER, VED, US, OES, VES, IEST, _NONE_
   }
 
   public SimpleLemmatizer() {}
 
   public static String lemma(String stemmed, ENDING ending) {
     if (stemmed == null || stemmed.isEmpty() || stemmed.length() < 2) return "";
+
+    if (ending == ENDING._NONE_) return stemmed;
 
     switch (stemmed.charAt(0)) {
       case 'a':

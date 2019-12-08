@@ -40,18 +40,12 @@ public class NormalizeTest
   }
 
   @Test
-  public void testRemoveSubPages() {
-    String s1 = "Kashyyyk/Legends";
-    assertEquals( "Kashyyyk", Normalize.removeSubPages(s1) );
-
-    String s2 = "/";
-    assertEquals( "/", Normalize.removeSubPages(s2) );
-  }
-
-  @Test
   public void testNormAcronym() {
-    String s1 = "U.S";
+    String s1 = "U.S.";
     assertEquals( "US", Normalize.normAcronym(s1) );
+
+    String s2 = "Ph.D.";
+    assertEquals( "PhD", Normalize.normAcronym(s2) );
   }
 
   @Test

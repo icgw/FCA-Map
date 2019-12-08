@@ -26,9 +26,7 @@ import cn.ac.amss.semanticweb.matching.LexicalMatcher;
 import cn.ac.amss.semanticweb.matching.MatcherByFCA;
 import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.model.ResourceWrapper;
-import cn.ac.amss.semanticweb.linguistics.stemming.PorterStemmer;
 import cn.ac.amss.semanticweb.text.Preprocessing;
-import cn.ac.amss.semanticweb.text.Normalize;
 import cn.ac.amss.semanticweb.fca.Hermes;
 import cn.ac.amss.semanticweb.vocabulary.DBkWik;
 
