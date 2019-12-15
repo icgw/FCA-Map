@@ -11,6 +11,9 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
 
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.Resource;
@@ -23,11 +26,56 @@ public class Mapping implements Iterable<MappingCell>
   private OntModel m_source = null;
   private OntModel m_target = null;
 
+  private Map<String, Integer> sourceEntity2Id = null;
+  private Map<Integer, String> Id2SourceEntity = null;
+
+  private Map<String, Integer> targetEntity2Id = null;
+  private Map<Integer, String> Id2TargetEntity = null;
+
+  private Map<Integer, Set<Integer>> sourceId2Targets = null;
+  private Map<Integer, Set<Integer>> targetId2Sources = null;
+
   public Mapping() {
     m_mapping = new HashSet<>();
+
+    sourceEntity2Id = new HashMap<>();
+    Id2SourceEntity = new HashMap<>();
+
+    targetEntity2Id = new HashMap<>();
+    Id2TargetEntity = new HashMap<>();
+
+    sourceId2Targets = new HashMap<>();
+    targetId2Sources = new HashMap<>();
   }
 
   public boolean add(MappingCell c) {
+    String e1 = c.getEntity1();
+    String e2 = c.getEntity2();
+
+    int i1 = sourceEntity2Id.getOrDefault(e1, sourceEntity2Id.size());
+    sourceEntity2Id.put(e1, i1);
+
+    int i2 = targetEntity2Id.getOrDefault(e2, targetEntity2Id.size());
+    targetEntity2Id.put(e2, i2);
+
+    if (!Id2SourceEntity.containsKey(i1)) Id2SourceEntity.put(i1, e1);
+
+    if (!Id2TargetEntity.containsKey(i2)) Id2TargetEntity.put(i2, e2);
+
+    Set<Integer> targets = sourceId2Targets.get(i1);
+    if (targets == null) {
+      sourceId2Targets.put(i1, new HashSet<>(Arrays.asList(i2)));
+    } else {
+      targets.add(i2);
+    }
+
+    Set<Integer> sources = targetId2Sources.get(i2);
+    if (sources == null) {
+      targetId2Sources.put(i2, new HashSet<>(Arrays.asList(i1)));
+    } else {
+      sources.add(i1);
+    }
+
     return m_mapping.add(c);
   }
 
@@ -93,6 +141,52 @@ public class Mapping implements Iterable<MappingCell>
 
   public boolean isEmpty() {
     return m_mapping == null || m_mapping.isEmpty();
+  }
+
+  /**
+   * Compute the cloure of the mappings
+   *
+   * @return the cloure of the mmappings
+   */
+  public Mapping toClosure() {
+    Mapping mClosure = new Mapping();
+
+    Map<Integer, Set<Integer>> source2TargetsClosure = new HashMap<>();
+    int n = sourceEntity2Id.size();
+
+    for (int i = 0; i < n; ++i) {
+      Set<Integer> sTargets = sourceId2Targets.get(i);
+      if (sTargets == null) continue;
+
+      Set<Integer> targets = new HashSet<>();
+
+      Set<Integer> sources = new HashSet<>();
+      for (int  t : sTargets) {
+        Set<Integer> ss = targetId2Sources.get(t);
+        if (ss == null) continue;
+        sources.addAll(ss);
+      }
+
+      for (int s : sources) {
+        Set<Integer> ts = sourceId2Targets.get(s);
+        if (ts == null) continue;
+        targets.addAll(ts);
+      }
+
+      source2TargetsClosure.put(i, targets);
+    }
+
+    for (Map.Entry<Integer, Set<Integer>> e : source2TargetsClosure.entrySet()) {
+      int sid = e.getKey();
+      for (int tid : e.getValue()) {
+        String e1 = Id2SourceEntity.get(sid);
+        String e2 = Id2TargetEntity.get(tid);
+        if (e1 == null || e2 == null) continue;
+        mClosure.add(e1, e2);
+      }
+    }
+
+    return mClosure;
   }
 
   public String listMappingCellSPO(MappingCell mc) {

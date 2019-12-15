@@ -50,7 +50,7 @@ public class NormalizeTest
 
   @Test
   public void testNormDigit() {
-    String s1 = "Volumn 1 10 2";
-    assertEquals( "Volumn 1-10-2", Normalize.normDigit(s1) );
+    String s1 = "Volume 1 10 2";
+    assertEquals( "Volume 1-10-2", Normalize.normDigit(s1) );
   }
 }

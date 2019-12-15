@@ -7,16 +7,18 @@
 
 package cn.ac.amss.semanticweb.model;
 
+import java.io.InputStream;
+
 import org.junit.Test;
 
 public class OntModelWrapperTest
 {
   @Test
   public void testOntModelWrapper() {
-    String conference_url = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/Conference.owl";
-    OntModelWrapper conf = new OntModelWrapper(conference_url);
+    InputStream inSource = this.getClass().getResourceAsStream("/oaei/conference/Conference.owl");
+    OntModelWrapper conf = new OntModelWrapper(inSource);
 
-    String ekaw_url = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/ekaw.owl";
-    OntModelWrapper ekaw = new OntModelWrapper(ekaw_url);
+    InputStream inTarget = this.getClass().getResourceAsStream("/oaei/conference/ekaw.owl");
+    OntModelWrapper ekaw = new OntModelWrapper(inTarget);
   }
 }

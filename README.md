@@ -95,11 +95,11 @@ PRs accepted.
 
 ### FCA-Map for matching biomedical ontologies
 
-See [FCA-Map@liweizhuo001](https://github.com/liweizhuo001/FCA-Map) (**no longer maintained**), which system is primarily developed by _Mengyi Zhao_.
+See \[[liweizhuo001/FCA-Map](https://github.com/liweizhuo001/FCA-Map)\] (**no longer maintained**), which system is primarily developed by _Mengyi Zhao_.
 
-## Related Systems
+## Other Systems
 - LogMap: An Ontology Alignment and Alignment Repair System \[[ernestojimenezruiz/logmap-matcher](https://github.com/ernestojimenezruiz/logmap-matcher)\]
-- AML: AgreementMaker Ontology Matching System \[[agreementmaker/agreementmaker](https://github.com/agreementmaker/agreementmaker)\]
+- AgrMaker: AgreementMaker Ontology Matching System \[[agreementmaker/agreementmaker](https://github.com/agreementmaker/agreementmaker)\]
 
 ## Acknowledgements
 
