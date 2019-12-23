@@ -100,6 +100,7 @@ See \[[liweizhuo001/FCA-Map](https://github.com/liweizhuo001/FCA-Map)\] (**no lo
 ## Other Systems
 - LogMap: An Ontology Alignment and Alignment Repair System \[[ernestojimenezruiz/logmap-matcher](https://github.com/ernestojimenezruiz/logmap-matcher)\]
 - AgrMaker: AgreementMaker Ontology Matching System \[[agreementmaker/agreementmaker](https://github.com/agreementmaker/agreementmaker)\]
+- AML: AgreementMakerLight Eclipse Project \[[AgreementMakerLight/AML-Project](https://github.com/AgreementMakerLight/AML-Project)\]
 
 ## Acknowledgements
 
@@ -107,17 +108,17 @@ This work has been supported by the National Key Research and Development Progra
 
 ## References
 
-1. **Identifying mappings among knowledge graphs by formal concept analysis.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[technical paper][1]\] \[[slides][7]\]
+1. **Identifying mappings among knowledge graphs by formal concept analysis**. _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2019: . \[[technical paper][1]\] \[[slides][7]\]
 
-2. **FCAMap-KG results for OAEI 2019.** _Fei Chang, Guowei Chen, Songmao Zhang._ OM@ISWC 2019: . \[[OAEI paper][2]\]
+2. **FCAMap-KG results for OAEI 2019**. _Fei Chang_, _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2019: . \[[OAEI paper][2]\]
 
-2. **FCAMapX results for OAEI 2018.** _Guowei Chen, Songmao Zhang._ OM@ISWC 2018: 160-166. \[[OAEI paper][3]\]
+2. **FCAMapX results for OAEI 2018**. _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2018: 160-166. \[[OAEI paper][3]\]
 
-3. **Matching biomedical ontologies based on formal concept analysis.** _Mengyi Zhao, Songmao Zhang, Weizhuo Li, Guowei Chen._ J. Biomedical Semantics **9**(1): 11:1-11:27 (2018). \[[publisher page][4]\]
+3. **Matching biomedical ontologies based on formal concept analysis**. _Mengyi Zhao_, _Songmao Zhang_, _Weizhuo Li_, _Guowei Chen_. J. Biomedical Semantics **9**(1): 11:1-11:27 (2018). \[[publisher page][4]\]
 
-4. **Identifying and validating ontology mappings by formal concept analysis.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 61-72. \[[technical paper][5]\]
+4. **Identifying and validating ontology mappings by formal concept analysis**. _Mengyi Zhao_, _Songmao Zhang_. OM@ISWC 2016: 61-72. \[[technical paper][5]\]
 
-5. **FCA-Map results for OAEI 2016.** _Mengyi Zhao, Songmao Zhang._ OM@ISWC 2016: 172-177. \[[OAEI paper][6]\]
+5. **FCA-Map results for OAEI 2016**. _Mengyi Zhao_, _Songmao Zhang_. OM@ISWC 2016: 172-177. \[[OAEI paper][6]\]
 
 ## Maintainer
 

@@ -17,6 +17,8 @@ import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.SKOS;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.Individual;
@@ -41,7 +43,8 @@ public class OntModelWrapper
   private Model m_raw_model   = null;
   private OntModel m_ontology = null;
 
-  private Set<Individual> m_instances   = null;
+  private Set<Individual> m_instances = null;
+  private Set<Resource> m_categories  = null;
 
   private Set<OntProperty> m_properties               = null;
   private Set<DatatypeProperty> m_datatype_properties = null;
@@ -56,6 +59,7 @@ public class OntModelWrapper
     m_raw_model = ModelFactory.createDefaultModel();
 
     m_instances           = new HashSet<>();
+    m_categories          = new HashSet<>();
     m_properties          = new HashSet<>();
     m_datatype_properties = new HashSet<>();
     m_object_properties   = new HashSet<>();
@@ -101,6 +105,9 @@ public class OntModelWrapper
     m_ontology = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, m_raw_model);
 
     acquireInstances();
+
+    acquireCategories();
+
     acquireProperties();
 
     // XXX: wait to improve
@@ -111,8 +118,8 @@ public class OntModelWrapper
     acquireClasses();
 
     if (m_logger.isInfoEnabled()) {
-      m_logger.info(String.format("#Instances: %8d, #Properties: %8d, #DatatypeProperties: %8d, #ObjectProperties: %8d, #Classes: %8d.",
-                    m_instances.size(), m_properties.size(), m_datatype_properties.size(), m_object_properties.size(), m_classes.size()));
+      m_logger.info(String.format("# Instances: %8d, # Categories: %8d, # Properties: %8d, # DatatypeProperties: %8d, # ObjectProperties: %8d, # Classes: %8d.",
+                    m_instances.size(), m_categories.size(), m_properties.size(), m_datatype_properties.size(), m_object_properties.size(), m_classes.size()));
     }
   }
 
@@ -155,6 +162,16 @@ public class OntModelWrapper
       Individual i = it.next();
       if (isSkipInstance(i)) continue;
       m_instances.add(i);
+    }
+  }
+
+  /**
+   * Acquire the categories
+   */
+  private void acquireCategories() {
+    for (ResIterator it = m_ontology.listResourcesWithProperty(RDF.type, SKOS.Concept); it.hasNext(); ) {
+      Resource c = it.nextResource();
+      m_categories.add(c);
     }
   }
 

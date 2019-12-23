@@ -79,12 +79,16 @@ public class Mapping implements Iterable<MappingCell>
     return m_mapping.add(c);
   }
 
-  public boolean addAll(Mapping m) {
-    return m_mapping.addAll(m.m_mapping);
+  public boolean addAll(Set<MappingCell> m) {
+    boolean b = true;
+    for (MappingCell mc : m) {
+      b = (b && m_mapping.add(mc));
+    }
+    return b;
   }
 
-  public boolean addAll(Set<MappingCell> m) {
-    return m_mapping.addAll(m);
+  public boolean addAll(Mapping m) {
+    return this.addAll(m.m_mapping);
   }
 
   public boolean removeAll(Mapping m) {
