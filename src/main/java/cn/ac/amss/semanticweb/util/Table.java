@@ -8,12 +8,17 @@
 package cn.ac.amss.semanticweb.util;
 
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.HashSet;
 
 public abstract class Table <K, V> {
   protected Map<K, Set<V>> map;
+
+  public Table() {
+    map = new HashMap<>();
+  }
 
   public Map<K, Set<V>> getMap() {
     return map;
