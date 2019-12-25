@@ -98,6 +98,10 @@ public class Hermes <O, A>
     }
   }
 
+  public void init(Context<O, A> context) {
+    init(context.getMap());
+  }
+
   public void init(Map<O, Set<A>> context) {
     int i = 0;
     for (O o : context.keySet()) {

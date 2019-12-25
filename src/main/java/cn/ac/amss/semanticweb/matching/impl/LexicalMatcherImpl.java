@@ -117,9 +117,9 @@ public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
     }
 
     if (Preprocessing.isNormalizationEnabled()) {
-      Set<String> normaliedLabelOrName = acquireNormalizedLabelOrName(labelOrName);
+      Set<String> normalizedLabelOrName = acquireNormalizedLabelOrName(labelOrName);
       labelOrName.clear();
-      labelOrName.addAll(normaliedLabelOrName);
+      labelOrName.addAll(normalizedLabelOrName);
     }
 
     return labelOrName;

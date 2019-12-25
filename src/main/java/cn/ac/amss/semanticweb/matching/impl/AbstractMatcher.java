@@ -26,28 +26,22 @@ public abstract class AbstractMatcher
     otherModels = new HashSet<>();
   }
 
-  public void setSourceTarget(String sourceFilenameOrURI, String targetFilenameOrURI) {
-    this.source = new ModelStorage(sourceFilenameOrURI);
-    this.target = new ModelStorage(targetFilenameOrURI);
+  public void setSourceTarget(ModelStorage source, ModelStorage target) {
+    this.source = source;
+    this.target = target;
   }
 
-  public boolean addOtherModel(String otherFilenameOrURI) {
-    if (null == otherFilenameOrURI) return false;
-    return otherModels.add(new ModelStorage(otherFilenameOrURI));
+  public boolean addOtherModel(ModelStorage other) {
+    if (null == other) return false;
+    return otherModels.add(other);
   }
 
   public void clearOtherModels() {
     otherModels.clear();
   }
 
-  public void close() {
-    if (null != source) source.clear();
-    if (null != target) target.clear();
-    for (ModelStorage m : otherModels) m.clear();
-    otherModels.clear();
-  }
-
   protected void matchPlainRDFNodes(Set<PlainRDFNode> candidatePool, Mapping mappings) {
+    if (null == candidatePool || null == mappings) return;
     Set<PlainRDFNode> sources = new HashSet<>();
     Set<PlainRDFNode> targets = new HashSet<>();
     splitPlainRDFNodes(candidatePool, sources, targets);

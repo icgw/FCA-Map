@@ -13,5 +13,15 @@ public class MatchingSpec
     SOURCE, TARGET, DUMMY, UNKNOWN;
   }
 
+  public enum MatchType {
+    INSTANCE,
+    CATEGORY,
+    ONT_PROPERTY,
+    DATA_TYPE_PROPERTY,
+    OBJECT_PROPERTY,
+    ONT_CLASS,
+    UNKNOWN;
+  }
+
   private MatchingSpec() {}
 }
