@@ -12,7 +12,7 @@ import cn.ac.amss.semanticweb.constant.MatchingSpec.Owner;
 public class PlainRDFNode
 {
   private String represent = "";
-  private Owner owner      = Owner.UNKNOWN;
+  private Owner owner      = Owner._UNKNOWN_;
 
   private PlainRDFNode() {}
 
@@ -27,5 +27,18 @@ public class PlainRDFNode
 
   public Owner getOwner() {
     return owner;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (null == o || getClass() != o.getClass()) return false;
+    PlainRDFNode that = (PlainRDFNode) o;
+    return that.represent.equals(this.represent) && that.owner == this.owner;
+  }
+
+  @Override
+  public int hashCode() {
+    return represent.hashCode();
   }
 }

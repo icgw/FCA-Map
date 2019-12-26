@@ -10,7 +10,10 @@ package cn.ac.amss.semanticweb.constant;
 public class MatchingSpec
 {
   public enum Owner {
-    SOURCE, TARGET, DUMMY, UNKNOWN;
+    SOURCE,
+    TARGET,
+    DUMMY,
+    _UNKNOWN_;
   }
 
   public enum MatchType {
@@ -20,7 +23,14 @@ public class MatchingSpec
     DATA_TYPE_PROPERTY,
     OBJECT_PROPERTY,
     ONT_CLASS,
-    UNKNOWN;
+    _UNKNOWN_;
+  }
+
+  public enum SPOPart {
+    AS_SUBJECT,
+    AS_PREDICATE,
+    AS_OBJECT,
+    _UNKNOWN_;
   }
 
   private MatchingSpec() {}

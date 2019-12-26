@@ -33,8 +33,8 @@ import java.util.Arrays;
 
 public class LexicalMatcher2Impl extends AbstractMatcherByFCA
 {
-  private class LookUpTable extends Table<String, PlainRDFNode> {
-    public LookUpTable() { super(); }
+  private class LookupTable extends Table<String, PlainRDFNode> {
+    public LookupTable() { super(); }
   }
 
   public LexicalMatcher2Impl() {
@@ -57,7 +57,7 @@ public class LexicalMatcher2Impl extends AbstractMatcherByFCA
     mapResources(MatchType.ONT_PROPERTY, mappings);
   }
 
-  public void mapDatatypeProperties(Mapping mappings) {
+  public void mapDataTypeProperties(Mapping mappings) {
     mapResources(MatchType.DATA_TYPE_PROPERTY, mappings);
   }
 
@@ -72,8 +72,8 @@ public class LexicalMatcher2Impl extends AbstractMatcherByFCA
   private void mapResources(MatchType type, Mapping mappings) {
     if (null == this.source || null == this.target || null == mappings) return;
 
-    LookUpTable labelOrName2PlainRDFNodes = new LookUpTable();
-    constructLookUpTable(type, labelOrName2PlainRDFNodes);
+    LookupTable labelOrName2PlainRDFNodes = new LookupTable();
+    constructLookupTable(type, labelOrName2PlainRDFNodes);
 
     Context<String, String> labelOrName2tokensContext = constructTokenBasedContext(labelOrName2PlainRDFNodes.keySet());
 
@@ -117,48 +117,48 @@ public class LexicalMatcher2Impl extends AbstractMatcherByFCA
     return labelOrName2tokensContext;
   }
 
-  private void constructLookUpTable(MatchType type, LookUpTable labelOrName2PlainRDFNodes) {
+  private void constructLookupTable(MatchType type, LookupTable labelOrName2PlainRDFNodes) {
     switch (type) {
       case INSTANCE:
-        constructLookUpTable(Owner.SOURCE, this.source.getIndividuals(), labelOrName2PlainRDFNodes);
-        constructLookUpTable(Owner.TARGET, this.target.getIndividuals(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.SOURCE, this.source.getIndividuals(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.TARGET, this.target.getIndividuals(), labelOrName2PlainRDFNodes);
         for (ModelStorage other : this.otherModels) {
-          constructLookUpTable(Owner.DUMMY, other.getIndividuals(), labelOrName2PlainRDFNodes);
+          constructLookupTable(Owner.DUMMY, other.getIndividuals(), labelOrName2PlainRDFNodes);
         }
         break;
       case CATEGORY:
-        constructLookUpTable(Owner.SOURCE, this.source.getCategories(), labelOrName2PlainRDFNodes);
-        constructLookUpTable(Owner.TARGET, this.target.getCategories(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.SOURCE, this.source.getCategories(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.TARGET, this.target.getCategories(), labelOrName2PlainRDFNodes);
         for (ModelStorage other : this.otherModels) {
-          constructLookUpTable(Owner.DUMMY, other.getCategories(), labelOrName2PlainRDFNodes);
+          constructLookupTable(Owner.DUMMY, other.getCategories(), labelOrName2PlainRDFNodes);
         }
         break;
       case ONT_PROPERTY:
-        constructLookUpTable(Owner.SOURCE, this.source.getOntProperties(), labelOrName2PlainRDFNodes);
-        constructLookUpTable(Owner.TARGET, this.target.getOntProperties(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.SOURCE, this.source.getOntProperties(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.TARGET, this.target.getOntProperties(), labelOrName2PlainRDFNodes);
         for (ModelStorage other : this.otherModels) {
-          constructLookUpTable(Owner.DUMMY, other.getOntProperties(), labelOrName2PlainRDFNodes);
+          constructLookupTable(Owner.DUMMY, other.getOntProperties(), labelOrName2PlainRDFNodes);
         }
         break;
       case DATA_TYPE_PROPERTY:
-        constructLookUpTable(Owner.SOURCE, this.source.getDataTypeProperties(), labelOrName2PlainRDFNodes);
-        constructLookUpTable(Owner.TARGET, this.target.getDataTypeProperties(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.SOURCE, this.source.getDataTypeProperties(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.TARGET, this.target.getDataTypeProperties(), labelOrName2PlainRDFNodes);
         for (ModelStorage other : this.otherModels) {
-          constructLookUpTable(Owner.DUMMY, other.getDataTypeProperties(), labelOrName2PlainRDFNodes);
+          constructLookupTable(Owner.DUMMY, other.getDataTypeProperties(), labelOrName2PlainRDFNodes);
         }
         break;
       case OBJECT_PROPERTY:
-        constructLookUpTable(Owner.SOURCE, this.source.getObjectProperties(), labelOrName2PlainRDFNodes);
-        constructLookUpTable(Owner.TARGET, this.target.getObjectProperties(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.SOURCE, this.source.getObjectProperties(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.TARGET, this.target.getObjectProperties(), labelOrName2PlainRDFNodes);
         for (ModelStorage other : this.otherModels) {
-          constructLookUpTable(Owner.DUMMY, other.getObjectProperties(), labelOrName2PlainRDFNodes);
+          constructLookupTable(Owner.DUMMY, other.getObjectProperties(), labelOrName2PlainRDFNodes);
         }
         break;
       case ONT_CLASS:
-        constructLookUpTable(Owner.SOURCE, this.source.getOntClasses(), labelOrName2PlainRDFNodes);
-        constructLookUpTable(Owner.TARGET, this.target.getOntClasses(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.SOURCE, this.source.getOntClasses(), labelOrName2PlainRDFNodes);
+        constructLookupTable(Owner.TARGET, this.target.getOntClasses(), labelOrName2PlainRDFNodes);
         for (ModelStorage other : this.otherModels) {
-          constructLookUpTable(Owner.DUMMY, other.getOntClasses(), labelOrName2PlainRDFNodes);
+          constructLookupTable(Owner.DUMMY, other.getOntClasses(), labelOrName2PlainRDFNodes);
         }
         break;
       default:
@@ -166,9 +166,9 @@ public class LexicalMatcher2Impl extends AbstractMatcherByFCA
     }
   }
 
-  private <T extends Resource> void constructLookUpTable(Owner owner,
+  private <T extends Resource> void constructLookupTable(Owner owner,
                                                          Set<T> resources,
-                                                         LookUpTable labelOrName2PlainRDFNodes) {
+                                                         LookupTable labelOrName2PlainRDFNodes) {
     for (T r : resources) {
       Set<String> labelsOrNames = getLabelsOrNames(r);
       PlainRDFNode prn = new PlainRDFNode(r.getURI(), owner);
@@ -228,7 +228,7 @@ public class LexicalMatcher2Impl extends AbstractMatcherByFCA
       Statement stmt = it.nextStatement();
       RDFNode obj = stmt.getObject();
       if (!obj.isLiteral()) continue;
-      String ls = obj.asLiteral().getString();
+      String ls = obj.asLiteral().getLexicalForm();
       if (null != ls && !ls.isEmpty()) {
         literalStrings.add(ls);
       }
@@ -265,7 +265,7 @@ public class LexicalMatcher2Impl extends AbstractMatcherByFCA
     return tokens;
   }
 
-  private Set<PlainRDFNode> getPlainRDFNodes(Set<String> labelsOrNames, LookUpTable labelOrName2PlainRDFNodes) {
+  private Set<PlainRDFNode> getPlainRDFNodes(Set<String> labelsOrNames, LookupTable labelOrName2PlainRDFNodes) {
     Set<PlainRDFNode> candidates = new HashSet<>();
     for (String ln : labelsOrNames) {
       candidates.addAll(labelOrName2PlainRDFNodes.get(ln));

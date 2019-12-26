@@ -24,6 +24,10 @@ public abstract class Table <K, V> {
     return map;
   }
 
+  public int size() {
+    return map.size();
+  }
+
   public boolean put(K k, V v) {
     Set<V> s = map.get(k);
     if (null == s) {
@@ -58,5 +62,14 @@ public abstract class Table <K, V> {
 
   public boolean isEmpty() {
     return map.isEmpty();
+  }
+
+  public boolean containsKey(K key) {
+    return map.containsKey(key);
+  }
+
+  @Override
+  public String toString() {
+    return map.toString();
   }
 }

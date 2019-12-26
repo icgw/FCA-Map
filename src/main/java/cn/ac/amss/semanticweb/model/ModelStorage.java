@@ -50,7 +50,7 @@ public class ModelStorage {
   private String filenameOrURI = "";
 
   private Model model       = null;
-  private OntModel ontology = null;
+  private OntModel ontModel = null;
 
   private Set<Individual> individuals = null;
 
@@ -78,8 +78,12 @@ public class ModelStorage {
     read(filenameOrURI);
   }
 
-  public OntModel getOntology() {
-    return ontology;
+  public Model getModel() {
+    return model;
+  }
+
+  public OntModel getOntModel() {
+    return ontModel;
   }
 
   public Set<Individual> getIndividuals() {
@@ -114,7 +118,13 @@ public class ModelStorage {
     objectProperties.clear();
     ontClasses.clear();
 
-    close();
+    if (null != model && model.isClosed()) {
+      model.close();
+    }
+
+    if (null != ontModel && ontModel.isClosed()) {
+      ontModel.close();
+    }
   }
 
   private void read(String filenameOrURI) {
@@ -131,7 +141,7 @@ public class ModelStorage {
     if (null == in) return;
     model = ModelFactory.createDefaultModel();
     model.read(in, null);
-    ontology = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, model);
+    ontModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, model);
 
     acquire();
 
@@ -146,7 +156,7 @@ public class ModelStorage {
   }
 
   private void acquireIndividuals() {
-    for (ExtendedIterator<Individual> it = ontology.listIndividuals(); it.hasNext(); ) {
+    for (ExtendedIterator<Individual> it = ontModel.listIndividuals(); it.hasNext(); ) {
       Individual i = it.next();
       if (isIgnoredIndividual(i)) continue;
       individuals.add(i);
@@ -154,7 +164,7 @@ public class ModelStorage {
   }
 
   private void acquireCategories() {
-    for (ResIterator it = ontology.listResourcesWithProperty(RDF.type, SKOS.Concept); it.hasNext(); ) {
+    for (ResIterator it = ontModel.listResourcesWithProperty(RDF.type, SKOS.Concept); it.hasNext(); ) {
       Resource r = it.nextResource();
       if (isIgnoredCategory(r)) continue;
       categories.add(r);
@@ -162,7 +172,7 @@ public class ModelStorage {
   }
 
   private void acquireOntProperties() {
-    for (ExtendedIterator<OntProperty> it = ontology.listAllOntProperties(); it.hasNext(); ) {
+    for (ExtendedIterator<OntProperty> it = ontModel.listAllOntProperties(); it.hasNext(); ) {
       OntProperty p = it.next();
       if (isIgnoredOntProperty(p)) continue;
       ontProperties.add(p);
@@ -170,7 +180,7 @@ public class ModelStorage {
   }
 
   private void acquireDataTypeProperties() {
-    for (ExtendedIterator<DatatypeProperty> it = ontology.listDatatypeProperties(); it.hasNext(); ) {
+    for (ExtendedIterator<DatatypeProperty> it = ontModel.listDatatypeProperties(); it.hasNext(); ) {
       DatatypeProperty p = it.next();
       if (isIgnoredDataTypeProperty(p)) continue;
       dataTypeProperties.add(p);
@@ -178,7 +188,7 @@ public class ModelStorage {
   }
 
   private void acquireObjectProperties() {
-    for (ExtendedIterator<ObjectProperty> it = ontology.listObjectProperties(); it.hasNext(); ) {
+    for (ExtendedIterator<ObjectProperty> it = ontModel.listObjectProperties(); it.hasNext(); ) {
       ObjectProperty p = it.next();
       if (isIgnoredObjectProperty(p)) continue;
       objectProperties.add(p);
@@ -186,7 +196,7 @@ public class ModelStorage {
   }
 
   private void acquireOntClasses() {
-    for (ExtendedIterator<OntClass> it = ontology.listClasses(); it.hasNext(); ) {
+    for (ExtendedIterator<OntClass> it = ontModel.listClasses(); it.hasNext(); ) {
       OntClass c = it.next();
       if (isIgnoredOntClass(c)) continue;
       ontClasses.add(c);
@@ -228,15 +238,5 @@ public class ModelStorage {
 
   private static final boolean isIgnoredOntClass(OntClass c) {
     return c.isAnon();
-  }
-
-  private void close() {
-    if (null != model && model.isClosed()) {
-      model.close();
-    }
-
-    if (null != ontology && ontology.isClosed()) {
-      ontology.close();
-    }
   }
 }
