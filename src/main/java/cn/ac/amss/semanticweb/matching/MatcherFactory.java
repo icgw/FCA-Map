@@ -7,7 +7,7 @@
 
 package cn.ac.amss.semanticweb.matching;
 
-import cn.ac.amss.semanticweb.matching.impl.LexicalMatcherImpl;
+import cn.ac.amss.semanticweb.matching.impl.LexicalMatcherAlphaImpl;
 import cn.ac.amss.semanticweb.matching.impl.AdditionalPropertyMatcherImpl;
 
 /**
@@ -25,8 +25,12 @@ public class MatcherFactory
    *
    * @return a lexical matcher
    */
-  public static LexicalMatcher createLexicalMatcher() {
-    return new LexicalMatcherImpl();
+  // public static LexicalMatcher createLexicalMatcher() {
+  //   return new LexicalMatcherImpl();
+  // }
+
+  public static LexicalMatcherAlpha createLexicalMatcherAlpha() {
+    return new LexicalMatcherAlphaImpl();
   }
 
   /**

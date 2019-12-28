@@ -1,5 +1,5 @@
 /*
- * LexicalMatcherTest.java
+ * LexicalMatcherAlphaTest.java
  * Copyright (C) 2019 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -16,17 +16,17 @@ import java.io.InputStream;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-public class LexicalMatcherTest
+public class LexicalMatcherAlphaTest
 {
   @Test
-  public void testLexicalMatcher() throws Exception {
+  public void testLexicalMatcherAlpha() throws Exception {
     InputStream inSource = this.getClass().getResourceAsStream("/oaei/conference/Conference.owl");
     InputStream inTarget = this.getClass().getResourceAsStream("/oaei/conference/ekaw.owl");
 
     OntModelWrapper source = new OntModelWrapper(inSource);
     OntModelWrapper target = new OntModelWrapper(inTarget);
 
-    LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
+    LexicalMatcherAlpha lm = MatcherFactory.createLexicalMatcherAlpha();
 
     lm.setSourceTargetOntModelWrapper(source, target);
     lm.setExtractType(true, true);

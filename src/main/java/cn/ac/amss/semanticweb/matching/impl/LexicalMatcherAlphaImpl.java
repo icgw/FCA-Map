@@ -1,5 +1,5 @@
 /*
- * LexicalMatcherImpl.java
+ * LexicalMatcherAlphaImpl.java
  * Copyright (C) 2019 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 
-import cn.ac.amss.semanticweb.matching.LexicalMatcher;
+import cn.ac.amss.semanticweb.matching.LexicalMatcherAlpha;
 import cn.ac.amss.semanticweb.matching.MatcherByFCA;
 import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.model.ResourceWrapper;
@@ -31,13 +31,13 @@ import cn.ac.amss.semanticweb.fca.Hermes;
 import cn.ac.amss.semanticweb.vocabulary.DBkWik;
 
 /**
- * Lexical Matcher based on formal concept analysis.
+ * Lexical Matcher (alpha) based on formal concept analysis.
  *
  * @author Guowei Chen (icgw@outlook.com)
  */
-public class LexicalMatcherImpl extends MatcherByFCA implements LexicalMatcher
+public class LexicalMatcherAlphaImpl extends MatcherByFCA implements LexicalMatcherAlpha
 {
-  public LexicalMatcherImpl() {
+  public LexicalMatcherAlphaImpl() {
     defaultConfig();
   }
 
