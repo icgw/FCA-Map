@@ -41,4 +41,9 @@ public class PlainRDFNode
   public int hashCode() {
     return represent.hashCode();
   }
+
+  @Override
+  public String toString() {
+    return this.represent;
+  }
 }

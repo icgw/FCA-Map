@@ -19,7 +19,6 @@ import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.fca.Context;
 import cn.ac.amss.semanticweb.fca.Hermes;
 
-import org.apache.jena.graph.Node_URI;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.rdf.model.Statement;
@@ -266,6 +265,7 @@ public class StructuralMatchingImpl extends AbstractMatcherByFCA
 
     Hermes<PlainRDFNode, AnchorIdPair> hermes = new Hermes<>();
     hermes.init(context);
+    hermes.compute();
 
     if (isEnabledGSH) {
       Set<Set<PlainRDFNode>> simplifiedExtents = hermes.listSimplifiedExtentsLeastMost(lowerBoundOfGSHObjectsSize,
@@ -385,6 +385,8 @@ public class StructuralMatchingImpl extends AbstractMatcherByFCA
       attrs.addAll(getAnchorIdPairs(prn, SPOPart.AS_PREDICATE, model, subject2AnchorIds, predicate2AnchorsIds, object2AnchorsIds));
 
       attrs.addAll(getAnchorIdPairs(prn, SPOPart.AS_OBJECT, model, subject2AnchorIds, predicate2AnchorsIds, object2AnchorsIds));
+
+      if (0 == attrs.size()) continue;
 
       context.put(prn, attrs);
     }
