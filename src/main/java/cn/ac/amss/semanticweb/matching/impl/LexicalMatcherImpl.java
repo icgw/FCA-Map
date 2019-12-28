@@ -1,5 +1,5 @@
 /*
- * LexicalMatcher2Impl.java
+ * LexicalMatcherImpl.java
  * Copyright (C) 2019 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -31,13 +31,13 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
-public class LexicalMatcher2Impl extends AbstractMatcherByFCA
+public class LexicalMatcherImpl extends AbstractMatcherByFCA
 {
   private class LookupTable extends Table<String, PlainRDFNode> {
     public LookupTable() { super(); }
   }
 
-  public LexicalMatcher2Impl() {
+  public LexicalMatcherImpl() {
     try {
       Preprocessing.setDefault();
     } catch (IOException e) {
