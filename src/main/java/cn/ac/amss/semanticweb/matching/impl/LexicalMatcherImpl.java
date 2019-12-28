@@ -12,6 +12,7 @@ import cn.ac.amss.semanticweb.constant.MatchingSpec.MatchType;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.Owner;
 import cn.ac.amss.semanticweb.fca.Context;
 import cn.ac.amss.semanticweb.fca.Hermes;
+import cn.ac.amss.semanticweb.matching.LexicalMatcher;
 import cn.ac.amss.semanticweb.model.PlainRDFNode;
 import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.text.Preprocessing;
@@ -31,7 +32,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
-public class LexicalMatcherImpl extends AbstractMatcherByFCA
+public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalMatcher
 {
   private class LookupTable extends Table<String, PlainRDFNode> {
     public LookupTable() { super(); }

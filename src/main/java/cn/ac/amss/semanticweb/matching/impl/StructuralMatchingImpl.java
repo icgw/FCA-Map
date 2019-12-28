@@ -14,6 +14,7 @@ import cn.ac.amss.semanticweb.util.Table;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.Owner;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.MatchType;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.SPOPart;
+import cn.ac.amss.semanticweb.matching.StructuralMatcher;
 import cn.ac.amss.semanticweb.model.PlainRDFNode;
 import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.fca.Context;
@@ -33,7 +34,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashMap;
 
-public class StructuralMatchingImpl extends AbstractMatcherByFCA
+public class StructuralMatchingImpl extends AbstractMatcherByFCA implements StructuralMatcher
 {
   private class LookupTable extends Table<String, Integer> {
     public LookupTable() { super(); }
