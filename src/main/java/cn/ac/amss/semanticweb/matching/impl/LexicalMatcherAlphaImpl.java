@@ -395,7 +395,7 @@ public class LexicalMatcherAlphaImpl extends MatcherByFCA implements LexicalMatc
   @Override
   public void defaultConfig() {
     try {
-      Preprocessing.setDefault();
+      Preprocessing.defaultInit();
     } catch (IOException e) {
       System.err.println("Caught IOException: " + e.getMessage());
     }

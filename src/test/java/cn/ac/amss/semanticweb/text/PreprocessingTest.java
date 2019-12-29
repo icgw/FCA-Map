@@ -18,7 +18,7 @@ public class PreprocessingTest
 {
   @Test
   public void testRemoveStopWords() throws Exception {
-    Preprocessing.setDefault();
+    Preprocessing.defaultInit();
 
     Set<String> words = new HashSet<>();
     words.add("the");

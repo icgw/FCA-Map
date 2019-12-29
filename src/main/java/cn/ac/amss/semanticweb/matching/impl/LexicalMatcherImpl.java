@@ -40,7 +40,7 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
   public LexicalMatcherImpl() {
     try {
-      Preprocessing.setDefault();
+      Preprocessing.defaultInit();
     } catch (IOException e) {
       System.err.println("Caught IOException: " + e.getMessage());
     }

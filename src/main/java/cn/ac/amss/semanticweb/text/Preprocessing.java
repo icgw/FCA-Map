@@ -29,25 +29,41 @@ public class Preprocessing
   private static Set<String> stopWords = new HashSet<>();
   private static Stemmer stemmer       = Init.porterStemmer();
 
-  private static boolean lowerCase            = true;
-  private static boolean stemmerEnabled       = true;
-  private static boolean stopWordsEnabled     = true;
-  private static boolean normalizationEnabled = true;
+  private static boolean enableLowerCase     = true;
+  private static boolean enableStemming      = true;
+  private static boolean enableStopWords     = true;
+  private static boolean enableNormalization = true;
 
   public static boolean isLowerCaseEnabled() {
-    return lowerCase;
+    return enableLowerCase;
   }
 
   public static boolean isStemmerEnabled() {
-    return stemmerEnabled;
+    return enableStemming;
   }
 
   public static boolean isStopWordsEnabled() {
-    return stopWordsEnabled;
+    return enableStopWords;
   }
 
   public static boolean isNormalizationEnabled() {
-    return normalizationEnabled;
+    return enableNormalization;
+  }
+
+  public static void setEnableLowerCase(boolean enableLowerCase) {
+    Preprocessing.enableLowerCase = enableLowerCase;
+  }
+
+  public static void setEnableStemming(boolean enableStemming) {
+    Preprocessing.enableStemming = enableStemming;
+  }
+
+  public static void setEnableStopWords(boolean enableStopWords) {
+    Preprocessing.enableStopWords = enableStopWords;
+  }
+
+  public static void setEnableNormalization(boolean enableNormalization) {
+    Preprocessing.enableNormalization = enableNormalization;
   }
 
   private static class StopWords {
@@ -58,7 +74,7 @@ public class Preprocessing
     private static String fileName(String s) { return PATH + s; }
   }
 
-  public static void setDefault() throws IOException {
+  public static void defaultInit() throws IOException {
     stopWords.clear();
     Init.en();
   }
@@ -76,7 +92,7 @@ public class Preprocessing
 
           if (line.isEmpty() || line.equals("")) continue;
 
-          if (lowerCase) {
+          if (enableLowerCase) {
             line = line.toLowerCase();
           }
 
@@ -103,7 +119,7 @@ public class Preprocessing
    * @return whether the string is a stopword
    */
   public static boolean isStopWord(String s) {
-    if (lowerCase) {
+    if (enableLowerCase) {
       s = s.toLowerCase();
     }
     return stopWords.contains(s);

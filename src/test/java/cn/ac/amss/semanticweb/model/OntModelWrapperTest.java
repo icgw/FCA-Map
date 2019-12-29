@@ -13,12 +13,14 @@ import org.junit.Test;
 
 public class OntModelWrapperTest
 {
-  @Test
-  public void testOntModelWrapper() {
-    InputStream inSource = this.getClass().getResourceAsStream("/oaei/conference/Conference.owl");
-    OntModelWrapper conf = new OntModelWrapper(inSource);
-
-    InputStream inTarget = this.getClass().getResourceAsStream("/oaei/conference/ekaw.owl");
-    OntModelWrapper ekaw = new OntModelWrapper(inTarget);
-  }
+/*
+ *   @Test
+ *   public void testOntModelWrapper() {
+ *     InputStream inSource = this.getClass().getResourceAsStream("/oaei/conference/Conference.owl");
+ *     OntModelWrapper conf = new OntModelWrapper(inSource);
+ * 
+ *     InputStream inTarget = this.getClass().getResourceAsStream("/oaei/conference/ekaw.owl");
+ *     OntModelWrapper ekaw = new OntModelWrapper(inTarget);
+ *   }
+ */
 }
