@@ -1,5 +1,5 @@
 /*
- * StructuralMatchingImpl.java
+ * StructuralMatcherImpl.java
  * Copyright (C) 2019 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashMap;
 
-public class StructuralMatchingImpl extends AbstractMatcherByFCA implements StructuralMatcher
+public class StructuralMatcherImpl extends AbstractMatcherByFCA implements StructuralMatcher
 {
   private class LookupTable extends Table<String, Integer> {
     public LookupTable() { super(); }
@@ -56,7 +56,7 @@ public class StructuralMatchingImpl extends AbstractMatcherByFCA implements Stru
   private Map<Anchor, Integer> predicateAnchors = null;
   private Map<Anchor, Integer> objectAnchors    = null;
 
-  public StructuralMatchingImpl() {
+  public StructuralMatcherImpl() {
     super();
     isEnabledGSH     = true;
     isEnabledLattice = true;
