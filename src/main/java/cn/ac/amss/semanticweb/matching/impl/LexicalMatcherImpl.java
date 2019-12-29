@@ -26,14 +26,23 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.jena.vocabulary.SKOS;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
+/**
+ * The implement of lexical matcher based on formal concept analysis.
+ *
+ * @author Guowei Chen (icgw@outlook.com)
+ */
 public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalMatcher
 {
+  private final static Logger logger = LogManager.getLogger(LexicalMatcherImpl.class.getName());
+
   private class LookupTable extends Table<String, PlainRDFNode> {
     public LookupTable() { super(); }
   }
@@ -79,28 +88,56 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
     Context<String, String> labelOrName2tokensContext = constructTokenBasedContext(labelOrName2PlainRDFNodes.keySet());
 
     Hermes<String, String> hermes = new Hermes<>();
+
+    if (logger.isDebugEnabled()) {
+      logger.debug("Init hermes...");
+    }
     hermes.init(labelOrName2tokensContext);
+    if (logger.isDebugEnabled()) {
+      logger.debug("Start hermes computing...");
+    }
     hermes.compute();
+    if (logger.isDebugEnabled()) {
+      logger.debug("Finish hermes computing!");
+    }
 
     if (isEnabledGSH) {
+      if (logger.isDebugEnabled()) {
+        logger.debug("Start getting the GSH...");
+      }
       Set<Set<String>> simplifiedExtents
         = hermes.listSimplifiedExtentsLeastMost(lowerBoundOfGSHObjectsSize,
                                                 upperBoundOfGSHObjectsSize,
                                                 lowerBoundOfGSHAttributesSize,
                                                 upperBoundOfGSHAttributesSize);
+      if (logger.isDebugEnabled()) {
+        logger.debug("Finish GSH!");
+      }
       for (Set<String> labelsOrNames : simplifiedExtents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
+      }
+      if (logger.isDebugEnabled()) {
+        logger.debug("Finish extracting mappings from GSH!");
       }
     }
 
     if (isEnabledLattice) {
+      if (logger.isDebugEnabled()) {
+        logger.debug("Start building complete lattice...");
+      }
       Set<Set<String>> extents
         = hermes.listExtentsLeastMost(lowerBoundOfLatticeObjectsSize,
                                       upperBoundOfLatticeObjectsSize,
                                       lowerBoundOfLatticeAttributesSize,
                                       upperBoundOfLatticeAttributesSize);
+      if (logger.isDebugEnabled()) {
+        logger.debug("Finish building complete lattice!");
+      }
       for (Set<String> labelsOrNames : extents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
+      }
+      if (logger.isDebugEnabled()) {
+        logger.debug("Finish extracting mappings from complete lattice!");
       }
     }
 
