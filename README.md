@@ -58,31 +58,30 @@ I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/)! :)
 // Demo.java
 
 import cn.ac.amss.semanticweb.alignment.Mapping;
-import cn.ac.amss.semanticweb.model.OntModelWrapper;
+import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.matching.LexicalMatcher;
 import cn.ac.amss.semanticweb.matching.MatcherFactory;
 
-public class Demo {
+public class Demo
+{
   public static void main(String[] args) {
-    String srcURL = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/Conference.owl";
-    String tgtURL = "https://raw.githubusercontent.com/icgw/FCA-Map/master/src/test/resources/oaei/conference/ekaw.owl";
-
-    OntModelWrapper source = new OntModelWrapper(srcURL);
-    OntModelWrapper target = new OntModelWrapper(tgtURL);
+    ModelStorage source = new ModelStorage("src/test/resources/oaei/conference/Conference.owl");
+    ModelStorage target = new ModelStorage("src/test/resources/oaei/conference/ekaw.owl");
 
     LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
 
-    lm.setSourceTargetOntModelWrapper(source, target);
+    lm.setSourceTarget(source, target);
     lm.setExtractType(true, true);
 
     Mapping mappings = new Mapping();
     lm.mapOntClasses(mappings);
-    lm.mapDatatypeProperties(mappings);
+    lm.mapDataTypeProperties(mappings);
     lm.mapObjectProperties(mappings);
 
     System.out.println(mappings);
 
-    lm.close();
+    source.clear();
+    target.clear();
   }
 }
 ```
