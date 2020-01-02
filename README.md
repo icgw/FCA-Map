@@ -27,8 +27,8 @@ The following is an example of a formal context (about the characters of [Marvel
 
 ### Formal Context
 
-|                        | ![Asgardian][asg] <br /> Asgardian | ![Avenger][ag] <br /> Avenger | ![Female][fml] <br /> Female | ![Human][hm] <br /> Human | ![Infinity Stones User][inf] <br /> Infinity Stones User | ![Male][ml] <br /> Male | ![Scientist][sci] <br /> Scientist | ![Villain][vln] <br /> Villain |
-|:----------------------:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|   | ![Asgardian][asg] <br /> Asgardian | ![Avenger][ag] <br /> Avenger | ![Female][fml] <br /> Female | ![Human][hm] <br /> Human | ![Infinity Stones User][inf] <br /> Infinity Stones User | ![Male][ml] <br /> Male | ![Scientist][sci] <br /> Scientist | ![Villain][vln] <br /> Villain |
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
 | ![Black Widow][bw] <br /> Black Widow         |   | ✖ | ✖ | ✖ |   |   |   |   |
 | ![Captain America][ca] <br /> Captain America |   | ✖ |   | ✖ |   | ✖ |   |   |
 | ![Hela][hl] <br /> Hela                       | ✖ |   | ✖ |   |   |   |   | ✖ |
@@ -55,7 +55,11 @@ I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/)! :)
 ## Usage
 
 ```java
-// Demo.java
+/****************************************
+ *                                      *
+ *    file://src/main/java/Demo.java    *
+ *                                      *
+ ****************************************/
 
 import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.model.ModelStorage;

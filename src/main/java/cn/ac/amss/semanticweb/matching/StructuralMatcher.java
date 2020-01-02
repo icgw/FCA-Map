@@ -43,4 +43,8 @@ public interface StructuralMatcher extends FcaMatcher
   public boolean addObjectAnchor(String s1, String s2);
 
   public boolean addAllObjectAnchors(Mapping anchors);
+
+  public boolean addSourceIgnoreCandidate(String candidateURI);
+
+  public boolean addTargetIgnoreCandidate(String candidateURI);
 }

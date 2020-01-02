@@ -64,6 +64,9 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
   private Map<Anchor, Integer> predicateAnchors = null;
   private Map<Anchor, Integer> objectAnchors    = null;
 
+  private Set<String> sourceIgnoreCandidates = null;
+  private Set<String> targetIgnoreCandidates = null;
+
   public StructuralMatcherImpl() {
     super();
     isEnabledGSH     = true;
@@ -84,6 +87,9 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     subjectAnchors   = new HashMap<>();
     predicateAnchors = new HashMap<>();
     objectAnchors    = new HashMap<>();
+
+    sourceIgnoreCandidates = new HashSet<>();
+    targetIgnoreCandidates = new HashSet<>();
   }
 
   public boolean addCommonSubject(Resource subject) {
@@ -120,6 +126,14 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
   public boolean addAllObjectAnchors(Mapping anchors) {
     return addAllAnchors(SPOPart.AS_OBJECT, anchors);
+  }
+
+  public boolean addSourceIgnoreCandidate(String candidateURI) {
+    return sourceIgnoreCandidates.add(candidateURI);
+  }
+
+  public boolean addTargetIgnoreCandidate(String candidateURI) {
+    return targetIgnoreCandidates.add(candidateURI);
   }
 
   public void mapInstances(Mapping mappings) {
@@ -412,6 +426,10 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
                                   LookupTable predicate2AnchorsIds,
                                   LookupTable object2AnchorsIds) {
     for (T r : resources) {
+      if (Owner.SOURCE == owner && sourceIgnoreCandidates.contains(r.getURI())) continue;
+
+      if (Owner.TARGET == owner && targetIgnoreCandidates.contains(r.getURI())) continue;
+
       PlainRDFNode prn = new PlainRDFNode(r.getURI(), owner);
 
       Set<AnchorIdPair> attrs = new HashSet<>();

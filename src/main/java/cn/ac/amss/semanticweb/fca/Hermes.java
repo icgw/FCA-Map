@@ -274,19 +274,16 @@ public class Hermes <O, A>
 
   private Set<Integer> relative(Set<Integer> s, Map<Integer, Set<Integer>> m) {
     Set<Integer> relative_s = new HashSet<>();
-    if (s == null || m == null) return relative_s;
+    if (null == s || null == m) return relative_s;
 
-    Iterator<Integer> it = s.iterator();
-    if (it.hasNext()) {
+    boolean hasInit = false;
+    for (Iterator<Integer> it = s.iterator(); it.hasNext(); ) {
       int i = it.next();
-      if (m.get(i) != null) {
+      if (null == m.get(i)) continue;
+      if (!hasInit) {
         relative_s.addAll(m.get(i));
-      }
-    }
-
-    while (it.hasNext()) {
-      int i = it.next();
-      if (m.get(i) != null) {
+        hasInit = true;
+      } else {
         relative_s.retainAll(m.get(i));
       }
     }
