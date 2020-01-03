@@ -26,7 +26,6 @@ import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.ontology.OntModel;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -44,6 +43,7 @@ import java.util.HashMap;
 public class StructuralMatcherImpl extends AbstractMatcherByFCA implements StructuralMatcher
 {
   private final static Logger logger = LogManager.getLogger(StructuralMatcherImpl.class.getName());
+
   private class LookupTable extends Table<String, Integer> {
     public LookupTable() { super(); }
   }
@@ -160,6 +160,14 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     mapResources(MatchType.ONT_CLASS, mappings);
   }
 
+  /**
+   * Adds the specified anchor to this matcher class.
+   *
+   * @param part which part of SPO should be add into anchors' set
+   * @param s1 resource's URI of source model
+   * @param s2 resource's URI of target model
+   * @return <tt>true</tt> if this set did not already contain the specified anchor
+   */
   private boolean addAnchor(SPOPart part, String s1, String s2) {
     boolean modified = false;
     Map<Anchor, Integer> temp = null;
@@ -215,6 +223,17 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     return "null";
   }
 
+  /**
+   * Get the anchor pair ids of a specified URI.
+   *
+   * @param plainRDFNode URI with its owner
+   * @param part SPO part of the URI
+   * @param model the model of the URI
+   * @param subject2AnchorIds lookup table of subject to anchor ids
+   * @param predicate2AnchorsIds lookup table of predicate to anchor ids
+   * @param object2AnchorsIds lookup table of object to anchor ids
+   * @return the set of anchor pair ids of the specified URI
+   */
   private <X extends Model> Set<AnchorIdPair> getAnchorIdPairs(PlainRDFNode plainRDFNode, SPOPart part, X model,
                                                                LookupTable subject2AnchorIds,
                                                                LookupTable predicate2AnchorsIds,
@@ -349,6 +368,15 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     }
   }
 
+  /**
+   * Contruct anchor pair based context for specified type (Instance, Property, Category, Class, ..)
+   *
+   * @param type INSTANCE / CATEGORY / ONT_PROPERTY / DATA_TYPE_PROPERTY / OBJECT_PROPERTY / ONT_CLASS ..
+   * @param context URI with its owner to id of anchor pair
+   * @param subject2AnchorIds lookup table of subject to anchor ids
+   * @param predicate2AnchorsIds lookup table of predicate to anchor ids
+   * @param object2AnchorsIds lookup table of object to anchor ids
+   */
   private void constructAnchorPairBasedContext(MatchType type, Context<PlainRDFNode, AnchorIdPair> context,
                                                LookupTable subject2AnchorIds,
                                                LookupTable predicate2AnchorsIds,
@@ -419,6 +447,17 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     }
   }
 
+  /**
+   * Construct the anchor pair based context.
+   *
+   * @param owner SOURCE / TARGET / DUMMY
+   * @param resources the set of resources
+   * @param model the model for constructing context
+   * @param context the context wait to contruct
+   * @param subject2AnchorIds lookup table of subject to the set of anchor's ids
+   * @param predicate2AnchorsIds lookup table of predicate to the set of anchor's ids
+   * @param object2AnchorsIds lookup table of object to the set of anchor's ids
+   */
   private <T extends Resource, X extends Model> void
   constructAnchorPairBasedContext(Owner owner, Set<T> resources, X model,
                                   Context<PlainRDFNode, AnchorIdPair> context,
@@ -446,6 +485,12 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     }
   }
 
+  /**
+   * Construct the lookup table of uri to the set of anchor ids.
+   *
+   * @param anchors key is the anchor and value is an integer of the anchor
+   * @param string2AnchorIds key is the uri and the value is the set of anchor's ids which contains the uri
+   */
   private void constructLookupTable(Map<Anchor, Integer> anchors, LookupTable string2AnchorIds) {
     for (Entry<Anchor, Integer> a : anchors.entrySet()) {
       Anchor anchor = a.getKey();
