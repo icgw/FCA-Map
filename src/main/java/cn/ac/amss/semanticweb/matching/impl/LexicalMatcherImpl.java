@@ -56,26 +56,44 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
   }
 
   public void mapInstances(Mapping mappings) {
+    if (logger.isDebugEnabled()) {
+      logger.debug("Start intance matching...");
+    }
     mapResources(MatchType.INSTANCE, mappings);
   }
 
   public void mapCategories(Mapping mappings) {
+    if (logger.isDebugEnabled()) {
+      logger.debug("Start category matching...");
+    }
     mapResources(MatchType.CATEGORY, mappings);
   }
 
   public void mapOntProperties(Mapping mappings) {
+    if (logger.isDebugEnabled()) {
+      logger.debug("Start property matching...");
+    }
     mapResources(MatchType.ONT_PROPERTY, mappings);
   }
 
   public void mapDataTypeProperties(Mapping mappings) {
+    if (logger.isDebugEnabled()) {
+      logger.debug("Start data property matching...");
+    }
     mapResources(MatchType.DATA_TYPE_PROPERTY, mappings);
   }
 
   public void mapObjectProperties(Mapping mappings) {
+    if (logger.isDebugEnabled()) {
+      logger.debug("Start Object property matching...");
+    }
     mapResources(MatchType.OBJECT_PROPERTY, mappings);
   }
 
   public void mapOntClasses(Mapping mappings) {
+    if (logger.isDebugEnabled()) {
+      logger.debug("Start class matching...");
+    }
     mapResources(MatchType.ONT_CLASS, mappings);
   }
 

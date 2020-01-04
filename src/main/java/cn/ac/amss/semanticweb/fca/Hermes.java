@@ -7,14 +7,17 @@
 
 package cn.ac.amss.semanticweb.fca;
 
+import cn.ac.amss.semanticweb.util.Pair;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Arrays;
-
-import cn.ac.amss.semanticweb.util.Pair;
 
 /**
  * Hermes: a simple and efficient algorithm for building the AOC-poset of a binary relation
@@ -24,6 +27,8 @@ import cn.ac.amss.semanticweb.util.Pair;
  */
 public class Hermes <O, A>
 {
+  private final static Logger logger = LogManager.getLogger(Hermes.class.getName());
+
   private Map<Integer, Set<Integer>> object2Attributes = null;
   private Map<Integer, Set<Integer>> attribute2Objects = null;
 
@@ -390,9 +395,12 @@ public class Hermes <O, A>
       }
     }
 
-    boolean bIncrease;
+    boolean modified;
     do {
-      bIncrease = false;
+      if (logger.isDebugEnabled()) {
+        logger.debug(String.format("The number of concept will more than %d.", set_of_attributes.size()));
+      }
+      modified = false;
       Set<Set<Integer>> copy = new HashSet<>(set_of_attributes);
 
       for (Set<Integer> s1 : copy) {
@@ -409,11 +417,11 @@ public class Hermes <O, A>
             for (int k : s3) {
               add(m, k, s3);
             }
-            bIncrease = true;
+            modified = true;
           }
         }
       }
-    } while (bIncrease);
+    } while (modified);
   }
 
   /**
