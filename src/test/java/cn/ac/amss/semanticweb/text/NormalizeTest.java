@@ -53,4 +53,10 @@ public class NormalizeTest
     String s1 = "Volume 1 10 2";
     assertEquals( "Volume 1-10-2", Normalize.normDigit(s1) );
   }
+
+  @Test
+  public void testSuppressDigit() {
+    String s1 = "book24545-18";
+    assertEquals( "book", Normalize.suppressDigit(s1) );
+  }
 }

@@ -7,17 +7,22 @@
 
 package cn.ac.amss.semanticweb.util;
 
+import cn.ac.amss.semanticweb.alignment.Mapping;
+import cn.ac.amss.semanticweb.alignment.MappingCell;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Arrays;
 
-import cn.ac.amss.semanticweb.alignment.Mapping;
-import cn.ac.amss.semanticweb.alignment.MappingCell;
-
 public class ConfusionMatrix
 {
+  private final static Logger logger = LogManager.getLogger(ConfusionMatrix.class.getName());
+
   private int true_positive = 0;
 
   private int false_positive = 0;
@@ -74,20 +79,42 @@ public class ConfusionMatrix
 
           if (left_duplicate_free) {
             false_positive += (systemSources.size() - 1);
+            if (logger.isDebugEnabled()) {
+              for (String e1 : systemSources) {
+                if (e1.equals(mc.getEntity1())) continue;
+                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", e1, mc.getEntity2()));
+              }
+            }
           }
 
           if (right_duplicate_free) {
             false_positive += (systemTargets.size() - 1);
+            if (logger.isDebugEnabled()) {
+              for (String e2 : systemTargets) {
+                if (e2.equals(mc.getEntity2())) continue;
+                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", mc.getEntity1(), e2));
+              }
+            }
           }
         } else {
           ++false_negative; // FN
 
           if (left_duplicate_free) {
             false_positive += systemSources.size();
+            if (logger.isDebugEnabled()) {
+              for (String e1 : systemSources) {
+                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", e1, mc.getEntity2()));
+              }
+            }
           }
 
           if (right_duplicate_free) {
             false_positive += systemTargets.size();
+            if (logger.isDebugEnabled()) {
+              for (String e2 : systemTargets) {
+                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", mc.getEntity1(), e2));
+              }
+            }
           }
         }
       }

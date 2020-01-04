@@ -7,21 +7,21 @@
 
 package cn.ac.amss.semanticweb.statistics;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Arrays;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
 import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.alignment.MappingCell;
 import cn.ac.amss.semanticweb.vocabulary.DBkWik;
 import cn.ac.amss.semanticweb.util.ConfusionMatrix;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
+
 public class Evaluation
 {
-  private final static Logger m_logger = LogManager.getLogger(Evaluation.class.getName());
+  private final static Logger logger = LogManager.getLogger(Evaluation.class.getName());
 
   private static final Set<String> CLASS_TYPES    = new HashSet<>(Arrays.asList("class", "null"));
   private static final Set<String> PROPERTY_TYPES = new HashSet<>(Arrays.asList("property", "null"));
@@ -88,7 +88,7 @@ public class Evaluation
     ConfusionMatrix overall_eval    = new ConfusionMatrix(m_system, m_reference,
                                                           left_duplicate_free, right_duplicate_free);
 
-    if (m_logger.isInfoEnabled()) {
+    if (logger.isInfoEnabled()) {
       String info = String.format("%nInstance - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %8d. (TP: %8d, FP: %8d, FN: %8d)" +
                                   "%nProperty - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %8d. (TP: %8d, FP: %8d, FN: %8d)" +
                                   "%nClass    - pre.: %.2f, f1m.: %.2f, rec.: %.2f, #: %8d. (TP: %8d, FP: %8d, FN: %8d)" +
@@ -102,7 +102,7 @@ public class Evaluation
       overall_eval.getPrecision()       , overall_eval.getF1measure()        , overall_eval.getRecall()           , m_system.size()          ,
       overall_eval.getTruePositive()    , overall_eval.getFalsePositive()    , overall_eval.getFalseNegative());
 
-      m_logger.info(info);
+      logger.info(info);
     }
   }
 }

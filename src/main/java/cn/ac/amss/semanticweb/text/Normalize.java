@@ -7,7 +7,6 @@
 
 package cn.ac.amss.semanticweb.text;
 
-import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.text.Normalizer;
 
@@ -23,12 +22,14 @@ public class Normalize
   private static final String RE_DIACRITICS_AND_FRIENDS   = "[\\p{InCombiningDiacriticalMarks}\\p{IsLm}\\p{IsSk}]+";
   private static final String RE_ACRONYM_WITH_STOP        = "(?<=[a-zA-Z])\\.";
   private static final String RE_NORM_DIGIT               = "(?<=\\d)\\W+(?=\\d)";
+  private static final String RE_DIGIT_SUPPRESSION        = "[^a-zA-Z]*\\d+[^a-zA-Z]*";
 
   private static final Pattern CAMEL_OR_SNAKE_DELIMITER = Pattern.compile(RE_CAMEL_OR_SNAKE_DELIMITER);
   private static final Pattern CONTRACTION              = Pattern.compile(RE_CONTRACTION);
   private static final Pattern DIACRITICS_AND_FRIENDS   = Pattern.compile(RE_DIACRITICS_AND_FRIENDS);
   private static final Pattern ACRONYM_WITH_STOP        = Pattern.compile(RE_ACRONYM_WITH_STOP);
   private static final Pattern NORM_DIGIT               = Pattern.compile(RE_NORM_DIGIT);
+  private static final Pattern DIGIT_SUPPRESSION        = Pattern.compile(RE_DIGIT_SUPPRESSION);
 
   /**
    * Replace the delimiter of camel or snake into one space
@@ -80,5 +81,15 @@ public class Normalize
    */
   public static final String normDigit(String s) {
     return NORM_DIGIT.matcher(s).replaceAll("-");
+  }
+
+  /**
+   * Suppresses digits.
+   *
+   * @param s the string contain digit
+   * @return the string without digit
+   */
+  public static final String suppressDigit(String s) {
+    return DIGIT_SUPPRESSION.matcher(s).replaceAll(" ").trim();
   }
 }
