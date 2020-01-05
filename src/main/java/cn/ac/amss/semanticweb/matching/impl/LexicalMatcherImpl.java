@@ -57,7 +57,7 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
   public void mapInstances(Mapping mappings) {
     if (logger.isDebugEnabled()) {
-      logger.debug("Start intance matching...");
+      logger.debug("Start instance matching...");
     }
     mapResources(MatchType.INSTANCE, mappings);
   }

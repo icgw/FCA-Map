@@ -45,12 +45,9 @@ This concept lattice is derived from the above context, only reserved simplified
 
 ## Install
 
-This project depends upon:
-- Maven 3.6.1
-- Jena 3.12.0
-- Java 1.8.0\_161
+See ![dependency graph](https://github.com/icgw/FCA-Map/network/dependencies).
 
-I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/)! :)
+I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/) for developing! :)
 
 ## Usage
 

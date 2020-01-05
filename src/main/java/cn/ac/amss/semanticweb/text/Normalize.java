@@ -76,8 +76,8 @@ public class Normalize
   /**
    * Add hyphen (-) between two numbers
    *
-   * @param s the string contain digit
-   * @return the string cotain digit connected with hyphen
+   * @param s the string contains digit
+   * @return the string contains digit connected with hyphen
    */
   public static final String normDigit(String s) {
     return NORM_DIGIT.matcher(s).replaceAll("-");

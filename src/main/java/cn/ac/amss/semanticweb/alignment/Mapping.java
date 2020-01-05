@@ -7,6 +7,10 @@
 
 package cn.ac.amss.semanticweb.alignment;
 
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.StmtIterator;
+
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,10 +18,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
-
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.StmtIterator;
 
 public class Mapping implements Iterable<MappingCell>
 {
@@ -148,9 +148,9 @@ public class Mapping implements Iterable<MappingCell>
   }
 
   /**
-   * Compute the cloure of the mappings
+   * Compute the closure of the mappings
    *
-   * @return the cloure of the mmappings
+   * @return the closure of the mappings
    */
   public Mapping toClosure() {
     Mapping mClosure = new Mapping();

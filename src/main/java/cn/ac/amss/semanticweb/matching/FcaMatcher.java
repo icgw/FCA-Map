@@ -19,6 +19,8 @@ public interface FcaMatcher
 
   public void setExtractType(boolean isEnabledGSH, boolean isEnabledLattice);
 
+  public void setLowerBoundOfGSHObjectsSize(int size);
+
   public void setUpperBoundOfGSHObjectsSize(int size);
 
   public void setLowerBoundOfGSHAttributesSize(int size);

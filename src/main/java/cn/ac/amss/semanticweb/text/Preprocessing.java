@@ -25,6 +25,7 @@ import cn.ac.amss.semanticweb.linguistics.stemming.PorterStemmer;
 public class Preprocessing
 {
   private static Pattern TOKEN_DELIMITER = Init.patternTokenDelimiterEN();
+  private static Pattern ONLY_LATIN      = Init.patternOnlyLatin();
 
   private static Set<String> stopWords = new HashSet<>();
   private static Stemmer stemmer       = Init.porterStemmer();
@@ -81,6 +82,7 @@ public class Preprocessing
 
   private static class Init {
     private static final String RE_TOKEN_DELIMITER_EN = "[^a-zA-Z\\d\\-']+[^a-zA-Z\\d]*[^a-zA-Z\\d\\-']*";
+    private static final String RE_ONLY_LATIN         = "^[a-zA-Z]+$";
 
     private static void en() throws IOException {
       try ( InputStream in = Preprocessing.class.getResourceAsStream(StopWords.EN);
@@ -103,6 +105,10 @@ public class Preprocessing
 
     private static Pattern patternTokenDelimiterEN() {
       return Pattern.compile(RE_TOKEN_DELIMITER_EN);
+    }
+
+    private static Pattern patternOnlyLatin() {
+      return Pattern.compile(RE_ONLY_LATIN);
     }
 
     private static Stemmer porterStemmer() {
@@ -137,7 +143,7 @@ public class Preprocessing
   }
 
   /**
-   * Acqure all tokens from string
+   * Acquire all tokens from string
    *
    * @param s a string
    * @return an string array of token
@@ -155,7 +161,8 @@ public class Preprocessing
    * @return a stemming of the string
    */
   public static String stem(String word) {
-    if (word == null || word.isEmpty()) return "";
+    if (null == word || word.isEmpty()) return "";
+    if (!ONLY_LATIN.matcher(word).matches()) return word;
     return stemmer.mutate(word);
   }
 

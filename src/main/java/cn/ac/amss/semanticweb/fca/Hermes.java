@@ -40,6 +40,8 @@ public class Hermes <O, A>
 
   private int dividing = 0;
 
+  private int maximumSizeOfConceptLattice = 300_000;
+
   /**
    * Rc: Clarified Relation.
    */
@@ -68,6 +70,10 @@ public class Hermes <O, A>
 
     attribute2A = new HashMap<>();
     A2Attribute = new HashMap<>();
+  }
+
+  public void setMaximumSizeOfConceptLattice(int maximum) {
+    maximumSizeOfConceptLattice = maximum;
   }
 
   private final static <K, V> void add(Map<K, Set<V>> m, K k, V v) {
@@ -398,8 +404,9 @@ public class Hermes <O, A>
     boolean modified;
     do {
       if (logger.isDebugEnabled()) {
-        logger.debug(String.format("The number of concept will more than %d.", set_of_attributes.size()));
+        logger.debug(String.format("The number of concept is at least %d.", set_of_attributes.size()));
       }
+
       modified = false;
       Set<Set<Integer>> copy = new HashSet<>(set_of_attributes);
 
@@ -422,6 +429,69 @@ public class Hermes <O, A>
         }
       }
     } while (modified);
+
+    if (logger.isDebugEnabled()) {
+      logger.debug("Finished constructing concept!");
+    }
+  }
+
+  private void attributeIdClosure(Set<Set<Integer>> set_of_attributes, int maximumSizeOfSet) {
+    // XXX: wait to improve
+    if (set_of_attributes.size() > maximumSizeOfSet) {
+      if (logger.isDebugEnabled()) {
+        logger.debug(String.format("The current size %d is more than %d (forced termination)",
+                                   set_of_attributes.size(), maximumSizeOfSet));
+      }
+      return;
+    }
+
+    Map<Integer, Set<Set<Integer>>> m = new HashMap<>();
+    for (Set<Integer> attributes : set_of_attributes) {
+      for (int i : attributes) {
+        add(m, i, attributes);
+      }
+    }
+
+    boolean modified;
+    do {
+      if (logger.isDebugEnabled()) {
+        logger.debug(String.format("The number of concept is at least %d.", set_of_attributes.size()));
+      }
+
+      if (set_of_attributes.size() > maximumSizeOfSet) {
+        if (logger.isDebugEnabled()) {
+          logger.debug(String.format("The current size %d is more than %d (forced termination)",
+                                     set_of_attributes.size(), maximumSizeOfSet));
+        }
+        break;
+      }
+
+      modified = false;
+      Set<Set<Integer>> copy = new HashSet<>(set_of_attributes);
+
+      for (Set<Integer> s1 : copy) {
+        Set<Set<Integer>> related_set_of_attributes = new HashSet<>();
+        for (int i : s1) {
+          related_set_of_attributes.addAll(m.get(i));
+        }
+
+        for (Set<Integer> s2 : related_set_of_attributes) {
+          Set<Integer> s3 = new HashSet<>(s2);
+          s3.retainAll(s1);
+          if (!set_of_attributes.contains(s3)) {
+            set_of_attributes.add(s3);
+            for (int k : s3) {
+              add(m, k, s3);
+            }
+            modified = true;
+          }
+        }
+      }
+    } while (modified);
+
+    if (logger.isDebugEnabled()) {
+      logger.debug("Finished constructing concept!");
+    }
   }
 
   /**
@@ -578,7 +648,7 @@ public class Hermes <O, A>
       }
     }
 
-    attributeIdClosure(set_of_attributes);
+    attributeIdClosure(set_of_attributes, maximumSizeOfConceptLattice);
 
     addTopBottomAttributes(set_of_attributes, limit_attributes_size);
 
@@ -609,7 +679,7 @@ public class Hermes <O, A>
       }
     }
 
-    attributeIdClosure(set_of_attributes);
+    attributeIdClosure(set_of_attributes, maximumSizeOfConceptLattice);
 
     addTopBottomAttributes(set_of_attributes, least_attributes_size, most_attributes_size);
 
@@ -639,7 +709,7 @@ public class Hermes <O, A>
       }
     }
 
-    attributeIdClosure(set_of_attributes);
+    attributeIdClosure(set_of_attributes, maximumSizeOfConceptLattice);
 
     addTopBottomAttributes(set_of_attributes, limit_attributes_size);
 
@@ -672,7 +742,7 @@ public class Hermes <O, A>
       }
     }
 
-    attributeIdClosure(set_of_attributes);
+    attributeIdClosure(set_of_attributes, maximumSizeOfConceptLattice);
 
     addTopBottomAttributes(set_of_attributes, least_attributes_size, most_attributes_size);
 

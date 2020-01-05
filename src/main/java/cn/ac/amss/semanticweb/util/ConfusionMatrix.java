@@ -79,20 +79,20 @@ public class ConfusionMatrix
 
           if (left_duplicate_free) {
             false_positive += (systemSources.size() - 1);
-            if (logger.isDebugEnabled()) {
+            if (logger.isTraceEnabled()) {
               for (String e1 : systemSources) {
                 if (e1.equals(mc.getEntity1())) continue;
-                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", e1, mc.getEntity2()));
+                logger.trace(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", e1, mc.getEntity2()));
               }
             }
           }
 
           if (right_duplicate_free) {
             false_positive += (systemTargets.size() - 1);
-            if (logger.isDebugEnabled()) {
+            if (logger.isTraceEnabled()) {
               for (String e2 : systemTargets) {
                 if (e2.equals(mc.getEntity2())) continue;
-                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", mc.getEntity1(), e2));
+                logger.trace(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", mc.getEntity1(), e2));
               }
             }
           }
@@ -101,18 +101,18 @@ public class ConfusionMatrix
 
           if (left_duplicate_free) {
             false_positive += systemSources.size();
-            if (logger.isDebugEnabled()) {
+            if (logger.isTraceEnabled()) {
               for (String e1 : systemSources) {
-                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", e1, mc.getEntity2()));
+                logger.trace(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", e1, mc.getEntity2()));
               }
             }
           }
 
           if (right_duplicate_free) {
             false_positive += systemTargets.size();
-            if (logger.isDebugEnabled()) {
+            if (logger.isTraceEnabled()) {
               for (String e2 : systemTargets) {
-                logger.debug(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", mc.getEntity1(), e2));
+                logger.trace(String.format("%n>>>False Positive<<<%n* %s%n* %s%n", mc.getEntity1(), e2));
               }
             }
           }
