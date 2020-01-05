@@ -45,7 +45,7 @@ This concept lattice is derived from the above context, only reserved simplified
 
 ## Install
 
-See ![dependency graph](https://github.com/icgw/FCA-Map/network/dependencies).
+See [dependency graph](https://github.com/icgw/FCA-Map/network/dependencies).
 
 I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/) for developing! :)
 
