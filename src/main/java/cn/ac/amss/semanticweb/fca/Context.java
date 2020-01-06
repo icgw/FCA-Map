@@ -9,12 +9,28 @@ package cn.ac.amss.semanticweb.fca;
 
 import cn.ac.amss.semanticweb.util.Table;
 
+import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
 public class Context <O, A> extends Table<O, A> {
   public Context() {
     super();
+  }
+
+  public Context(Context<O, A> context) {
+    this.map = new HashMap<>(context.map);
+  }
+
+  public Context<A, O> inverse() {
+    Context<A, O> inverseContext = new Context<>();
+    for (Entry<O, Set<A>> e : this.map.entrySet()) {
+      O v = e.getKey();
+      for (A k : e.getValue()) {
+        inverseContext.put(k, v);
+      }
+    }
+    return inverseContext;
   }
 
   @Override

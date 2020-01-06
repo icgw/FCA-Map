@@ -7,6 +7,7 @@
 
 package cn.ac.amss.semanticweb.util;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -21,7 +22,7 @@ public abstract class Table <K, V> {
   }
 
   public Map<K, Set<V>> getMap() {
-    return map;
+    return new HashMap<>(map);
   }
 
   public int size() {
@@ -50,6 +51,10 @@ public abstract class Table <K, V> {
 
   public Set<K> keySet() {
     return map.keySet();
+  }
+
+  public Collection<Set<V>> values() {
+    return map.values();
   }
 
   public Set<Entry<K, Set<V>>> entrySet() {
