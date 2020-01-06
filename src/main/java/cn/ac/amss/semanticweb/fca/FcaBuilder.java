@@ -23,7 +23,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 /**
- * An improved formal concept analaysis builder designed by Guowei Chen.
+ * An (alpha version) improved formal concept analaysis builder designed by Guowei Chen.
  *   - AOC-poset algorithm part inspired by Hermes
  *
  * @author Guowei Chen (icgw@outlook.com)
@@ -79,7 +79,7 @@ public class FcaBuilder <O, A>
   }
 
   public Set<Set<O>> listExtents() {
-    return listExtents(0, -1, -1);
+    return listExtents(0, -1);
   }
 
   public Set<Set<O>> listSimplifiedExtents(int objectAtLeastSize, int objectAtMostSize) {
@@ -103,6 +103,10 @@ public class FcaBuilder <O, A>
   private boolean checkLeastMost(int check, int atLeast, int atMost) {
     if (atLeast > atMost) return true;
     return check >= atLeast && check <= atMost;
+  }
+
+  public Set<Set<O>> listExtents(int objectAtLeastSize, int objectAtMostSize) {
+    return listExtents(objectAtLeastSize, objectAtMostSize, -1);
   }
 
   public Set<Set<O>> listExtents(int objectAtLeastSize, int objectAtMostSize, int maximumSizeOfExtents) {
@@ -133,7 +137,13 @@ public class FcaBuilder <O, A>
   }
 
   private Set<O> computeExtent(Set<Integer> clarifiedAttributeIds) {
-    Set<Integer> extent = new HashSet<>(clarifiedContext.keySet());
+    Set<Integer> extent = new HashSet<>();
+    if (!clarifiedAttributeIds.iterator().hasNext()) {
+      extent.addAll(clarifiedContext.keySet());
+    } else {
+      Integer a = clarifiedAttributeIds.iterator().next();
+      extent.addAll(attributeToObjectsIdClarified.get(a));
+    }
 
     retainAllInOtherSets(extent, clarifiedAttributeIds, attributeToObjectsIdClarified);
 
@@ -149,9 +159,9 @@ public class FcaBuilder <O, A>
 
   private boolean retainAllInOtherSets(Set<Integer> baseSet, Set<Integer> keyOfSet,
                                        Map<Integer, Set<Integer>> map) {
-    boolean modified = false;
-    if (null == baseSet || null == keyOfSet || null == map) return modified;
+    if (null == baseSet || null == keyOfSet || null == map) return false;
 
+    boolean modified = false;
     for (Integer k : keyOfSet) {
       Set<Integer> s = map.get(k);
       if (null == s) continue;
@@ -240,56 +250,46 @@ public class FcaBuilder <O, A>
   private void computeAttributesToAttributeObject() {
     Context<Integer, Integer> inverseClarifiedContext = clarifiedContext.inverse();
 
-    SortedSet<Entry<Integer, Set<Integer>>> sortedInverseContext = new TreeSet<>(
-      new Comparator<Entry<Integer, Set<Integer>>>() {
-        @Override
-        public int compare(Entry<Integer, Set<Integer>> e1, Entry<Integer, Set<Integer>> e2) {
-          Set<Integer> s1 = e1.getValue(), s2 = e2.getValue();
-          if (s1.size() == s2.size()) {
-            Set<Integer> sort1 = new TreeSet<>(s1), sort2 = new TreeSet<>(s2);
-            for (Iterator<Integer> it1 = sort1.iterator(), it2 = sort2.iterator(); it1.hasNext(); ) {
-              Integer i1 = it1.next(), i2 = it2.next();
-              if (i1 == i2) continue;
-              return i1 - i2;
-            }
-            return 0;
-          }
-          return e1.getValue().size() - e2.getValue().size();
-        }
-      }
-    );
-
-    List<Entry<Integer, Set<Integer>>> sortedInverseContextList = new ArrayList<>();
-    for (Entry<Integer, Set<Integer>> e : inverseClarifiedContext.entrySet()) {
-      sortedInverseContext.add(e);
-    }
-
-    for (Entry<Integer, Set<Integer>> e : sortedInverseContext) {
-      sortedInverseContextList.add(e);
-    }
-
     Context<Integer, Integer> attributeToItsBroader = new Context<>();
 
-    int n = sortedInverseContextList.size();
-    for (int i = 0; i < n; ++i) {
-      Integer k = sortedInverseContextList.get(i).getKey();
-      SortedSet<Integer> objects = new TreeSet<>(sortedInverseContextList.get(i).getValue());
-      attributeToItsBroader.put(k, k);
-      for (int j = i + 1; j < n; ++j) {
-        SortedSet<Integer> otherObjects = new TreeSet<>(sortedInverseContextList.get(j).getValue());
-        if (objects.size() == otherObjects.size() ||
-            objects.first() > otherObjects.last() ||
-            objects.last() < otherObjects.first() ||
-            !otherObjects.containsAll(objects)) continue;
-        attributeToItsBroader.put(k, sortedInverseContextList.get(j).getKey());
+    Thread t1 = new Thread() {
+      public void run() {
+        for (Entry<Integer, Set<Integer>> e : inverseClarifiedContext.entrySet()) {
+          if (!e.getValue().iterator().hasNext()) {
+            attributeToItsBroader.put(e.getKey(), inverseClarifiedContext.keySet());
+            continue;
+          }
+
+          Integer o = e.getValue().iterator().next();
+          if (null == o) continue;
+
+          Set<Integer> objects = clarifiedContext.get(o);
+          if (null == objects) continue;
+
+          Set<Integer> baseSet = new HashSet<>(objects);
+          retainAllInOtherSets(baseSet, e.getValue(), clarifiedContext.getMap());
+          attributeToItsBroader.put(e.getKey(), baseSet);
+        }
       }
+    };
+
+    Thread t2 = new Thread() {
+      public void run() {
+        for (Entry<Integer, Set<Integer>> e : clarifiedContext.entrySet()) {
+          attributesToAttributeObjectOnTheirClarifiedId.put(e.getValue(), e.getKey());
+        }
+      }
+    };
+
+    t1.start(); t2.start();
+
+    try {
+      t1.join(); t2.join();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
 
     for (Entry<Integer, Set<Integer>> e : attributeToItsBroader.entrySet()) {
-      attributesToAttributeObjectOnTheirClarifiedId.put(e.getValue(), e.getKey());
-    }
-
-    for (Entry<Integer, Set<Integer>> e : clarifiedContext.entrySet()) {
       attributesToAttributeObjectOnTheirClarifiedId.put(e.getValue(), e.getKey());
     }
   }
