@@ -42,8 +42,8 @@ public class FcaBuilder <O, A>
   private LookupTable<A> clarifiedAttributeIdToAttributes = null;
   private Context<Integer, Integer> clarifiedContext      = null;
 
-  private Context<Set<Integer>, Integer> attributesToAttributeObjectOnTheirClarifiedId = null;
-  private Map<Integer, Set<Integer>> attributeToObjectsIdClarified                     = null;
+  private Context<Set<Integer>, Integer> attributesToAttributeObjectIdClarified = null;
+  private Map<Integer, Set<Integer>> attributeToObjectsIdClarified              = null;
 
   public FcaBuilder() {
     clarifiedObjectIdToObjects       = new LookupTable<>();
@@ -51,7 +51,7 @@ public class FcaBuilder <O, A>
     clarifiedContext                 = new Context<>();
 
     attributeToObjectsIdClarified                 = new HashMap<>();
-    attributesToAttributeObjectOnTheirClarifiedId = new Context<>();
+    attributesToAttributeObjectIdClarified = new Context<>();
   }
 
   public void init(Context<O, A> context) {
@@ -69,7 +69,7 @@ public class FcaBuilder <O, A>
     clarifiedObjectIdToObjects.clear();
     clarifiedAttributeIdToAttributes.clear();
     clarifiedContext.clear();
-    attributesToAttributeObjectOnTheirClarifiedId.clear();
+    attributesToAttributeObjectIdClarified.clear();
     attributeToObjectsIdClarified.clear();
     hasInitialized = false;
   }
@@ -84,7 +84,7 @@ public class FcaBuilder <O, A>
 
   public Set<Set<O>> listSimplifiedExtents(int objectAtLeastSize, int objectAtMostSize) {
     Set<Set<O>> simplifiedExtents = new HashSet<>();
-    for (Set<Integer> attributeObjectConcept : attributesToAttributeObjectOnTheirClarifiedId.values()) {
+    for (Set<Integer> attributeObjectConcept : attributesToAttributeObjectIdClarified.values()) {
       Set<O> simplifiedExtent = new HashSet<>();
       for (Integer ao : attributeObjectConcept) {
         if (ao < 0) continue;
@@ -112,10 +112,11 @@ public class FcaBuilder <O, A>
   public Set<Set<O>> listExtents(int objectAtLeastSize, int objectAtMostSize, int maximumSizeOfExtents) {
     Set<Set<O>> extents = new HashSet<>();
 
-    Set<Set<Integer>> attributesSet = new HashSet<>(attributesToAttributeObjectOnTheirClarifiedId.keySet());
+    Set<Set<Integer>> attributesSet = new HashSet<>(attributesToAttributeObjectIdClarified.keySet());
 
-    Set<Set<Integer>> closureOfAttributes
-      = closureOfIntersection(attributesToAttributeObjectOnTheirClarifiedId.keySet(), maximumSizeOfExtents);
+    Set<Set<Integer>> closureOfAttributes = new HashSet<>();
+
+    closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
 
     Set<Integer> all = new HashSet<>(clarifiedAttributeIdToAttributes.keySet());
     closureOfAttributes.add(all);
@@ -276,7 +277,7 @@ public class FcaBuilder <O, A>
     Thread t2 = new Thread() {
       public void run() {
         for (Entry<Integer, Set<Integer>> e : clarifiedContext.entrySet()) {
-          attributesToAttributeObjectOnTheirClarifiedId.put(e.getValue(), e.getKey());
+          attributesToAttributeObjectIdClarified.put(e.getValue(), e.getKey());
         }
       }
     };
@@ -290,19 +291,16 @@ public class FcaBuilder <O, A>
     }
 
     for (Entry<Integer, Set<Integer>> e : attributeToItsBroader.entrySet()) {
-      attributesToAttributeObjectOnTheirClarifiedId.put(e.getValue(), e.getKey());
+      attributesToAttributeObjectIdClarified.put(e.getValue(), e.getKey());
     }
   }
 
-  private Set<Set<Integer>> closureOfIntersection(Set<Set<Integer>> s, int maximumSizeOfSet) {
-    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) {
-      return s;
-    }
+  private void closureOfIntersection(Set<Set<Integer>> closure, Set<Set<Integer>> s, int maximumSizeOfSet) {
+    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) return;
 
     LookupTable<Set<Integer>> lookup = new LookupTable<>();
     resetLookup(lookup, s);
 
-    Set<Set<Integer>> closure = new HashSet<>();
     for (Set<Set<Integer>> after = new HashSet<>(s); !after.isEmpty(); ) {
       Set<Set<Integer>> newAfter = new HashSet<>();
 
@@ -314,13 +312,29 @@ public class FcaBuilder <O, A>
 
       closure.addAll(after);
 
-      if (maximumSizeOfSet >= 0 && closure.size() >= maximumSizeOfSet) return closure;
+      if (maximumSizeOfSet >= 0 && closure.size() >= maximumSizeOfSet) return;
 
       after.clear();
       after.addAll(newAfter);
     }
 
-    return closure;
+    if (s.iterator().hasNext()) {
+      Set<Integer> base = new HashSet<>(s.iterator().next());
+      for (Set<Integer> sub : s) {
+        base.retainAll(sub);
+      }
+      closure.add(base);
+    }
+
+    if (maximumSizeOfSet >= 0 && closure.size() >= maximumSizeOfSet) return;
+
+    Set<Integer> all = new HashSet<>();
+    for (Set<Integer> sub : s) {
+      all.addAll(sub);
+    }
+    closure.add(all);
+
+    return;
   }
 
   private void resetLookup(LookupTable<Set<Integer>> lookup, Set<Set<Integer>> s) {
