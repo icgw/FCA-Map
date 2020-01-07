@@ -8,38 +8,62 @@
 package cn.ac.amss.semanticweb.fca;
 
 import java.util.Set;
-
-import cn.ac.amss.semanticweb.util.Pair;
-
+import java.util.HashSet;
 
 /**
  * A (formal) concept is a pair (A, B), where A is the extent and B is the intent.
  *
  * @author Guowei Chen (icgw@outlook.com)
  */
-public class Concept <O, A> extends Pair<Set<O>, Set<A>> {
+public class Concept <O, A>
+{
+  private final Set<O> extent;
+  private final Set<A> intent;
 
   /**
-   * A concept of a complete lattice.
+   * Concept constructor.
    *
-   * @param extent add extent to this concept
-   * @param intent add intent to this concept
+   * @param extent the extent of this concept
+   * @param intent the intent of this concept
    */
-  public Concept(Set<O> extent, Set<A> intent)  {
-    super(extent, intent);
+  public Concept(Set<O> extent, Set<A> intent) {
+    this.extent = new HashSet<>(extent);
+    this.intent = new HashSet<>(intent);
   }
 
   /**
    * @return the extent of this concept
    */
-  public Set<O> getExtent() {
-    return this.getKey();
+  public final Set<O> getExtent() {
+    return extent;
   }
 
   /**
    * @return the intent of this concept
    */
-  public Set<A> getIntent() {
-    return this.getValue();
+  public final Set<A> getIntent() {
+    return intent;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%n>>>>>>>%nExtent: %s%nIntent: %s%n<<<<<<<", extent, intent);
+  }
+
+  @Override
+  public int hashCode() {
+    return (null == extent ? 0 : extent.hashCode() * 31) + (null == intent ? 0 : intent.hashCode());
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o instanceof Concept) {
+      Concept<?, ?> that = (Concept<?, ?>) o;
+      if (null != extent ? !extent.equals(that.extent) : null != that.extent) return false;
+      if (null != intent ? !intent.equals(that.intent) : null != that.intent) return false;
+      return true;
+    }
+    return false;
   }
 }

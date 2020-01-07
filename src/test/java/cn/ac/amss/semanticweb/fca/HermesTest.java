@@ -71,17 +71,17 @@ public class HermesTest
     algorithm.init(context);
     algorithm.compute();
 
-    Set<Pair<Set<Integer>, Set<Character>>> answer = new HashSet<>();
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(Arrays.asList(1)), new HashSet<Character>()));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(Arrays.asList(2, 8)), new HashSet<Character>()));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(Arrays.asList(4)), new HashSet<Character>()));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(Arrays.asList(6)), new HashSet<Character>()));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(), new HashSet<Character>(Arrays.asList('a', 'g'))));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(Arrays.asList(3)), new HashSet<Character>(Arrays.asList('b'))));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(), new HashSet<Character>(Arrays.asList('c'))));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(Arrays.asList(5)), new HashSet<Character>(Arrays.asList('d'))));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(Arrays.asList(7)), new HashSet<Character>(Arrays.asList('e'))));
-    answer.add(new Pair<Set<Integer>, Set<Character>>(new HashSet<Integer>(), new HashSet<Character>(Arrays.asList('f'))));
+    Set<Concept<Integer, Character>> answer = new HashSet<>();
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(Arrays.asList(1)), new HashSet<Character>()));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(Arrays.asList(2, 8)), new HashSet<Character>()));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(Arrays.asList(4)), new HashSet<Character>()));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(Arrays.asList(6)), new HashSet<Character>()));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(), new HashSet<Character>(Arrays.asList('a', 'g'))));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(Arrays.asList(3)), new HashSet<Character>(Arrays.asList('b'))));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(), new HashSet<Character>(Arrays.asList('c'))));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(Arrays.asList(5)), new HashSet<Character>(Arrays.asList('d'))));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(Arrays.asList(7)), new HashSet<Character>(Arrays.asList('e'))));
+    answer.add(new Concept<Integer, Character>(new HashSet<Integer>(), new HashSet<Character>(Arrays.asList('f'))));
 
     assertEquals ( answer, algorithm.listAllSimplifiedConcepts() );
   }
@@ -120,19 +120,19 @@ public class HermesTest
     algorithm.init(context);
     algorithm.compute();
 
-    Set<Pair<Set<String>, Set<String>>> answer = new HashSet<>();
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(), new HashSet<String>(Arrays.asList("鸟类", "食肉的", "食草的", "会飞的", "哺乳动物", "偶蹄的", "奇蹄的"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰", "鹅", "豹", "狮", "牛", "马")), new HashSet<String>()));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰", "鹅")), new HashSet<String>(Arrays.asList("鸟类"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰", "豹", "狮")), new HashSet<String>(Arrays.asList("食肉的"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹅", "牛", "马")), new HashSet<String>(Arrays.asList("食草的"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("豹", "狮", "牛", "马")), new HashSet<String>(Arrays.asList("哺乳动物"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹰")), new HashSet<String>(Arrays.asList("鸟类", "食肉的", "会飞的"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("鹅")), new HashSet<String>(Arrays.asList("鸟类", "食草的"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("豹", "狮")), new HashSet<String>(Arrays.asList("食肉的", "哺乳动物"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("牛")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物", "偶蹄的"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("牛", "马")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物"))));
-    answer.add(new Pair<Set<String>, Set<String>>(new HashSet<String>(Arrays.asList("马")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物", "奇蹄的"))));
+    Set<Concept<String, String>> answer = new HashSet<>();
+    answer.add(new Concept<String, String>(new HashSet<String>(), new HashSet<String>(Arrays.asList("鸟类", "食肉的", "食草的", "会飞的", "哺乳动物", "偶蹄的", "奇蹄的"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("鹰", "鹅", "豹", "狮", "牛", "马")), new HashSet<String>()));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("鹰", "鹅")), new HashSet<String>(Arrays.asList("鸟类"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("鹰", "豹", "狮")), new HashSet<String>(Arrays.asList("食肉的"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("鹅", "牛", "马")), new HashSet<String>(Arrays.asList("食草的"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("豹", "狮", "牛", "马")), new HashSet<String>(Arrays.asList("哺乳动物"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("鹰")), new HashSet<String>(Arrays.asList("鸟类", "食肉的", "会飞的"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("鹅")), new HashSet<String>(Arrays.asList("鸟类", "食草的"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("豹", "狮")), new HashSet<String>(Arrays.asList("食肉的", "哺乳动物"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("牛")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物", "偶蹄的"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("牛", "马")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物"))));
+    answer.add(new Concept<String, String>(new HashSet<String>(Arrays.asList("马")), new HashSet<String>(Arrays.asList("食草的", "哺乳动物", "奇蹄的"))));
 
     assertEquals( answer, algorithm.listAllConcepts() );
 

@@ -10,7 +10,7 @@ package cn.ac.amss.semanticweb.matching.impl;
 import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.alignment.MappingCell;
 import cn.ac.amss.semanticweb.util.Pair;
-import cn.ac.amss.semanticweb.util.Table;
+import cn.ac.amss.semanticweb.util.AbstractTable;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.Owner;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.MatchType;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.SPOPart;
@@ -44,7 +44,7 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 {
   private final static Logger logger = LogManager.getLogger(StructuralMatcherImpl.class.getName());
 
-  private class LookupTable extends Table<String, Integer> {
+  private class LookupTable extends AbstractTable<String, Integer> {
     public LookupTable() { super(); }
   }
 

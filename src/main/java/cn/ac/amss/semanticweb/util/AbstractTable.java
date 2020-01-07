@@ -1,5 +1,5 @@
 /*
- * Table.java
+ * AbstractTable.java
  * Copyright (C) 2019 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -14,10 +14,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.HashSet;
 
-public abstract class Table <K, V> {
+public abstract class AbstractTable <K, V> {
   protected Map<K, Set<V>> map;
 
-  public Table() {
+  public AbstractTable() {
     map = new HashMap<>();
   }
 

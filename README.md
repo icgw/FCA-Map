@@ -54,7 +54,7 @@ I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/) for developing! :)
 ```java
 /****************************************
  *                                      *
- *    file://src/main/java/Demo.java    *
+ *    file:///src/main/java/Demo.java   *
  *                                      *
  ****************************************/
 

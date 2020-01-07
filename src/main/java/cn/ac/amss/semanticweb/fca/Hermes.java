@@ -501,13 +501,13 @@ public class Hermes <O, A>
    * @param limit_attributes_size  limit the size of attributes of simplified concept
    * @return the simplified concept, where its size of objects and attributes both are less than and equals limit
    */
-  public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
-    Set<Pair<Set<O>, Set<A>>> simplified_concepts_limit = new HashSet<>();
+  public Set<Concept<O, A>> listSimplifiedConceptsLimit(int limit_objects_size, int limit_attributes_size) {
+    Set<Concept<O, A>> simplified_concepts_limit = new HashSet<>();
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
-        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() <= limit_objects_size) &&
-            (limit_attributes_size <= 0 || simplified_concept.getValue().size() <= limit_attributes_size) &&
+        Concept<O, A> simplified_concept = simplifiedConceptFrom(e.getValue());
+        if ((limit_objects_size <= 0 || simplified_concept.getExtent().size() <= limit_objects_size) &&
+            (limit_attributes_size <= 0 || simplified_concept.getIntent().size() <= limit_attributes_size) &&
             simplified_concept != null) {
           simplified_concepts_limit.add(simplified_concept);
         }
@@ -525,14 +525,14 @@ public class Hermes <O, A>
    * @param most_attributes_size the most size of attributes, when the most size less than 0 indicates no most limit
    * @return the simplified concept which satisfied above condition
    */
-  public Set<Pair<Set<O>, Set<A>>> listSimplifiedConceptsLeastMost(int least_objects_size,    int most_objects_size,
-                                                                   int least_attributes_size, int most_attributes_size) {
-    Set<Pair<Set<O>, Set<A>>> simplified_concepts_least_most = new HashSet<>();
+  public Set<Concept<O, A>> listSimplifiedConceptsLeastMost(int least_objects_size,    int most_objects_size,
+                                                            int least_attributes_size, int most_attributes_size) {
+    Set<Concept<O, A>> simplified_concepts_least_most = new HashSet<>();
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
-        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+        Concept<O, A> simplified_concept = simplifiedConceptFrom(e.getValue());
         if (simplified_concept == null) continue;
-        int k_sz = simplified_concept.getKey().size(), v_sz = simplified_concept.getValue().size();
+        int k_sz = simplified_concept.getExtent().size(), v_sz = simplified_concept.getIntent().size();
         if ( k_sz >= least_objects_size    && (k_sz <= most_objects_size    || most_objects_size < 0) &&
              v_sz >= least_attributes_size && (v_sz <= most_attributes_size || most_attributes_size < 0)) {
           simplified_concepts_least_most.add(simplified_concept);
@@ -542,7 +542,7 @@ public class Hermes <O, A>
     return simplified_concepts_least_most;
   }
 
-  public Set<Pair<Set<O>, Set<A>>> listAllSimplifiedConcepts() {
+  public Set<Concept<O, A>> listAllSimplifiedConcepts() {
     return listSimplifiedConceptsLimit(0, 0);
   }
 
@@ -550,11 +550,11 @@ public class Hermes <O, A>
     Set<Set<O>> simplified_extents_limit = new HashSet<>();
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
-        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
-        if ((limit_objects_size <= 0 || simplified_concept.getKey().size() <= limit_objects_size) &&
-            (limit_attributes_size <= 0 || simplified_concept.getValue().size() <= limit_attributes_size) &&
+        Concept<O, A> simplified_concept = simplifiedConceptFrom(e.getValue());
+        if ((limit_objects_size <= 0 || simplified_concept.getExtent().size() <= limit_objects_size) &&
+            (limit_attributes_size <= 0 || simplified_concept.getIntent().size() <= limit_attributes_size) &&
             simplified_concept != null) {
-          simplified_extents_limit.add(simplified_concept.getKey());
+          simplified_extents_limit.add(simplified_concept.getExtent());
         }
       }
     }
@@ -575,12 +575,12 @@ public class Hermes <O, A>
     Set<Set<O>> simplified_extents_least_most = new HashSet<>();
     if (simplification != null) {
       for (Map.Entry<Set<Integer>, Set<Integer>> e : simplification.entrySet()) {
-        Pair<Set<O>, Set<A>> simplified_concept = simplifiedConceptFrom(e.getValue());
+        Concept<O, A> simplified_concept = simplifiedConceptFrom(e.getValue());
         if (simplified_concept == null) continue;
-        int k_sz = simplified_concept.getKey().size(), v_sz = simplified_concept.getValue().size();
+        int k_sz = simplified_concept.getExtent().size(), v_sz = simplified_concept.getIntent().size();
         if ( k_sz >= least_objects_size    && (k_sz <= most_objects_size    || most_objects_size < 0) &&
              v_sz >= least_attributes_size && (v_sz <= most_attributes_size || most_attributes_size < 0)) {
-          simplified_extents_least_most.add(simplified_concept.getKey());
+          simplified_extents_least_most.add(simplified_concept.getExtent());
         }
       }
     }

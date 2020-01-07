@@ -7,13 +7,13 @@
 
 package cn.ac.amss.semanticweb.fca;
 
-import cn.ac.amss.semanticweb.util.Table;
+import cn.ac.amss.semanticweb.util.AbstractTable;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-public class Context <O, A> extends Table<O, A> {
+public class Context <O, A> extends AbstractTable<O, A> {
   public Context() {
     super();
   }

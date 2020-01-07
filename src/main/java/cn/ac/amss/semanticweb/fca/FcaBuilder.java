@@ -7,20 +7,14 @@
 
 package cn.ac.amss.semanticweb.fca;
 
-import cn.ac.amss.semanticweb.util.Table;
+import cn.ac.amss.semanticweb.util.AbstractTable;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.SortedSet;
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.Comparator;
-import java.util.Iterator;
 
 /**
  * An (alpha version) improved formal concept analaysis builder designed by Guowei Chen.
@@ -30,7 +24,7 @@ import java.util.Iterator;
  */
 public class FcaBuilder <O, A>
 {
-  private class LookupTable <V> extends Table<Integer, V> {
+  private class LookupTable <V> extends AbstractTable<Integer, V> {
     public LookupTable() {
       super();
     }
@@ -50,13 +44,14 @@ public class FcaBuilder <O, A>
     clarifiedAttributeIdToAttributes = new LookupTable<>();
     clarifiedContext                 = new Context<>();
 
-    attributeToObjectsIdClarified                 = new HashMap<>();
+    attributeToObjectsIdClarified          = new HashMap<>();
     attributesToAttributeObjectIdClarified = new Context<>();
   }
 
   public void init(Context<O, A> context) {
     getClarifiedContext(context);
     attributeToObjectsIdClarified = new HashMap<>(clarifiedContext.inverse().getMap());
+
     hasInitialized = true;
   }
 
@@ -71,15 +66,12 @@ public class FcaBuilder <O, A>
     clarifiedContext.clear();
     attributesToAttributeObjectIdClarified.clear();
     attributeToObjectsIdClarified.clear();
+
     hasInitialized = false;
   }
 
   public Set<Set<O>> listSimplifiedExtents() {
     return listSimplifiedExtents(0, -1);
-  }
-
-  public Set<Set<O>> listExtents() {
-    return listExtents(0, -1);
   }
 
   public Set<Set<O>> listSimplifiedExtents(int objectAtLeastSize, int objectAtMostSize) {
@@ -100,9 +92,38 @@ public class FcaBuilder <O, A>
     return simplifiedExtents;
   }
 
-  private boolean checkLeastMost(int check, int atLeast, int atMost) {
-    if (atLeast > atMost) return true;
-    return check >= atLeast && check <= atMost;
+  public Set<Concept<O, A>> listSimplifiedConcepts() {
+    return listSimplifiedConcepts(0, -1, 0, -1);
+  }
+
+  public Set<Concept<O, A>> listSimplifiedConcepts(int objectAtLeastSize, int objectAtMostSize,
+                                                   int attributeAtLeastSize, int attributeAtMostSize) {
+    Set<Concept<O, A>> simplifiedConcepts = new HashSet<>();
+    for (Set<Integer> attributeObjectConcept : attributesToAttributeObjectIdClarified.values()) {
+      Set<O> simplifiedExtent = new HashSet<>();
+      Set<A> simplifiedIntent = new HashSet<>();
+      for (Integer ao : attributeObjectConcept) {
+        if (ao < 0) {
+          Set<A> attributes = clarifiedAttributeIdToAttributes.get(ao);
+          if (null == attributes || attributes.isEmpty()) continue;
+          simplifiedIntent.addAll(attributes);
+        } else {
+          Set<O> objects = clarifiedObjectIdToObjects.get(ao);
+          if (null == objects || objects.isEmpty()) continue;
+          simplifiedExtent.addAll(objects);
+        }
+      }
+      if (checkLeastMost(simplifiedExtent.size(), objectAtLeastSize, objectAtMostSize) &&
+          checkLeastMost(simplifiedIntent.size(), attributeAtLeastSize, attributeAtMostSize)) {
+        simplifiedConcepts.add(new Concept<O, A>(simplifiedExtent, simplifiedIntent));
+      }
+    }
+
+    return simplifiedConcepts;
+  }
+
+  public Set<Set<O>> listExtents() {
+    return listExtents(0, -1);
   }
 
   public Set<Set<O>> listExtents(int objectAtLeastSize, int objectAtMostSize) {
@@ -112,20 +133,9 @@ public class FcaBuilder <O, A>
   public Set<Set<O>> listExtents(int objectAtLeastSize, int objectAtMostSize, int maximumSizeOfExtents) {
     Set<Set<O>> extents = new HashSet<>();
 
-    Set<Set<Integer>> attributesSet = new HashSet<>(attributesToAttributeObjectIdClarified.keySet());
-
     Set<Set<Integer>> closureOfAttributes = new HashSet<>();
 
     closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
-
-    Set<Integer> all = new HashSet<>(clarifiedAttributeIdToAttributes.keySet());
-    closureOfAttributes.add(all);
-
-    Set<Integer> base = new HashSet<>(all);
-    for (Set<Integer> s : clarifiedContext.values()) {
-      base.retainAll(s);
-    }
-    closureOfAttributes.add(base);
 
     for (Set<Integer> s : closureOfAttributes) {
       Set<O> extent = computeExtent(s);
@@ -135,6 +145,46 @@ public class FcaBuilder <O, A>
     }
 
     return extents;
+  }
+
+  public Set<Concept<O, A>> listConcepts() {
+    return listConcepts(0, -1, 0, -1);
+  }
+
+  public Set<Concept<O, A>> listConcepts(int objectAtLeastSize, int objectAtMostSize,
+                                         int attributeAtLeastSize, int attributeAtMostSize) {
+    return listConcepts(objectAtLeastSize, objectAtMostSize, attributeAtLeastSize, attributeAtMostSize, -1);
+  }
+
+  public Set<Concept<O, A>> listConcepts(int objectAtLeastSize, int objectAtMostSize,
+                                         int attributeAtLeastSize, int attributeAtMostSize,
+                                         int maximumSizeOfConcepts) {
+    Set<Concept<O, A>> concepts = new HashSet<>();
+
+    Set<Set<Integer>> closureOfAttributes = new HashSet<>();
+
+    closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfConcepts);
+
+    for (Set<Integer> s : closureOfAttributes) {
+      Set<O> extent = computeExtent(s);
+      Set<A> intent = new HashSet<>();
+      for (Integer a : s) {
+        Set<A> attributes = clarifiedAttributeIdToAttributes.get(a);
+        if (null == attributes || attributes.isEmpty()) continue;
+        intent.addAll(attributes);
+      }
+      if (checkLeastMost(extent.size(), objectAtLeastSize, objectAtMostSize) &&
+          checkLeastMost(intent.size(), attributeAtLeastSize, attributeAtMostSize)) {
+        concepts.add(new Concept<O, A>(extent, intent));
+      }
+    }
+
+    return concepts;
+  }
+
+  private boolean checkLeastMost(int check, int atLeast, int atMost) {
+    if (atLeast > atMost) return true;
+    return check >= atLeast && check <= atMost;
   }
 
   private Set<O> computeExtent(Set<Integer> clarifiedAttributeIds) {
@@ -184,6 +234,8 @@ public class FcaBuilder <O, A>
       O k      = e.getKey();
       Set<A> v = e.getValue();
 
+      if (null == k || null == v) continue;
+
       objects.add(k);
       attributes.addAll(v);
 
@@ -194,23 +246,31 @@ public class FcaBuilder <O, A>
 
     Map<O, Integer> objectToId = new HashMap<>();
     Map<Integer, O> idToObject = new HashMap<>();
-    Thread t1 = new Thread(new InitBiMap<O>(objectToId, idToObject, objects, 0, 1));
+    Thread t1 = new Thread(
+                  new InitBiMap<O>(objectToId, idToObject, objects, 0, 1)
+                );
 
     Map<A, Integer> attributeToId = new HashMap<>();
     Map<Integer, A> idToAttribute = new HashMap<>();
-    Thread t2 = new Thread(new InitBiMap<A>(attributeToId, idToAttribute, attributes, -1, -1));
+    Thread t2 = new Thread(
+                  new InitBiMap<A>(attributeToId, idToAttribute, attributes, -1, -1)
+                );
 
     Map<Set<A>, Integer> attributesToClarifiedObjectId = new HashMap<>();
     Map<Integer, Set<A>> clarifiedObjectIdToAttributes = new HashMap<>();
-    Thread t3 = new Thread(new InitBiMap<Set<A>>(attributesToClarifiedObjectId,
-                                                 clarifiedObjectIdToAttributes,
-                                                 context.values(), 0, 1));
+    Thread t3 = new Thread(
+                  new InitBiMap<Set<A>>(attributesToClarifiedObjectId,
+                                        clarifiedObjectIdToAttributes,
+                                        context.values(), 0, 1)
+                );
 
     Map<Set<O>, Integer> objectsToClarifiedAttributeId = new HashMap<>();
     Map<Integer, Set<O>> clarifiedAttributeIdToObjects = new HashMap<>();
-    Thread t4 = new Thread(new InitBiMap<Set<O>>(objectsToClarifiedAttributeId,
-                                                 clarifiedAttributeIdToObjects,
-                                                 inverseContext.values(), -1, -1));
+    Thread t4 = new Thread(
+                  new InitBiMap<Set<O>>(objectsToClarifiedAttributeId,
+                                        clarifiedAttributeIdToObjects,
+                                        inverseContext.values(), -1, -1)
+                );
 
     t1.start(); t2.start(); t3.start(); t4.start();
 
@@ -221,14 +281,19 @@ public class FcaBuilder <O, A>
     }
 
     Map<O, Integer> objectToClarifiedId    = new HashMap<>();
-    Thread t5 = new Thread(new InitClarifiedMap<A, O>(clarifiedObjectIdToObjects,
-                                                      objectToClarifiedId,
-                                                      attributesToClarifiedObjectId, context));
+    Thread t5 = new Thread(
+                  new InitClarifiedMap<A, O>(clarifiedObjectIdToObjects,
+                                             objectToClarifiedId,
+                                             attributesToClarifiedObjectId, context)
+                );
 
     Map<A, Integer> attributeToClarifiedId = new HashMap<>();
-    Thread t6 = new Thread(new InitClarifiedMap<O, A>(clarifiedAttributeIdToAttributes,
-                                                      attributeToClarifiedId,
-                                                      objectsToClarifiedAttributeId, inverseContext));
+    Thread t6 = new Thread(
+                  new InitClarifiedMap<O, A>(clarifiedAttributeIdToAttributes,
+                                             attributeToClarifiedId,
+                                             objectsToClarifiedAttributeId, inverseContext)
+                );
+
     t5.start(); t6.start();
 
     try {
@@ -301,6 +366,14 @@ public class FcaBuilder <O, A>
     LookupTable<Set<Integer>> lookup = new LookupTable<>();
     resetLookup(lookup, s);
 
+    if (s.iterator().hasNext()) {
+      Set<Integer> base = new HashSet<>(s.iterator().next());
+      for (Set<Integer> sub : s) {
+        base.retainAll(sub);
+      }
+      closure.add(base);
+    }
+
     for (Set<Set<Integer>> after = new HashSet<>(s); !after.isEmpty(); ) {
       Set<Set<Integer>> newAfter = new HashSet<>();
 
@@ -317,16 +390,6 @@ public class FcaBuilder <O, A>
       after.clear();
       after.addAll(newAfter);
     }
-
-    if (s.iterator().hasNext()) {
-      Set<Integer> base = new HashSet<>(s.iterator().next());
-      for (Set<Integer> sub : s) {
-        base.retainAll(sub);
-      }
-      closure.add(base);
-    }
-
-    if (maximumSizeOfSet >= 0 && closure.size() >= maximumSizeOfSet) return;
 
     Set<Integer> all = new HashSet<>();
     for (Set<Integer> sub : s) {

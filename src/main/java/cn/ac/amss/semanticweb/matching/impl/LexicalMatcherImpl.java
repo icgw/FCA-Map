@@ -12,11 +12,12 @@ import cn.ac.amss.semanticweb.constant.MatchingSpec.MatchType;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.Owner;
 import cn.ac.amss.semanticweb.fca.Context;
 import cn.ac.amss.semanticweb.fca.Hermes;
+import cn.ac.amss.semanticweb.fca.FcaBuilder;
 import cn.ac.amss.semanticweb.matching.LexicalMatcher;
 import cn.ac.amss.semanticweb.model.PlainRDFNode;
 import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.text.Preprocessing;
-import cn.ac.amss.semanticweb.util.Table;
+import cn.ac.amss.semanticweb.util.AbstractTable;
 import cn.ac.amss.semanticweb.vocabulary.DBkWik;
 
 import org.apache.jena.rdf.model.RDFNode;
@@ -43,7 +44,7 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 {
   private final static Logger logger = LogManager.getLogger(LexicalMatcherImpl.class.getName());
 
-  private class LookupTable extends Table<String, PlainRDFNode> {
+  private class LookupTable extends AbstractTable<String, PlainRDFNode> {
     public LookupTable() { super(); }
   }
 
@@ -105,16 +106,20 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
     Context<String, String> labelOrName2tokensContext = constructTokenBasedContext(labelOrName2PlainRDFNodes.keySet());
 
-    Hermes<String, String> hermes = new Hermes<>();
+    // Hermes<String, String> hermes = new Hermes<>();
+
+    FcaBuilder<String, String> fca = new FcaBuilder<>();
 
     if (logger.isDebugEnabled()) {
       logger.debug("Init hermes...");
     }
-    hermes.init(labelOrName2tokensContext);
+    // hermes.init(labelOrName2tokensContext);
+    fca.init(labelOrName2tokensContext);
     if (logger.isDebugEnabled()) {
       logger.debug("Start hermes computing...");
     }
-    hermes.compute();
+    // hermes.compute();
+    fca.exec();
     if (logger.isDebugEnabled()) {
       logger.debug("Finish hermes computing!");
     }
@@ -123,11 +128,13 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
       if (logger.isDebugEnabled()) {
         logger.debug("Start getting the GSH...");
       }
+      // Set<Set<String>> simplifiedExtents
+      //   = hermes.listSimplifiedExtentsLeastMost(lowerBoundOfGSHObjectsSize,
+      //                                           upperBoundOfGSHObjectsSize,
+      //                                           lowerBoundOfGSHAttributesSize,
+      //                                           upperBoundOfGSHAttributesSize);
       Set<Set<String>> simplifiedExtents
-        = hermes.listSimplifiedExtentsLeastMost(lowerBoundOfGSHObjectsSize,
-                                                upperBoundOfGSHObjectsSize,
-                                                lowerBoundOfGSHAttributesSize,
-                                                upperBoundOfGSHAttributesSize);
+        = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize);
       if (logger.isDebugEnabled()) {
         logger.debug("Finish GSH!");
       }
@@ -143,11 +150,13 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
       if (logger.isDebugEnabled()) {
         logger.debug("Start building complete lattice...");
       }
+      // Set<Set<String>> extents
+      //   = hermes.listExtentsLeastMost(lowerBoundOfLatticeObjectsSize,
+      //                                 upperBoundOfLatticeObjectsSize,
+      //                                 lowerBoundOfLatticeAttributesSize,
+      //                                 upperBoundOfLatticeAttributesSize);
       Set<Set<String>> extents
-        = hermes.listExtentsLeastMost(lowerBoundOfLatticeObjectsSize,
-                                      upperBoundOfLatticeObjectsSize,
-                                      lowerBoundOfLatticeAttributesSize,
-                                      upperBoundOfLatticeAttributesSize);
+        = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize);
       if (logger.isDebugEnabled()) {
         logger.debug("Finish building complete lattice!");
       }
@@ -159,7 +168,8 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
       }
     }
 
-    hermes.close();
+    fca.clear();
+    // hermes.close();
   }
 
   private Context<String, String> constructTokenBasedContext(Set<String> labelsOrNames) {

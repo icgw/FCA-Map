@@ -24,6 +24,8 @@ public abstract class AbstractMatcherByFCA extends AbstractMatcher
   protected int lowerBoundOfLatticeAttributesSize;
   protected int upperBoundOfLatticeAttributesSize;
 
+  protected int maximumSizeOfConcepts;
+
   public AbstractMatcherByFCA() {
     super();
     isEnabledGSH     = true;
@@ -40,6 +42,8 @@ public abstract class AbstractMatcherByFCA extends AbstractMatcher
 
     lowerBoundOfLatticeAttributesSize = 1;
     upperBoundOfLatticeAttributesSize = -1;
+
+    maximumSizeOfConcepts = 300_000;
   }
 
   public void setExtractType(boolean isEnabledGSH, boolean isEnabledLattice) {
