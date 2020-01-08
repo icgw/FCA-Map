@@ -48,6 +48,25 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
   }
 
   public LexicalMatcherImpl() {
+    super();
+
+    isEnabledGSH     = true;
+    isEnabledLattice = true;
+
+    lowerBoundOfGSHObjectsSize = 1;
+    upperBoundOfGSHObjectsSize = -1;
+
+    lowerBoundOfGSHAttributesSize = 0;
+    upperBoundOfGSHAttributesSize = -1;
+
+    lowerBoundOfLatticeObjectsSize = 2;
+    upperBoundOfLatticeObjectsSize = 2;
+
+    lowerBoundOfLatticeAttributesSize = 1;
+    upperBoundOfLatticeAttributesSize = -1;
+
+    maximumSizeOfConcepts = 300_000;
+
     try {
       Preprocessing.defaultInit();
     } catch (IOException e) {
@@ -107,60 +126,59 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
     FCABuilder<String, String> fca = new FCABuilder<>();
 
-    if (logger.isDebugEnabled()) {
-      logger.debug("Init FCA Builder...");
+    if (logger.isInfoEnabled()) {
+      logger.info("Init Formal Concept Analysis Builder...");
     }
     fca.init(labelOrName2tokensContext);
 
-    if (logger.isDebugEnabled()) {
-      logger.debug("Start formal concept analysis...");
+    if (logger.isInfoEnabled()) {
+      logger.info("Start formal concept analysis...");
     }
     fca.exec();
 
-    if (logger.isDebugEnabled()) {
-      logger.debug("Finish analysis!");
-    }
-
     if (isEnabledGSH) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Start getting the GSH...");
+      if (logger.isInfoEnabled()) {
+        logger.info("Start getting the GSH...");
       }
       Set<Set<String>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
                                     lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
 
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish GSH!");
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish GSH!");
       }
 
       for (Set<String> labelsOrNames : simplifiedExtents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
       }
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish extracting mappings from GSH!");
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish extracting mappings from GSH!");
       }
     }
 
     if (isEnabledLattice) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Start building complete lattice...");
+      if (logger.isInfoEnabled()) {
+        logger.info("Start building complete lattice...");
       }
       Set<Set<String>> extents
         = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize);
 
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish building complete lattice!");
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish building complete lattice!");
       }
 
       for (Set<String> labelsOrNames : extents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
       }
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish extracting mappings from complete lattice!");
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish extracting mappings from complete lattice!");
       }
     }
 
     fca.clear();
+    if (logger.isInfoEnabled()) {
+      logger.info("Finish analysis!");
+    }
   }
 
   private Context<String, String> constructTokenBasedContext(Set<String> labelsOrNames) {

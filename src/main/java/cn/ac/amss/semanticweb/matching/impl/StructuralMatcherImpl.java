@@ -18,7 +18,7 @@ import cn.ac.amss.semanticweb.matching.StructuralMatcher;
 import cn.ac.amss.semanticweb.model.PlainRDFNode;
 import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.fca.Context;
-import cn.ac.amss.semanticweb.fca.Hermes;
+import cn.ac.amss.semanticweb.fca.FCABuilder;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.StmtIterator;
@@ -323,58 +323,63 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
     constructAnchorPairBasedContext(type, context, subject2AnchorIds, predicate2AnchorsIds, object2AnchorsIds);
 
-    Hermes<PlainRDFNode, AnchorIdPair> hermes = new Hermes<>();
-    if (logger.isDebugEnabled()) {
-      logger.debug("Init hermes...");
+    FCABuilder<PlainRDFNode, AnchorIdPair> fca = new FCABuilder<>();
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Init Formal Concept Analysis Builder...");
     }
-    hermes.init(context);
-    if (logger.isDebugEnabled()) {
-      logger.debug("Start hermes computing...");
+    fca.init(context);
+
+    if (logger.isInfoEnabled()) {
+      logger.info("Start formal concept analysis...");
     }
-    hermes.compute();
-    if (logger.isDebugEnabled()) {
-      logger.debug("Finish hermes computing!");
-    }
+    fca.exec();
 
     if (isEnabledGSH) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Start getting the GSH...");
+      if (logger.isInfoEnabled()) {
+        logger.info("Start getting the GSH...");
       }
-      Set<Set<PlainRDFNode>> simplifiedExtents = hermes.listSimplifiedExtentsLeastMost(lowerBoundOfGSHObjectsSize,
-                                                                                       upperBoundOfGSHObjectsSize,
-                                                                                       lowerBoundOfGSHAttributesSize,
-                                                                                       upperBoundOfGSHAttributesSize);
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish GSH!");
+      Set<Set<PlainRDFNode>> simplifiedExtents
+        = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
+                                    lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
+
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish GSH!");
       }
+
       for (Set<PlainRDFNode> candidatePool : simplifiedExtents) {
         matchPlainRDFNodes(candidatePool, mappings);
       }
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish extracting mappings from GSH!");
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish extracting mappings from GSH!");
       }
     }
 
     if (isEnabledLattice) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Start building complete lattice...");
+      if (logger.isInfoEnabled()) {
+        logger.info("Start building complete lattice...");
       }
-      Set<Set<PlainRDFNode>> extents = hermes.listExtentsLeastMost(lowerBoundOfLatticeObjectsSize,
-                                                                   upperBoundOfLatticeObjectsSize,
-                                                                   lowerBoundOfLatticeAttributesSize,
-                                                                   upperBoundOfLatticeAttributesSize);
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish building complete lattice!");
+      Set<Set<PlainRDFNode>> extents
+        = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
+                          lowerBoundOfLatticeAttributesSize, upperBoundOfLatticeAttributesSize);
+
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish building complete lattice!");
       }
+
       for (Set<PlainRDFNode> candidatePool : extents) {
         matchPlainRDFNodes(candidatePool, mappings);
       }
-      if (logger.isDebugEnabled()) {
-        logger.debug("Finish extracting mappings from complete lattice!");
+      if (logger.isInfoEnabled()) {
+        logger.info("Finish extracting mappings from complete lattice!");
       }
     }
 
-    hermes.close();
+    fca.clear();
+    if (logger.isInfoEnabled()) {
+      logger.info("Finish analysis!");
+    }
+
   }
 
   private void putAll(Set<AnchorIdPair> anchorIdPairs, Set<Integer> leftHandAnchorIds, Set<Integer> rightHandAnchorIds) {

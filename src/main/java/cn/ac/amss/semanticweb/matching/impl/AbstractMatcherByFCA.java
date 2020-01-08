@@ -40,10 +40,10 @@ public abstract class AbstractMatcherByFCA extends AbstractMatcher
     lowerBoundOfLatticeObjectsSize = 2;
     upperBoundOfLatticeObjectsSize = 2;
 
-    lowerBoundOfLatticeAttributesSize = 1;
+    lowerBoundOfLatticeAttributesSize = 0;
     upperBoundOfLatticeAttributesSize = -1;
 
-    maximumSizeOfConcepts = 300_000;
+    maximumSizeOfConcepts = -1;
   }
 
   public void setExtractType(boolean isEnabledGSH, boolean isEnabledLattice) {
