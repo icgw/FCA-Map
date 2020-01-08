@@ -138,21 +138,21 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
     if (isEnabledGSH) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start getting the GSH...");
+        logger.info("Start getting Galois Sub-hierarchy...");
       }
       Set<Set<String>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
                                     lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
 
       if (logger.isInfoEnabled()) {
-        logger.info("Finish GSH!");
+        logger.info("Finish Galois Sub-hierarchy!");
       }
 
       for (Set<String> labelsOrNames : simplifiedExtents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
       }
       if (logger.isInfoEnabled()) {
-        logger.info("Finish extracting mappings from GSH!");
+        logger.info("Finish extracting mappings from Galois Sub-hierarchy!");
       }
     }
 

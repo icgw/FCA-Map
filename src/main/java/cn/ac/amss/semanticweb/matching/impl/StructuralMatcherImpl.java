@@ -337,21 +337,21 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
     if (isEnabledGSH) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start getting the GSH...");
+        logger.info("Start getting Galois Sub-hierarchy...");
       }
       Set<Set<PlainRDFNode>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
                                     lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
 
       if (logger.isInfoEnabled()) {
-        logger.info("Finish GSH!");
+        logger.info("Finish Galois Sub-hierarchy!");
       }
 
       for (Set<PlainRDFNode> candidatePool : simplifiedExtents) {
         matchPlainRDFNodes(candidatePool, mappings);
       }
       if (logger.isInfoEnabled()) {
-        logger.info("Finish extracting mappings from GSH!");
+        logger.info("Finish extracting mappings from Galois Sub-hierarchy!");
       }
     }
 
