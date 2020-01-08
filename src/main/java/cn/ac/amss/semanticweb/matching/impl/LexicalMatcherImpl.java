@@ -134,7 +134,8 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
       //                                           lowerBoundOfGSHAttributesSize,
       //                                           upperBoundOfGSHAttributesSize);
       Set<Set<String>> simplifiedExtents
-        = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize);
+        = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
+                                    lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
       if (logger.isDebugEnabled()) {
         logger.debug("Finish GSH!");
       }

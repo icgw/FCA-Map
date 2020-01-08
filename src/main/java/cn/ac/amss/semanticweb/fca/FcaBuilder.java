@@ -75,16 +75,28 @@ public class FcaBuilder <O, A>
   }
 
   public Set<Set<O>> listSimplifiedExtents(int objectAtLeastSize, int objectAtMostSize) {
+    return listSimplifiedExtents(objectAtLeastSize, objectAtMostSize, 0, -1);
+  }
+
+  public Set<Set<O>> listSimplifiedExtents(int objectAtLeastSize, int objectAtMostSize,
+                                           int attributeAtLeastSize, int attributeAtMostSize) {
     Set<Set<O>> simplifiedExtents = new HashSet<>();
     for (Set<Integer> attributeObjectConcept : attributesToAttributeObjectIdClarified.values()) {
       Set<O> simplifiedExtent = new HashSet<>();
+      int sizeOfSimplifiedIntent = 0;
       for (Integer ao : attributeObjectConcept) {
-        if (ao < 0) continue;
-        Set<O> objects = clarifiedObjectIdToObjects.get(ao);
-        if (null == objects || objects.isEmpty()) continue;
-        simplifiedExtent.addAll(objects);
+        if (ao < 0) {
+          Set<A> attributes = clarifiedAttributeIdToAttributes.get(ao);
+          if (null == attributes || attributes.isEmpty()) continue;
+          sizeOfSimplifiedIntent += attributes.size();
+        } else {
+          Set<O> objects = clarifiedObjectIdToObjects.get(ao);
+          if (null == objects || objects.isEmpty()) continue;
+          simplifiedExtent.addAll(objects);
+        }
       }
-      if (checkLeastMost(simplifiedExtent.size(), objectAtLeastSize, objectAtMostSize)) {
+      if (checkLeastMost(simplifiedExtent.size(), objectAtLeastSize, objectAtMostSize) &&
+          checkLeastMost(sizeOfSimplifiedIntent, attributeAtLeastSize, attributeAtMostSize)) {
         simplifiedExtents.add(simplifiedExtent);
       }
     }
@@ -147,6 +159,37 @@ public class FcaBuilder <O, A>
     return extents;
   }
 
+  public Set<Set<O>> listExtents(int objectAtLeastSize, int objectAtMostSize,
+                                 int attributeAtLeastSize, int attributeAtMostSize) {
+    return listExtents(objectAtLeastSize, objectAtMostSize, attributeAtLeastSize, attributeAtMostSize, -1);
+  }
+
+  public Set<Set<O>> listExtents(int objectAtLeastSize, int objectAtMostSize,
+                                 int attributeAtLeastSize, int attributeAtMostSize,
+                                 int maximumSizeOfExtents) {
+    Set<Set<O>> extents = new HashSet<>();
+
+    Set<Set<Integer>> closureOfAttributes = new HashSet<>();
+
+    closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
+
+    for (Set<Integer> s : closureOfAttributes) {
+      Set<O> extent = computeExtent(s);
+      int sizeOfIntent = 0;
+      for (Integer a : s) {
+        Set<A> attributes = clarifiedAttributeIdToAttributes.get(a);
+        if (null == attributes || attributes.isEmpty()) continue;
+        sizeOfIntent += attributes.size();
+      }
+      if (checkLeastMost(extent.size(), objectAtLeastSize, objectAtMostSize) &&
+          checkLeastMost(sizeOfIntent, attributeAtLeastSize, attributeAtMostSize)) {
+        extents.add(extent);
+      }
+    }
+
+    return extents;
+  }
+
   public Set<Concept<O, A>> listConcepts() {
     return listConcepts(0, -1, 0, -1);
   }
@@ -183,7 +226,7 @@ public class FcaBuilder <O, A>
   }
 
   private boolean checkLeastMost(int check, int atLeast, int atMost) {
-    if (atLeast > atMost) return true;
+    if (atLeast > atMost && check >= atLeast) return true;
     return check >= atLeast && check <= atMost;
   }
 
