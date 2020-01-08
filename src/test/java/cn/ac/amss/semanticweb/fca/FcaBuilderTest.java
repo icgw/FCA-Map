@@ -1,5 +1,5 @@
 /*
- * FcaBuilderTest.java
+ * FCABuilderTest.java
  * Copyright (C) 2020 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -13,12 +13,9 @@ import org.junit.Test;
 
 import java.util.Set;
 import java.util.HashSet;
-import java.util.TreeSet;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
 
-public class FcaBuilderTest
+public class FCABuilderTest
 {
   @Test
   public void testListSimplifiedExtents() {
@@ -68,7 +65,7 @@ public class FcaBuilderTest
     expected.add(new HashSet<>(Arrays.asList(6)));
     expected.add(new HashSet<>(Arrays.asList(7)));
 
-    FcaBuilder<Integer, Character> fca = new FcaBuilder<>();
+    FCABuilder<Integer, Character> fca = new FCABuilder<>();
     fca.init(context);
     fca.exec();
 
@@ -115,7 +112,7 @@ public class FcaBuilderTest
     expected.add(new HashSet<>(Arrays.asList("牛", "马")));
     expected.add(new HashSet<>(Arrays.asList("马")));
 
-    FcaBuilder<String, String> fca = new FcaBuilder<>();
+    FCABuilder<String, String> fca = new FCABuilder<>();
     fca.init(context);
     fca.exec();
 
@@ -214,7 +211,7 @@ public class FcaBuilderTest
       )
     );
 
-    FcaBuilder<Integer, Character> fca = new FcaBuilder<>();
+    FCABuilder<Integer, Character> fca = new FCABuilder<>();
     fca.init(context);
     fca.exec();
 
@@ -346,7 +343,7 @@ public class FcaBuilderTest
       )
     );
 
-    FcaBuilder<String, String> fca = new FcaBuilder<>();
+    FCABuilder<String, String> fca = new FCABuilder<>();
     fca.init(context);
     fca.exec();
 

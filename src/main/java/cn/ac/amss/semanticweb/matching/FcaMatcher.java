@@ -1,5 +1,5 @@
 /*
- * FcaMatcher.java
+ * FCAMatcher.java
  * Copyright (C) 2019 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -9,7 +9,7 @@ package cn.ac.amss.semanticweb.matching;
 
 import cn.ac.amss.semanticweb.model.ModelStorage;
 
-public interface FcaMatcher
+public interface FCAMatcher
 {
   public void setSourceTarget(ModelStorage source, ModelStorage target);
 
@@ -34,4 +34,6 @@ public interface FcaMatcher
   public void setLowerBoundOfLatticeAttributesSize(int size);
 
   public void setUpperBoundOfLatticeAttributesSize(int size);
+
+  public void setMaximumSizeOfConcepts(int size);
 }

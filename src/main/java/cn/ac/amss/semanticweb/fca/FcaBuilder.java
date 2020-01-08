@@ -1,5 +1,5 @@
 /*
- * FcaBuilder.java
+ * FCABuilder.java
  * Copyright (C) 2020 Guowei Chen <icgw@outlook.com>
  *
  * Distributed under terms of the GPL license.
@@ -17,12 +17,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * An (alpha version) improved formal concept analaysis builder designed by Guowei Chen.
+ * An improved formal concept analaysis builder designed by Guowei Chen.
  *   - AOC-poset algorithm part inspired by Hermes
  *
  * @author Guowei Chen (icgw@outlook.com)
  */
-public class FcaBuilder <O, A>
+public class FCABuilder <O, A>
 {
   private class LookupTable <V> extends AbstractTable<Integer, V> {
     public LookupTable() {
@@ -39,7 +39,7 @@ public class FcaBuilder <O, A>
   private Context<Set<Integer>, Integer> attributesToAttributeObjectIdClarified = null;
   private Map<Integer, Set<Integer>> attributeToObjectsIdClarified              = null;
 
-  public FcaBuilder() {
+  public FCABuilder() {
     clarifiedObjectIdToObjects       = new LookupTable<>();
     clarifiedAttributeIdToAttributes = new LookupTable<>();
     clarifiedContext                 = new Context<>();

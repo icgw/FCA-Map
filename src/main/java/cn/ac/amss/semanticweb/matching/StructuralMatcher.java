@@ -12,7 +12,7 @@ import cn.ac.amss.semanticweb.alignment.Mapping;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Property;
 
-public interface StructuralMatcher extends FcaMatcher
+public interface StructuralMatcher extends FCAMatcher
 {
   public void mapInstances(Mapping mappings);
 

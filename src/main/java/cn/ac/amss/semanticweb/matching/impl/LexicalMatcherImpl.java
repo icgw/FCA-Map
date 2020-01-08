@@ -11,8 +11,7 @@ import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.MatchType;
 import cn.ac.amss.semanticweb.constant.MatchingSpec.Owner;
 import cn.ac.amss.semanticweb.fca.Context;
-import cn.ac.amss.semanticweb.fca.Hermes;
-import cn.ac.amss.semanticweb.fca.FcaBuilder;
+import cn.ac.amss.semanticweb.fca.FCABuilder;
 import cn.ac.amss.semanticweb.matching.LexicalMatcher;
 import cn.ac.amss.semanticweb.model.PlainRDFNode;
 import cn.ac.amss.semanticweb.model.ModelStorage;
@@ -106,39 +105,34 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
     Context<String, String> labelOrName2tokensContext = constructTokenBasedContext(labelOrName2PlainRDFNodes.keySet());
 
-    // Hermes<String, String> hermes = new Hermes<>();
-
-    FcaBuilder<String, String> fca = new FcaBuilder<>();
+    FCABuilder<String, String> fca = new FCABuilder<>();
 
     if (logger.isDebugEnabled()) {
-      logger.debug("Init hermes...");
+      logger.debug("Init FCA Builder...");
     }
-    // hermes.init(labelOrName2tokensContext);
     fca.init(labelOrName2tokensContext);
+
     if (logger.isDebugEnabled()) {
-      logger.debug("Start hermes computing...");
+      logger.debug("Start formal concept analysis...");
     }
-    // hermes.compute();
     fca.exec();
+
     if (logger.isDebugEnabled()) {
-      logger.debug("Finish hermes computing!");
+      logger.debug("Finish analysis!");
     }
 
     if (isEnabledGSH) {
       if (logger.isDebugEnabled()) {
         logger.debug("Start getting the GSH...");
       }
-      // Set<Set<String>> simplifiedExtents
-      //   = hermes.listSimplifiedExtentsLeastMost(lowerBoundOfGSHObjectsSize,
-      //                                           upperBoundOfGSHObjectsSize,
-      //                                           lowerBoundOfGSHAttributesSize,
-      //                                           upperBoundOfGSHAttributesSize);
       Set<Set<String>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
                                     lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
+
       if (logger.isDebugEnabled()) {
         logger.debug("Finish GSH!");
       }
+
       for (Set<String> labelsOrNames : simplifiedExtents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
       }
@@ -151,16 +145,13 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
       if (logger.isDebugEnabled()) {
         logger.debug("Start building complete lattice...");
       }
-      // Set<Set<String>> extents
-      //   = hermes.listExtentsLeastMost(lowerBoundOfLatticeObjectsSize,
-      //                                 upperBoundOfLatticeObjectsSize,
-      //                                 lowerBoundOfLatticeAttributesSize,
-      //                                 upperBoundOfLatticeAttributesSize);
       Set<Set<String>> extents
         = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize);
+
       if (logger.isDebugEnabled()) {
         logger.debug("Finish building complete lattice!");
       }
+
       for (Set<String> labelsOrNames : extents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
       }
@@ -170,7 +161,6 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
     }
 
     fca.clear();
-    // hermes.close();
   }
 
   private Context<String, String> constructTokenBasedContext(Set<String> labelsOrNames) {

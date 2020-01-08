@@ -82,4 +82,8 @@ public abstract class AbstractMatcherByFCA extends AbstractMatcher
   public void setUpperBoundOfLatticeAttributesSize(int size) {
     upperBoundOfLatticeAttributesSize = size;
   }
+
+  public void setMaximumSizeOfConcepts(int size) {
+    maximumSizeOfConcepts = size;
+  }
 }
