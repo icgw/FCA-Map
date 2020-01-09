@@ -76,42 +76,42 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
   public void mapInstances(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start instance matching...");
+      logger.info("<<<<<<< Start matching instance >>>>>>>");
     }
     mapResources(MatchType.INSTANCE, mappings);
   }
 
   public void mapCategories(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start category matching...");
+      logger.info("<<<<<<< Start matching category >>>>>>>");
     }
     mapResources(MatchType.CATEGORY, mappings);
   }
 
   public void mapOntProperties(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start property matching...");
+      logger.info("<<<<<<< Start matching property >>>>>>>");
     }
     mapResources(MatchType.ONT_PROPERTY, mappings);
   }
 
   public void mapDataTypeProperties(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start data property matching...");
+      logger.info("<<<<<<< Start matching data property >>>>>>>");
     }
     mapResources(MatchType.DATA_TYPE_PROPERTY, mappings);
   }
 
   public void mapObjectProperties(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start Object property matching...");
+      logger.info("<<<<<<< Start matching object property >>>>>>>");
     }
     mapResources(MatchType.OBJECT_PROPERTY, mappings);
   }
 
   public void mapOntClasses(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start class matching...");
+      logger.info("<<<<<<< Start matching class >>>>>>>");
     }
     mapResources(MatchType.ONT_CLASS, mappings);
   }
@@ -138,40 +138,42 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
     if (isEnabledGSH) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start getting Galois Sub-hierarchy...");
+        logger.info("Start getting simplified concepts...");
       }
       Set<Set<String>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
                                     lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
 
       if (logger.isInfoEnabled()) {
-        logger.info("Finish Galois Sub-hierarchy!");
+        logger.info("Finish getting simplified concepts!");
       }
 
       for (Set<String> labelsOrNames : simplifiedExtents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
       }
       if (logger.isInfoEnabled()) {
-        logger.info("Finish extracting mappings from Galois Sub-hierarchy!");
+        logger.info("Finish extracting mappings from simplified concepts!");
       }
     }
 
     if (isEnabledLattice) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start building complete lattice...");
+        logger.info("Start building complete concepts...");
       }
       Set<Set<String>> extents
-        = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize);
+        = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
+                          lowerBoundOfLatticeAttributesSize, upperBoundOfLatticeAttributesSize,
+                          maximumSizeOfConcepts);
 
       if (logger.isInfoEnabled()) {
-        logger.info("Finish building complete lattice!");
+        logger.info("Finish building complete concepts!");
       }
 
       for (Set<String> labelsOrNames : extents) {
         matchPlainRDFNodes(getPlainRDFNodes(labelsOrNames, labelOrName2PlainRDFNodes), mappings);
       }
       if (logger.isInfoEnabled()) {
-        logger.info("Finish extracting mappings from complete lattice!");
+        logger.info("Finish extracting mappings from complete concepts!");
       }
     }
 

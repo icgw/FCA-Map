@@ -32,6 +32,8 @@ public class FCABuilder <O, A>
 
   private boolean hasInitialized = false;
 
+  private boolean complete = false;
+
   private LookupTable<O> clarifiedObjectIdToObjects       = null;
   private LookupTable<A> clarifiedAttributeIdToAttributes = null;
   private Context<Integer, Integer> clarifiedContext      = null;
@@ -48,11 +50,17 @@ public class FCABuilder <O, A>
     attributesToAttributeObjectIdClarified = new Context<>();
   }
 
+  public boolean isComplete() {
+    return complete;
+  }
+
   public void init(Context<O, A> context) {
     getClarifiedContext(context);
     attributeToObjectsIdClarified = new HashMap<>(clarifiedContext.inverse().getMap());
 
     hasInitialized = true;
+
+    complete = false;
   }
 
   public void exec() {
@@ -68,6 +76,8 @@ public class FCABuilder <O, A>
     attributeToObjectsIdClarified.clear();
 
     hasInitialized = false;
+
+    complete = false;
   }
 
   public Set<Set<O>> listSimplifiedExtents() {
@@ -147,7 +157,7 @@ public class FCABuilder <O, A>
 
     Set<Set<Integer>> closureOfAttributes = new HashSet<>();
 
-    closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
+    complete = closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
 
     for (Set<Integer> s : closureOfAttributes) {
       Set<O> extent = computeExtent(s);
@@ -171,7 +181,7 @@ public class FCABuilder <O, A>
 
     Set<Set<Integer>> closureOfAttributes = new HashSet<>();
 
-    closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
+    complete = closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
 
     for (Set<Integer> s : closureOfAttributes) {
       Set<O> extent = computeExtent(s);
@@ -206,7 +216,7 @@ public class FCABuilder <O, A>
 
     Set<Set<Integer>> closureOfAttributes = new HashSet<>();
 
-    closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfConcepts);
+    complete = closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfConcepts);
 
     for (Set<Integer> s : closureOfAttributes) {
       Set<O> extent = computeExtent(s);
@@ -225,6 +235,15 @@ public class FCABuilder <O, A>
     return concepts;
   }
 
+  /**
+   * Check whether the integer number is in an interval [atLeast, atMost], if atLeast is more than atMost, then the
+   * interval is [atLeast, positive maximum integer].
+   *
+   * @param check the number to check
+   * @param atLeast the least number
+   * @param atMost the most number
+   * @return true if the integer is in the interval, else false
+   */
   private boolean checkLeastMost(int check, int atLeast, int atMost) {
     if (atLeast > atMost && check >= atLeast) return true;
     return check >= atLeast && check <= atMost;
@@ -403,8 +422,8 @@ public class FCABuilder <O, A>
     }
   }
 
-  private void closureOfIntersection(Set<Set<Integer>> closure, Set<Set<Integer>> s, int maximumSizeOfSet) {
-    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) return;
+  private boolean closureOfIntersection(Set<Set<Integer>> closure, Set<Set<Integer>> s, int maximumSizeOfSet) {
+    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) return false;
 
     LookupTable<Set<Integer>> lookup = new LookupTable<>();
     resetLookup(lookup, s);
@@ -420,15 +439,31 @@ public class FCABuilder <O, A>
     for (Set<Set<Integer>> after = new HashSet<>(s); !after.isEmpty(); ) {
       Set<Set<Integer>> newAfter = new HashSet<>();
 
-      newAfter.addAll(closureOfIntersectionHelper(closure, lookup));
-      newAfter.addAll(closureOfIntersectionHelper(after, lookup));
-      newAfter.removeAll(closure);
+      Set<Set<Integer>> s1 = new HashSet<>(), s2 = new HashSet<>();
 
-      resetLookup(lookup, newAfter);
+      Thread t1 = new Thread(new ClosureOfIntersectionHelper(s1, closure, lookup));
+      Thread t2 = new Thread(new ClosureOfIntersectionHelper(s2, after,   lookup));
+
+      t1.start(); t2.start();
+
+      try {
+        t1.join(); t2.join();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
 
       closure.addAll(after);
 
-      if (maximumSizeOfSet >= 0 && closure.size() >= maximumSizeOfSet) return;
+      s1.removeAll(closure); s2.removeAll(closure);
+
+      newAfter.addAll(s1); newAfter.addAll(s2);
+
+      resetLookup(lookup, newAfter);
+
+      if (maximumSizeOfSet >= 0 && closure.size() + newAfter.size() >= maximumSizeOfSet) {
+        closure.addAll(newAfter);
+        return false;
+      }
 
       after.clear();
       after.addAll(newAfter);
@@ -440,7 +475,7 @@ public class FCABuilder <O, A>
     }
     closure.add(all);
 
-    return;
+    return true;
   }
 
   private void resetLookup(LookupTable<Set<Integer>> lookup, Set<Set<Integer>> s) {
@@ -452,8 +487,7 @@ public class FCABuilder <O, A>
     }
   }
 
-  private Set<Set<Integer>> closureOfIntersectionHelper(Set<Set<Integer>> left,
-                                                        LookupTable<Set<Integer>> rightLookup) {
+  private Set<Set<Integer>> closureOfIntersectionHelper(Set<Set<Integer>> left, LookupTable<Set<Integer>> rightLookup) {
     Set<Set<Integer>> newIntersectionSets = new HashSet<>();
     if (null == left || left.isEmpty()) return newIntersectionSets;
 
@@ -464,13 +498,46 @@ public class FCABuilder <O, A>
         for (Set<Integer> otherSet : otherSets) {
           Set<Integer> newIntersectionSet = new HashSet<>(s);
           newIntersectionSet.retainAll(otherSet);
+          if (left.contains(newIntersectionSet)) continue;
           newIntersectionSets.add(newIntersectionSet);
         }
       }
     }
 
-    newIntersectionSets.removeAll(left);
     return newIntersectionSets;
+  }
+
+  private class ClosureOfIntersectionHelper implements Runnable {
+    Set<Set<Integer>> left                = null;
+    LookupTable<Set<Integer>> rightLookup = null;
+    Set<Set<Integer>> newIntersectionSets = null;
+
+    public ClosureOfIntersectionHelper(Set<Set<Integer>> newIntersectionSets,
+                                       Set<Set<Integer>> left,
+                                       LookupTable<Set<Integer>> rightLookup) {
+      this.newIntersectionSets = newIntersectionSets;
+      this.left                = left;
+      this.rightLookup         = rightLookup;
+    }
+
+    @Override
+    public void run() {
+      if (null == left || null == rightLookup || null == newIntersectionSets) return;
+      for (Set<Integer> s : left) {
+        for (Integer i : s) {
+          Set<Set<Integer>> otherSets = rightLookup.get(i);
+          if (null == otherSets) continue;
+          for (Set<Integer> otherSet : otherSets) {
+            Set<Integer> newIntersectionSet = new HashSet<>(s);
+            if (newIntersectionSet.retainAll(otherSet) && !left.contains(newIntersectionSet)) {
+              // NOTE: when the intersection of `newIntersectionSet' and `otherSet' is changed and
+              // `left' do not contain it, then add it into `newIntersectionSets'.
+              newIntersectionSets.add(newIntersectionSet);
+            }
+          }
+        }
+      }
+    }
   }
 
   private class InitClarifiedMap <K, V> implements Runnable {

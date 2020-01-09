@@ -84,6 +84,8 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     lowerBoundOfLatticeAttributesSize = 1;
     upperBoundOfLatticeAttributesSize = -1;
 
+    maximumSizeOfConcepts = 300_000;
+
     subjectAnchors   = new HashMap<>();
     predicateAnchors = new HashMap<>();
     objectAnchors    = new HashMap<>();
@@ -138,42 +140,42 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
   public void mapInstances(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start instance matching...");
+      logger.info("<<<<<<< Start matching instance >>>>>>>");
     }
     mapResources(MatchType.INSTANCE, mappings);
   }
 
   public void mapCategories(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start category matching...");
+      logger.info("<<<<<<< Start matching category >>>>>>>");
     }
     mapResources(MatchType.CATEGORY, mappings);
   }
 
   public void mapOntProperties(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start property matching...");
+      logger.info("<<<<<<< Start matching property >>>>>>>");
     }
     mapResources(MatchType.ONT_PROPERTY, mappings);
   }
 
   public void mapDataTypeProperties(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start data property matching...");
+      logger.info("<<<<<<< Start matching data property >>>>>>>");
     }
     mapResources(MatchType.DATA_TYPE_PROPERTY, mappings);
   }
 
   public void mapObjectProperties(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start Object property matching...");
+      logger.info("<<<<<<< Start matching object property >>>>>>>");
     }
     mapResources(MatchType.ONT_PROPERTY, mappings);
   }
 
   public void mapOntClasses(Mapping mappings) {
     if (logger.isInfoEnabled()) {
-      logger.info("Start class matching...");
+      logger.info("<<<<<<< Start matching class >>>>>>>");
     }
     mapResources(MatchType.ONT_CLASS, mappings);
   }
@@ -337,41 +339,42 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
     if (isEnabledGSH) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start getting Galois Sub-hierarchy...");
+        logger.info("Start getting simplified concepts...");
       }
       Set<Set<PlainRDFNode>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
                                     lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize);
 
       if (logger.isInfoEnabled()) {
-        logger.info("Finish Galois Sub-hierarchy!");
+        logger.info("Finish getting simplified concepts!");
       }
 
       for (Set<PlainRDFNode> candidatePool : simplifiedExtents) {
         matchPlainRDFNodes(candidatePool, mappings);
       }
       if (logger.isInfoEnabled()) {
-        logger.info("Finish extracting mappings from Galois Sub-hierarchy!");
+        logger.info("Finish extracting mappings from simplified concepts!");
       }
     }
 
     if (isEnabledLattice) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start building complete lattice...");
+        logger.info("Start building complete concepts...");
       }
       Set<Set<PlainRDFNode>> extents
         = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
-                          lowerBoundOfLatticeAttributesSize, upperBoundOfLatticeAttributesSize);
+                          lowerBoundOfLatticeAttributesSize, upperBoundOfLatticeAttributesSize,
+                          maximumSizeOfConcepts);
 
       if (logger.isInfoEnabled()) {
-        logger.info("Finish building complete lattice!");
+        logger.info("Finish building complete concepts!");
       }
 
       for (Set<PlainRDFNode> candidatePool : extents) {
         matchPlainRDFNodes(candidatePool, mappings);
       }
       if (logger.isInfoEnabled()) {
-        logger.info("Finish extracting mappings from complete lattice!");
+        logger.info("Finish extracting mappings from complete concepts!");
       }
     }
 
@@ -379,7 +382,6 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     if (logger.isInfoEnabled()) {
       logger.info("Finish analysis!");
     }
-
   }
 
   private void putAll(Set<AnchorIdPair> anchorIdPairs, Set<Integer> leftHandAnchorIds, Set<Integer> rightHandAnchorIds) {
