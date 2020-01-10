@@ -34,6 +34,8 @@ public class FCABuilder <O, A>
 
   private boolean complete = false;
 
+  private int sizeOfConcepts = 0;
+
   private LookupTable<O> clarifiedObjectIdToObjects       = null;
   private LookupTable<A> clarifiedAttributeIdToAttributes = null;
   private Context<Integer, Integer> clarifiedContext      = null;
@@ -54,6 +56,10 @@ public class FCABuilder <O, A>
     return complete;
   }
 
+  public int getSizeOfConcepts() {
+    return sizeOfConcepts;
+  }
+
   public void init(Context<O, A> context) {
     getClarifiedContext(context);
     attributeToObjectsIdClarified = new HashMap<>(clarifiedContext.inverse().getMap());
@@ -61,6 +67,8 @@ public class FCABuilder <O, A>
     hasInitialized = true;
 
     complete = false;
+
+    sizeOfConcepts = 0;
   }
 
   public void exec() {
@@ -78,6 +86,8 @@ public class FCABuilder <O, A>
     hasInitialized = false;
 
     complete = false;
+
+    sizeOfConcepts = 0;
   }
 
   public Set<Set<O>> listSimplifiedExtents() {
@@ -427,7 +437,11 @@ public class FCABuilder <O, A>
   }
 
   private boolean closureOfIntersection(Set<Set<Integer>> closure, Set<Set<Integer>> s, int maximumSizeOfSet) {
-    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) return false;
+    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) {
+      closure.addAll(s);
+      sizeOfConcepts = closure.size();
+      return false;
+    }
 
     LookupTable<Set<Integer>> lookup = new LookupTable<>();
     resetLookup(lookup, s);
@@ -466,6 +480,7 @@ public class FCABuilder <O, A>
 
       if (maximumSizeOfSet >= 0 && closure.size() + newAfter.size() >= maximumSizeOfSet) {
         closure.addAll(newAfter);
+        sizeOfConcepts = closure.size();
         return false;
       }
 
@@ -479,6 +494,7 @@ public class FCABuilder <O, A>
     }
     closure.add(all);
 
+    sizeOfConcepts = closure.size();
     return true;
   }
 
@@ -495,13 +511,17 @@ public class FCABuilder <O, A>
 
   private boolean closureOfIntersection(Set<Set<Integer>> closure, Set<Set<Integer>> s, LookupTable<A> attributesLookup,
                                         int attributeAtLeastSize, int attributeAtMostSize, int maximumSizeOfSet) {
-    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) return false;
-
     Set<Set<Integer>> newS = new HashSet<>();
     for (Set<Integer> sub : s) {
       if (checkIsSatisfied(sub, attributesLookup, attributeAtLeastSize, attributeAtMostSize)) {
         newS.add(sub);
       }
+    }
+
+    if (maximumSizeOfSet >= 0 && newS.size() >= maximumSizeOfSet) {
+      closure.addAll(newS);
+      sizeOfConcepts = closure.size();
+      return false;
     }
 
     LookupTable<Set<Integer>> lookup = new LookupTable<>();
@@ -554,6 +574,7 @@ public class FCABuilder <O, A>
 
       if (maximumSizeOfSet >= 0 && closure.size() + newAfter.size() >= maximumSizeOfSet) {
         closure.addAll(newAfter);
+        sizeOfConcepts = closure.size();
         return false;
       }
 
@@ -570,6 +591,7 @@ public class FCABuilder <O, A>
       closure.add(all);
     }
 
+    sizeOfConcepts = closure.size();
     return true;
   }
 
