@@ -181,7 +181,9 @@ public class FCABuilder <O, A>
 
     Set<Set<Integer>> closureOfAttributes = new HashSet<>();
 
-    complete = closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfExtents);
+    complete = closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(),
+                                     clarifiedAttributeIdToAttributes, attributeAtLeastSize, attributeAtMostSize,
+                                     maximumSizeOfExtents);
 
     for (Set<Integer> s : closureOfAttributes) {
       Set<O> extent = computeExtent(s);
@@ -216,7 +218,9 @@ public class FCABuilder <O, A>
 
     Set<Set<Integer>> closureOfAttributes = new HashSet<>();
 
-    complete = closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(), maximumSizeOfConcepts);
+    complete = closureOfIntersection(closureOfAttributes, attributesToAttributeObjectIdClarified.keySet(),
+                                     clarifiedAttributeIdToAttributes, attributeAtLeastSize, attributeAtMostSize,
+                                     maximumSizeOfConcepts);
 
     for (Set<Integer> s : closureOfAttributes) {
       Set<O> extent = computeExtent(s);
@@ -474,6 +478,97 @@ public class FCABuilder <O, A>
       all.addAll(sub);
     }
     closure.add(all);
+
+    return true;
+  }
+
+  private boolean checkIsSatisfied(Set<Integer> attributeIds, LookupTable<A> attributesLookup,
+                                   int attributeAtLeastSize, int attributeAtMostSize) {
+    int sizeOfAttributes = 0;
+    for (Integer a : attributeIds) {
+      Set<A> attributes = attributesLookup.get(a);
+      if (null == attributes) continue;
+      sizeOfAttributes += attributes.size();
+    }
+    return checkLeastMost(sizeOfAttributes, attributeAtLeastSize, attributeAtMostSize);
+  }
+
+  private boolean closureOfIntersection(Set<Set<Integer>> closure, Set<Set<Integer>> s, LookupTable<A> attributesLookup,
+                                        int attributeAtLeastSize, int attributeAtMostSize, int maximumSizeOfSet) {
+    if (maximumSizeOfSet >= 0 && s.size() >= maximumSizeOfSet) return false;
+
+    Set<Set<Integer>> newS = new HashSet<>();
+    for (Set<Integer> sub : s) {
+      if (checkIsSatisfied(sub, attributesLookup, attributeAtLeastSize, attributeAtMostSize)) {
+        newS.add(sub);
+      }
+    }
+
+    LookupTable<Set<Integer>> lookup = new LookupTable<>();
+
+    resetLookup(lookup, newS);
+
+    if (s.iterator().hasNext()) {
+      Set<Integer> base = new HashSet<>(s.iterator().next());
+      for (Set<Integer> sub : s) {
+        base.retainAll(sub);
+      }
+      if (checkIsSatisfied(base, attributesLookup, attributeAtLeastSize, attributeAtMostSize)) {
+        closure.add(base);
+      }
+    }
+
+    for (Set<Set<Integer>> after = new HashSet<>(newS); !after.isEmpty(); ) {
+      Set<Set<Integer>> newAfter = new HashSet<>();
+
+      Set<Set<Integer>> s1 = new HashSet<>(), s2 = new HashSet<>();
+
+      Thread t1 = new Thread(new ClosureOfIntersectionHelper(s1, closure, lookup));
+      Thread t2 = new Thread(new ClosureOfIntersectionHelper(s2, after,   lookup));
+
+      t1.start(); t2.start();
+
+      try {
+        t1.join(); t2.join();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+      closure.addAll(after);
+
+      s1.removeAll(closure); s2.removeAll(closure);
+
+      for (Set<Integer> sub : s1) {
+        if (checkIsSatisfied(sub, attributesLookup, attributeAtLeastSize, attributeAtMostSize)) {
+          newAfter.add(sub);
+        }
+      }
+
+      for (Set<Integer> sub : s2) {
+        if (checkIsSatisfied(sub, attributesLookup, attributeAtLeastSize, attributeAtMostSize)) {
+          newAfter.add(sub);
+        }
+      }
+
+      resetLookup(lookup, newAfter);
+
+      if (maximumSizeOfSet >= 0 && closure.size() + newAfter.size() >= maximumSizeOfSet) {
+        closure.addAll(newAfter);
+        return false;
+      }
+
+      after.clear();
+      after.addAll(newAfter);
+    }
+
+    Set<Integer> all = new HashSet<>();
+    for (Set<Integer> sub : s) {
+      all.addAll(sub);
+    }
+
+    if (checkIsSatisfied(all, attributesLookup, attributeAtLeastSize, attributeAtMostSize)) {
+      closure.add(all);
+    }
 
     return true;
   }

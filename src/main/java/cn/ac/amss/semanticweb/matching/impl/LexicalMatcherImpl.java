@@ -138,7 +138,12 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
     if (isEnabledGSH) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start getting simplified concepts...");
+        logger.info(
+          String.format("Start getting simplified concepts (Size of object: [%d, %d], Size of attribute: [%d, %d])...",
+            lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
+            lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize
+          )
+        );
       }
       Set<Set<String>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
@@ -158,7 +163,12 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
     if (isEnabledLattice) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start building complete concepts...");
+        logger.info(
+          String.format("Start building complete concepts (Size of object: [%d. %d], Size of attribute: [%d, %d])...",
+            lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
+            lowerBoundOfLatticeAttributesSize, upperBoundOfLatticeAttributesSize
+          )
+        );
       }
       Set<Set<String>> extents
         = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
@@ -167,6 +177,9 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
 
       if (logger.isInfoEnabled()) {
         logger.info("Finish building complete concepts!");
+        if (!fca.isComplete()) {
+          logger.info("NOTE: NOT complete concept!");
+        }
       }
 
       for (Set<String> labelsOrNames : extents) {

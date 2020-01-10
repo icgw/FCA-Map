@@ -339,7 +339,12 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
     if (isEnabledGSH) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start getting simplified concepts...");
+        logger.info(
+          String.format("Start getting simplified concepts (Size of object: [%d, %d], Size of attribute: [%d, %d])...",
+            lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
+            lowerBoundOfGSHAttributesSize, upperBoundOfGSHAttributesSize
+          )
+        );
       }
       Set<Set<PlainRDFNode>> simplifiedExtents
         = fca.listSimplifiedExtents(lowerBoundOfGSHObjectsSize, upperBoundOfGSHObjectsSize,
@@ -359,7 +364,12 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
     if (isEnabledLattice) {
       if (logger.isInfoEnabled()) {
-        logger.info("Start building complete concepts...");
+        logger.info(
+          String.format("Start building complete concepts (Size of object: [%d. %d], Size of attribute: [%d, %d])...",
+            lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
+            lowerBoundOfLatticeAttributesSize, upperBoundOfLatticeAttributesSize
+          )
+        );
       }
       Set<Set<PlainRDFNode>> extents
         = fca.listExtents(lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
@@ -368,6 +378,9 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
 
       if (logger.isInfoEnabled()) {
         logger.info("Finish building complete concepts!");
+        if (!fca.isComplete()) {
+          logger.info("NOTE: NOT complete concept!");
+        }
       }
 
       for (Set<PlainRDFNode> candidatePool : extents) {
