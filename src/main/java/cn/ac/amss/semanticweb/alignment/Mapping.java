@@ -82,7 +82,7 @@ public class Mapping implements Iterable<MappingCell>
   public boolean addAll(Set<MappingCell> m) {
     boolean b = true;
     for (MappingCell mc : m) {
-      b = (b && m_mapping.add(mc));
+      b = (b && this.add(mc));
     }
     return b;
   }

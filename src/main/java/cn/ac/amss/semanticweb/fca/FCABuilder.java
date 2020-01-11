@@ -74,6 +74,8 @@ public class FCABuilder <O, A>
   public void exec() {
     if (!hasInitialized) return;
     computeAttributesToAttributeObject();
+
+    sizeOfConcepts = attributesToAttributeObjectIdClarified.values().size();
   }
 
   public void clear() {
