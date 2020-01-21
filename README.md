@@ -108,9 +108,9 @@ This work has been supported by the National Key Research and Development Progra
 
 ## References
 
-1. **Identifying mappings among knowledge graphs by formal concept analysis**. _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2019: . \[[technical paper][1]\] \[[slides][7]\]
+1. **Identifying mappings among knowledge graphs by formal concept analysis**. _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2019: 25-35. \[[technical paper][1]\] \[[slides][7]\]
 
-2. **FCAMap-KG results for OAEI 2019**. _Fei Chang_, _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2019: . \[[OAEI paper][2]\]
+2. **FCAMap-KG results for OAEI 2019**. _Fei Chang_, _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2019: 138-145. \[[OAEI paper][2]\]
 
 2. **FCAMapX results for OAEI 2018**. _Guowei Chen_, _Songmao Zhang_. OM@ISWC 2018: 160-166. \[[OAEI paper][3]\]
 
@@ -143,8 +143,8 @@ This work has been supported by the National Key Research and Development Progra
 [vln]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/villain.png
 [asg]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/asgardian.png
 [inf]: https://raw.githubusercontent.com/icgw/FCA-Map/master/.github/assets/infinity.png
-[1]: http://disi.unitn.it/~pavel/om2019/papers/om2019\_LTpaper3.pdf
-[2]: http://www.dit.unitn.it/~pavel/om2019/papers/oaei19\_paper8.pdf
+[1]: http://ceur-ws.org/Vol-2536/om2019_LTpaper3.pdf
+[2]: http://ceur-ws.org/Vol-2536/oaei19_paper8.pdf
 [3]: http://ceur-ws.org/Vol-2288/oaei18\_paper7.pdf
 [4]: https://jbiomedsem.biomedcentral.com/articles/10.1186/s13326-018-0178-9
 [5]: http://ceur-ws.org/Vol-1766/om2016\_Tpaper6.pdf
