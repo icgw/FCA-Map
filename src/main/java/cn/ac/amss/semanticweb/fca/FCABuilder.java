@@ -643,6 +643,7 @@ public class FCABuilder <O, A>
     public void run() {
       if (null == left || null == rightLookup || null == newIntersectionSets) return;
       for (Set<Integer> s : left) {
+        if (1 >= s.size()) continue;
         for (Integer i : s) {
           Set<Set<Integer>> otherSets = rightLookup.get(i);
           if (null == otherSets) continue;

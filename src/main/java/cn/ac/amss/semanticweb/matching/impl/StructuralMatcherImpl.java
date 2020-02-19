@@ -365,7 +365,7 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
     if (isEnabledLattice) {
       if (logger.isInfoEnabled()) {
         logger.info(
-          String.format("Start building complete concepts (Size of object: [%d. %d], Size of attribute: [%d, %d])...",
+          String.format("Start building complete concepts (Size of object: [%d, %d], Size of attribute: [%d, %d])...",
             lowerBoundOfLatticeObjectsSize, upperBoundOfLatticeObjectsSize,
             lowerBoundOfLatticeAttributesSize, upperBoundOfLatticeAttributesSize
           )
@@ -407,7 +407,7 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
   }
 
   /**
-   * Contruct anchor pair based context for specified type (Instance, Property, Category, Class, ..)
+   * Construct anchor pair based context for specified type (Instance, Property, Category, Class, ..)
    *
    * @param type INSTANCE / CATEGORY / ONT_PROPERTY / DATA_TYPE_PROPERTY / OBJECT_PROPERTY / ONT_CLASS ..
    * @param context URI with its owner to id of anchor pair
