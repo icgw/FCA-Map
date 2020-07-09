@@ -73,6 +73,7 @@ public class Demo
     ModelStorage source = new ModelStorage("src/test/resources/oaei/conference/Conference.owl");
     ModelStorage target = new ModelStorage("src/test/resources/oaei/conference/ekaw.owl");
 
+    /************************** Lexical-level Matching ***************************/
     LexicalMatcher lm = MatcherFactory.createLexicalMatcher();
 
     lm.setSourceTarget(source, target);
@@ -86,6 +87,7 @@ public class Demo
     lm.mapObjectProperties(lexicalObjectPropertyMappings);
     System.out.println(lexicalObjectPropertyMappings);
 
+    /************************* Structural-level Matching *************************/
     StructuralMatcher sm = MatcherFactory.createStructuralMatcher();
     sm.setSourceTarget(source, target);
     sm.setExtractType(true, true);

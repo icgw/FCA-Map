@@ -45,11 +45,7 @@ public abstract class AbstractMatcher
     Set<PlainRDFNode> sources = new HashSet<>();
     Set<PlainRDFNode> targets = new HashSet<>();
     splitPlainRDFNodes(candidatePool, sources, targets);
-    for (PlainRDFNode s : sources) {
-      for (PlainRDFNode t : targets) {
-        mappings.add(s.getRepresent(), t.getRepresent());
-      }
-    }
+    matchPlainRDFNodes(sources, targets, mappings);
   }
 
   protected void matchPlainRDFNodes(Set<PlainRDFNode> sources, Set<PlainRDFNode> targets, Mapping mappings) {
