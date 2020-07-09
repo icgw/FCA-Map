@@ -17,7 +17,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * An improved formal concept analaysis builder designed by Guowei Chen.
+ * An improved formal concept analysis builder designed by Guowei Chen.
  *   - AOC-poset algorithm part inspired by Hermes
  *
  * @author Guowei Chen (icgw@outlook.com)

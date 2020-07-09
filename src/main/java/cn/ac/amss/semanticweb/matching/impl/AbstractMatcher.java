@@ -52,6 +52,14 @@ public abstract class AbstractMatcher
     }
   }
 
+  protected void matchPlainRDFNodes(Set<PlainRDFNode> sources, Set<PlainRDFNode> targets, Mapping mappings) {
+    for (PlainRDFNode s : sources) {
+      for (PlainRDFNode t : targets) {
+        mappings.add(s.getRepresent(), t.getRepresent());
+      }
+    }
+  }
+
   protected void splitPlainRDFNodes(Set<PlainRDFNode> candidatePool,
                                     Set<PlainRDFNode> sources, Set<PlainRDFNode> targets) {
     for (PlainRDFNode c : candidatePool) {

@@ -537,4 +537,14 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
       string2AnchorIds.put(anchor.getValue(), i);
     }
   }
+
+  @Override
+  protected void matchPlainRDFNodes(Set<PlainRDFNode> sources, Set<PlainRDFNode> targets, Mapping mappings) {
+    // XXX: redefine it by yourself.
+    for (PlainRDFNode s : sources) {
+      for (PlainRDFNode t : targets) {
+        mappings.add(s.getRepresent(), t.getRepresent());
+      }
+    }
+  }
 }

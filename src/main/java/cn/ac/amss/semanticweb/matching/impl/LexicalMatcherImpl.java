@@ -362,4 +362,14 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
     }
     return candidates;
   }
+
+  @Override
+  protected void matchPlainRDFNodes(Set<PlainRDFNode> sources, Set<PlainRDFNode> targets, Mapping mappings) {
+    // XXX: redefine it by yourself.
+    for (PlainRDFNode s : sources) {
+      for (PlainRDFNode t : targets) {
+        mappings.add(s.getRepresent(), t.getRepresent());
+      }
+    }
+  }
 }

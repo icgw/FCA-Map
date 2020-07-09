@@ -10,9 +10,6 @@ package cn.ac.amss.semanticweb.matching;
 import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.io.XMLAlignReader;
-import cn.ac.amss.semanticweb.matching.LexicalMatcher;
-
-import java.io.InputStream;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
