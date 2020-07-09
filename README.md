@@ -60,8 +60,9 @@ I recommend [IntelliJ IDEA](https://www.jetbrains.com/idea/) for developing! :)
 
 import cn.ac.amss.semanticweb.alignment.Mapping;
 import cn.ac.amss.semanticweb.model.ModelStorage;
-import cn.ac.amss.semanticweb.matching.LexicalMatcher;
 import cn.ac.amss.semanticweb.matching.MatcherFactory;
+import cn.ac.amss.semanticweb.matching.LexicalMatcher;
+import cn.ac.amss.semanticweb.matching.StructuralMatcher;
 
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.RDFS;
@@ -90,8 +91,8 @@ public class Demo
     sm.setExtractType(true, true);
     sm.addCommonPredicate(RDFS.subClassOf);
     sm.addCommonPredicate(OWL.disjointWith);
-    sm.addAllSubjectAnchors(lexicalClassMappings);
-    sm.addAllObjectAnchors(lexicalClassMappings);
+    sm.addAllSubjectAnchors(lexicalOntClassMappings);
+    sm.addAllObjectAnchors(lexicalOntClassMappings);
 
     Mapping structuralOntClassMappings = new Mapping();
     sm.mapOntClasses(structuralOntClassMappings);
