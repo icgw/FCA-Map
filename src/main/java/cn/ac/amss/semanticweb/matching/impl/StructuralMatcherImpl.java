@@ -234,8 +234,11 @@ public class StructuralMatcherImpl extends AbstractMatcherByFCA implements Struc
   }
 
   private <T extends RDFNode> String getRepresent(T r) {
-    if (r.isURIResource() || r.isResource() || r.isAnon()) {
+    if (r.isURIResource()) {
       return r.asNode().getURI();
+    }
+    else if (r.isResource() || r.isAnon()) {
+      return r.asNode().toString();
     }
     else if (r.isLiteral()) {
       return r.asLiteral().getLexicalForm();
