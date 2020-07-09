@@ -63,6 +63,9 @@ import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.matching.LexicalMatcher;
 import cn.ac.amss.semanticweb.matching.MatcherFactory;
 
+import org.apache.jena.vocabulary.OWL;
+import org.apache.jena.vocabulary.RDFS;
+
 public class Demo
 {
   public static void main(String[] args) {
@@ -74,12 +77,25 @@ public class Demo
     lm.setSourceTarget(source, target);
     lm.setExtractType(true, true);
 
-    Mapping mappings = new Mapping();
-    lm.mapOntClasses(mappings);
-    lm.mapDataTypeProperties(mappings);
-    lm.mapObjectProperties(mappings);
+    Mapping lexicalOntClassMappings = new Mapping();
+    lm.mapOntClasses(lexicalOntClassMappings);
+    System.out.println(lexicalOntClassMappings);
 
-    System.out.println(mappings);
+    Mapping lexicalObjectPropertyMappings = new Mapping();
+    lm.mapObjectProperties(lexicalObjectPropertyMappings);
+    System.out.println(lexicalObjectPropertyMappings);
+
+    StructuralMatcher sm = MatcherFactory.createStructuralMatcher();
+    sm.setSourceTarget(source, target);
+    sm.setExtractType(true, true);
+    sm.addCommonPredicate(RDFS.subClassOf);
+    sm.addCommonPredicate(OWL.disjointWith);
+    sm.addAllSubjectAnchors(lexicalClassMappings);
+    sm.addAllObjectAnchors(lexicalClassMappings);
+
+    Mapping structuralOntClassMappings = new Mapping();
+    sm.mapOntClasses(structuralOntClassMappings);
+    System.out.println(structuralOntClassMappings);
 
     source.clear();
     target.clear();
