@@ -54,6 +54,10 @@ public class MappingCell extends Relation
     this(entity1, entity2, EQUIVALENCE, 1.0f);
   }
 
+  public MappingCell(String entity1, String entity2, double confidence) {
+    this(entity1, entity2, EQUIVALENCE, confidence);
+  }
+
   public MappingCell(Resource resource1, Resource resource2) {
     this(resource1.getURI(), resource2.getURI());
     m_resource1 = resource1;
@@ -128,14 +132,14 @@ public class MappingCell extends Relation
     MappingCell that = (MappingCell) o;
 
     return m_relation == that.m_relation &&
-           m_confidence == that.m_confidence &&
+           Math.abs(m_confidence - that.m_confidence) <= 0.1 &&
            Objects.equals(m_entity1, that.m_entity1) &&
            Objects.equals(m_entity2, that.m_entity2);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(m_entity1, m_entity2, m_relation, m_confidence);
+    return Objects.hash(m_entity1, m_entity2, m_relation);
   }
 
   @Override

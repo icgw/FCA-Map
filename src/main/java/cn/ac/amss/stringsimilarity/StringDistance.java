@@ -6,8 +6,6 @@
  */
 package cn.ac.amss.stringsimilarity;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Guowei Chen (icgw@outlook.com)

@@ -9,16 +9,28 @@ package cn.ac.amss.semanticweb.model;
 
 import cn.ac.amss.semanticweb.constant.MatchingSpec.Owner;
 
+import java.util.Set;
+
 public class PlainRDFNode
 {
   private String represent = "";
   private Owner owner      = Owner._UNKNOWN_;
+  private Set<String> labelOrNames = null;
+
 
   private PlainRDFNode() {}
 
   public PlainRDFNode(String represent, Owner owner) {
     this.represent = represent;
     this.owner     = owner;
+  }
+
+  public void setLabelOrNames(Set<String> labelOrNames) {
+    this.labelOrNames = labelOrNames;
+  }
+
+  public Set<String> getLabelOrNames() {
+    return this.labelOrNames;
   }
 
   public String getRepresent() {

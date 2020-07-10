@@ -18,6 +18,8 @@ import cn.ac.amss.semanticweb.model.ModelStorage;
 import cn.ac.amss.semanticweb.text.Preprocessing;
 import cn.ac.amss.semanticweb.util.AbstractTable;
 import cn.ac.amss.semanticweb.vocabulary.DBkWik;
+import cn.ac.amss.stringsimilarity.StringMetricFactory;
+import cn.ac.amss.stringsimilarity.StringSimilarity;
 
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
@@ -41,7 +43,8 @@ import java.util.Arrays;
  */
 public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalMatcher
 {
-  private final static Logger logger = LogManager.getLogger(LexicalMatcherImpl.class.getName());
+  private final static Logger logger       = LogManager.getLogger(LexicalMatcherImpl.class.getName());
+  private final static StringSimilarity ss = StringMetricFactory.createLevenshteinSimilarity();
 
   private class LookupTable extends AbstractTable<String, PlainRDFNode> {
     public LookupTable() { super(); }
@@ -262,6 +265,9 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
     for (T r : resources) {
       Set<String> labelsOrNames = getLabelsOrNames(r);
       PlainRDFNode prn = new PlainRDFNode(r.getURI(), owner);
+
+      prn.setLabelOrNames(labelsOrNames);
+
       for (String ln : labelsOrNames) {
         labelOrName2PlainRDFNodes.put(ln, prn);
       }
@@ -368,7 +374,14 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
     // XXX: redefine it by yourself.
     for (PlainRDFNode s : sources) {
       for (PlainRDFNode t : targets) {
-        mappings.add(s.getRepresent(), t.getRepresent());
+        double cnt = 1e-15, confidence = 1e-15;
+        for (String sln : s.getLabelOrNames()) {
+          for (String tln : t.getLabelOrNames()) {
+            confidence += ss.similarity(sln, tln);
+            cnt += 1.0f;
+          }
+        }
+        mappings.add(s.getRepresent(), t.getRepresent(), confidence / cnt);
       }
     }
   }

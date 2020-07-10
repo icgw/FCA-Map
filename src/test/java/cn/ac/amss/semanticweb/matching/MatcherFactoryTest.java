@@ -28,7 +28,6 @@ public class MatcherFactoryTest
 
     Mapping mappings = new Mapping();
     lm.mapOntClasses(mappings);
-    lm.mapDataTypeProperties(mappings);
     lm.mapObjectProperties(mappings);
 
     try {
@@ -48,4 +47,3 @@ public class MatcherFactoryTest
     // TODO:
   }
 }
-

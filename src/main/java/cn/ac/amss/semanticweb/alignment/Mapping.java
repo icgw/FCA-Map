@@ -103,6 +103,10 @@ public class Mapping implements Iterable<MappingCell>
     return add(new MappingCell(entity1, entity2));
   }
 
+  public boolean add(String entity1, String entity2, double confidence) {
+    return add(new MappingCell(entity1, entity2, confidence));
+  }
+
   public boolean add(Resource resource1, Resource resource2) {
     return add(new MappingCell(resource1, resource2));
   }
