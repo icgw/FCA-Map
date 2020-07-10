@@ -374,6 +374,10 @@ public class LexicalMatcherImpl extends AbstractMatcherByFCA implements LexicalM
     // XXX: redefine it by yourself.
     for (PlainRDFNode s : sources) {
       for (PlainRDFNode t : targets) {
+        if (null == s.getLabelOrNames() || null == t.getLabelOrNames()) {
+          mappings.add(s.getRepresent(), t.getRepresent());
+          continue;
+        }
         double cnt = 1e-15, confidence = 1e-15;
         for (String sln : s.getLabelOrNames()) {
           for (String tln : t.getLabelOrNames()) {
